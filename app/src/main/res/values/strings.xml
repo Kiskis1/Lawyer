@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Lawyer</string>
+    <string name="facebook_app_id">641877796515383</string>
+    <string name="fb_login_protocol_scheme">fb641877796515383</string>
+
+    <string name="title_login">Login</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_option">OR CONNECT WITH</string>
+    <string name="login_no_account">Don\'t have an account?</string>
+    <string name="login_register_now">Register now</string>
+
+    <string name="title_register">Register</string>
+    <string name="register_nickname_hint">Nickname</string>
+    <string name="register_email_hint">Email</string>
+    <string name="register_password_hint">Password</string>
+    <string name="register_country_hint">Country</string>
+    <string name="register_city_hint">City</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
