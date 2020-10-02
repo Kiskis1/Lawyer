@@ -1,15 +1,16 @@
 package com.acruxcs.lawyer.ui.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -17,55 +18,48 @@ import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragment : Fragment() {
+class LoginFragment : Fragment(R.layout.fragment_login) {
     private val TAG = this::class.java.simpleName
 
     private val RC_SIGN_IN = 1
-    private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
-    private lateinit var firebaseAuth: FirebaseAuth
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        firebaseAuth = Firebase.auth
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_menu)
+        if (navBar != null) {
+            navBar.visibility = View.GONE
+        }
+        val user = viewModel.getCurrentUser()
+        if (user != null) {
+            view.findNavController()
+                .navigate(R.id.action_loginFragment_to_mainFragment)
+        }
+
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance()
             .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
-                    Log.e("facebook", "onSuccess")
-                    //TODO: handle facebook sign in here
                     val credential = FacebookAuthProvider.getCredential(result.accessToken.token)
-                    firebaseAuth.signInWithCredential(credential)
+                    viewModel.firebaseAuth.signInWithCredential(credential)
                         .addOnCompleteListener(requireActivity()) { task ->
                             if (task.isSuccessful) {
-                                val user = firebaseAuth.currentUser
+                                viewModel.createNewUser(task)
                                 view.findNavController()
                                     .navigate(R.id.action_loginFragment_to_mainFragment)
                             } else {
+                                println(task.exception)
                                 Toast.makeText(
-                                    requireContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT
+                                    requireContext(), getString(R.string.login_error),
+                                    Toast.LENGTH_LONG
                                 ).show()
                             }
                         }
@@ -76,48 +70,56 @@ class LoginFragment : Fragment() {
                 }
 
                 override fun onError(error: FacebookException?) {
-                    text_login_error.text = error?.message
+                    Toast.makeText(context, error?.message, Toast.LENGTH_SHORT).show()
                 }
             })
 
         //google sign in
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
-        button_login_google.setOnClickListener {
-            loading.visibility = View.VISIBLE
-            val signInIntent = googleSignInClient.signInIntent
+        login_button_login_google.setOnClickListener {
+            login_loading.visibility = View.VISIBLE
+            val signInIntent = (activity as MainActivity).googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
 //         facebook sign in
-        button_login_facebook.setOnClickListener {
+        login_button_facebook.setOnClickListener {
             LoginManager.getInstance()
                 .logInWithReadPermissions(this, listOf("email", "public_profile"))
         }
 
         button_login.setOnClickListener {
-            firebaseAuth.signInWithEmailAndPassword(
-                edit_email.text.toString().trim(),
-                edit_password.text.toString().trim()
+            login_layout_edit_email.error = null
+            login_layout_edit_password.error = null
+            val email = edit_email.text.toString().trim()
+            val password = edit_password.text.toString().trim()
+            if (email.isEmpty()) {
+                login_layout_edit_email.error = "Please enter email"
+                edit_email.requestFocus()
+                return@setOnClickListener
+            }
+            if (password.isEmpty()) {
+                login_layout_edit_password.error = "Please enter password"
+                edit_password.requestFocus()
+                return@setOnClickListener
+            }
+            viewModel.firebaseAuth.signInWithEmailAndPassword(
+                email,
+                password
             )
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
-                        val user = firebaseAuth.currentUser
+                        val imm: InputMethodManager =
+                            requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(view.windowToken, 0)
                         view.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
-                        text_login_error.text = task.exception?.message
+                        Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
                     }
                 }
-        }
-        button_logout.setOnClickListener {
-            signOut()
         }
 
         text_register_now.setOnClickListener {
@@ -131,24 +133,22 @@ class LoginFragment : Fragment() {
 
         //google sign in
         if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            val account = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                val account = task.getResult(ApiException::class.java)
-                loading.visibility = View.GONE
-                //TODO: handle google sign in here
-                val credential = GoogleAuthProvider.getCredential(account!!.idToken!!, null)
-                firebaseAuth.signInWithCredential(credential)
+                val result = account.getResult(ApiException::class.java)
+                val credential = GoogleAuthProvider.getCredential(result!!.idToken!!, null)
+                viewModel.firebaseAuth.signInWithCredential(credential)
+                    .addOnCompleteListener(requireActivity()) { task ->
+                        viewModel.createNewUser(task)
+                    }
+                login_loading.visibility = View.GONE
                 view?.findNavController()?.navigate(R.id.action_loginFragment_to_mainFragment)
             } catch (e: ApiException) {
-                e.printStackTrace()
-                loading.visibility = View.GONE
-                text_login_error.text = e.message
+                login_loading.visibility = View.GONE
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
-
-    private fun signOut() {
-        Firebase.auth.signOut()
-    }
-
 }
+
+//TODO: show user errors

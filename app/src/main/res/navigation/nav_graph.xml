@@ -34,5 +34,14 @@
         android:id="@+id/mainFragment"
         android:name="com.acruxcs.lawyer.ui.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/lawyersFragment"
+        android:name="com.acruxcs.lawyer.ui.lawyers.LawyersFragment"
+        android:label="lawyers_fragment"
+        tools:layout="@layout/fragment_lawyers" />
 </navigation>

@@ -2,68 +2,77 @@ package com.acruxcs.lawyer.ui.login
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.acruxcs.lawyer.FirebaseRepository
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.User
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_register.*
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : Fragment(R.layout.fragment_register) {
     private val TAG = this::class.java.simpleName
-    private lateinit var firebaseAuth: FirebaseAuth
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        firebaseAuth = Firebase.auth
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false)
-    }
+    private val viewModel: LoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        button_register.setOnClickListener {
+        register_button_register.setOnClickListener {
             register()
-            view.findNavController().navigate(R.id.action_registerFragment_to_mainFragment)
         }
     }
 
     private fun register() {
+        val email = edit_email.text.toString().trim()
+        val password = edit_password.text.toString().trim()
+        val nickname = edit_nickname.text.toString().trim()
+        val country = edit_country.text.toString().trim()
+        val city = edit_city.text.toString().trim()
+        if (email.isEmpty()) {
+            register_layout_edit_email.error = "Please enter email"
+            edit_email.requestFocus()
+            return
+        }
+        if (password.isEmpty()) {
+            register_layout_edit_password.error = "Please enter password"
+            edit_password.requestFocus()
+            return
+        }
+        if (password.length < 6) {
+            register_layout_edit_password.error = "Password must be longer than 6 symbols"
+            edit_password.requestFocus()
+            return
+        }
+        if (nickname.isEmpty()) {
+            register_layout_edit_nickname.error = "Please enter nickname"
+            edit_nickname.requestFocus()
+            return
+        }
+        if (country.isEmpty()) {
+            register_layout_edit_country.error = "Please enter country"
+            edit_country.requestFocus()
+            return
+        }
+        if (city.isEmpty()) {
+            register_layout_edit_city.error = "Please enter city"
+            edit_city.requestFocus()
+            return
+        }
         val user = User(
-            edit_email.text.toString().trim(),
-            edit_password.text.toString().trim(),
-            edit_nickname.text.toString().trim(),
-            edit_country.text.toString().trim(),
-            edit_city.text.toString().trim()
+            email, password, nickname, country, city
         )
+
         createAccount(user)
     }
 
     private fun createAccount(user: User) {
-        firebaseAuth.createUserWithEmailAndPassword(user.email, user.password)
+        viewModel.firebaseAuth.createUserWithEmailAndPassword(user.email, user.password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "createUserWithEmail:success")
-                    val fbUser = firebaseAuth.currentUser
-                    if (fbUser != null) {
-                        FirebaseRepository.writeNewUser(fbUser.uid, user)
-                    }
-
+                    viewModel.createNewUser(user)
+                    view?.findNavController()
+                        ?.navigate(R.id.action_registerFragment_to_mainFragment)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -74,5 +83,4 @@ class RegisterFragment : Fragment() {
                 }
             }
     }
-
 }
