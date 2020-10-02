@@ -75,56 +75,62 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             })
 
         //google sign in
-
         login_button_login_google.setOnClickListener {
             login_loading.visibility = View.VISIBLE
             val signInIntent = (activity as MainActivity).googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
-//         facebook sign in
+
+        //facebook sign in
         login_button_facebook.setOnClickListener {
             LoginManager.getInstance()
                 .logInWithReadPermissions(this, listOf("email", "public_profile"))
         }
 
+        //normal login
         button_login.setOnClickListener {
-            login_layout_edit_email.error = null
-            login_layout_edit_password.error = null
-            val email = edit_email.text.toString().trim()
-            val password = edit_password.text.toString().trim()
-            if (email.isEmpty()) {
-                login_layout_edit_email.error = "Please enter email"
-                edit_email.requestFocus()
-                return@setOnClickListener
-            }
-            if (password.isEmpty()) {
-                login_layout_edit_password.error = "Please enter password"
-                edit_password.requestFocus()
-                return@setOnClickListener
-            }
-            viewModel.firebaseAuth.signInWithEmailAndPassword(
-                email,
-                password
-            )
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithEmail:success")
-                        val imm: InputMethodManager =
-                            requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
-                        view.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithEmail:failure", task.exception)
-                        Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
+            login()
         }
 
         text_register_now.setOnClickListener {
             view.findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+    }
+
+    private fun login() {
+        login_layout_edit_email.error = null
+        login_layout_edit_password.error = null
+        val email = edit_email.text.toString().trim()
+        val password = edit_password.text.toString().trim()
+        if (email.isEmpty()) {
+            login_layout_edit_email.error = getString(R.string.empty_field)
+            edit_email.requestFocus()
+            return
+        }
+        if (password.isEmpty()) {
+            login_layout_edit_password.error = getString(R.string.empty_field)
+            edit_password.requestFocus()
+            return
+        }
+        viewModel.firebaseAuth.signInWithEmailAndPassword(
+            email,
+            password
+        )
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val imm: InputMethodManager =
+                        requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+                    requireView().findNavController()
+                        .navigate(R.id.action_loginFragment_to_mainFragment)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -142,7 +148,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         viewModel.createNewUser(task)
                     }
                 login_loading.visibility = View.GONE
-                view?.findNavController()?.navigate(R.id.action_loginFragment_to_mainFragment)
+                requireView().findNavController()
+                    .navigate(R.id.action_loginFragment_to_mainFragment)
             } catch (e: ApiException) {
                 login_loading.visibility = View.GONE
                 Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
@@ -151,4 +158,4 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 }
 
-//TODO: show user errors
+// show user errors

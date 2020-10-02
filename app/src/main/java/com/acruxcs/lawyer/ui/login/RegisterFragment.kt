@@ -30,32 +30,32 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         val country = edit_country.text.toString().trim()
         val city = edit_city.text.toString().trim()
         if (email.isEmpty()) {
-            register_layout_edit_email.error = "Please enter email"
+            register_layout_edit_email.error = getString(R.string.empty_field)
             edit_email.requestFocus()
             return
         }
         if (password.isEmpty()) {
-            register_layout_edit_password.error = "Please enter password"
+            register_layout_edit_password.error = getString(R.string.empty_field)
             edit_password.requestFocus()
             return
         }
         if (password.length < 6) {
-            register_layout_edit_password.error = "Password must be longer than 6 symbols"
+            register_layout_edit_password.error = getString(R.string.empty_field)
             edit_password.requestFocus()
             return
         }
         if (nickname.isEmpty()) {
-            register_layout_edit_nickname.error = "Please enter nickname"
+            register_layout_edit_nickname.error = getString(R.string.empty_field)
             edit_nickname.requestFocus()
             return
         }
         if (country.isEmpty()) {
-            register_layout_edit_country.error = "Please enter country"
+            register_layout_edit_country.error = getString(R.string.empty_field)
             edit_country.requestFocus()
             return
         }
         if (city.isEmpty()) {
-            register_layout_edit_city.error = "Please enter city"
+            register_layout_edit_city.error = getString(R.string.empty_field)
             edit_city.requestFocus()
             return
         }
@@ -71,8 +71,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     viewModel.createNewUser(user)
-                    view?.findNavController()
-                        ?.navigate(R.id.action_registerFragment_to_mainFragment)
+                    requireView().findNavController()
+                        .navigate(R.id.action_registerFragment_to_mainFragment)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)

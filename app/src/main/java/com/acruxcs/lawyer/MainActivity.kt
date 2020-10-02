@@ -2,6 +2,7 @@ package com.acruxcs.lawyer
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import com.acruxcs.lawyer.ui.lawyers.LawyersFragment
 import com.acruxcs.lawyer.ui.main.MainFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -36,23 +37,23 @@ class MainActivity : AppCompatActivity() {
         when (it.itemId) {
             R.id.bottom_nav_home -> {
                 val fragment = MainFragment()
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment, fragment, fragment.javaClass.simpleName)
-                    .commit()
+                supportFragmentManager.commit {
+                    replace(R.id.nav_host_fragment, fragment, fragment.javaClass.simpleName)
+                }
                 true
             }
             R.id.bottom_nav_question -> {
                 val fragment = LawyersFragment()
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment, fragment, fragment.javaClass.simpleName)
-                    .commit()
+                supportFragmentManager.commit {
+                    replace(R.id.nav_host_fragment, fragment, fragment.javaClass.simpleName)
+                }
                 true
             }
             R.id.bottom_nav_lawyers -> {
                 val fragment = LawyersFragment()
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.nav_host_fragment, fragment, fragment.javaClass.simpleName)
-                    .commit()
+                supportFragmentManager.commit {
+                    replace(R.id.nav_host_fragment, fragment, fragment.javaClass.simpleName)
+                }
                 true
             }
             else -> false
