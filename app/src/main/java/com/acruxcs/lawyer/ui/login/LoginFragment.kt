@@ -43,6 +43,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             view.findNavController()
                 .navigate(R.id.action_loginFragment_to_mainFragment)
         }
+        login_error_message.text = null
 
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance()
@@ -56,11 +57,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 view.findNavController()
                                     .navigate(R.id.action_loginFragment_to_mainFragment)
                             } else {
-                                println(task.exception)
-                                Toast.makeText(
-                                    requireContext(), getString(R.string.login_error),
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                login_error_message.text = task.exception?.message
                             }
                         }
                 }
@@ -76,6 +73,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         //google sign in
         login_button_login_google.setOnClickListener {
+            login_error_message.text = null
             login_loading.visibility = View.VISIBLE
             val signInIntent = (activity as MainActivity).googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -83,12 +81,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         //facebook sign in
         login_button_facebook.setOnClickListener {
+            login_error_message.text = null
             LoginManager.getInstance()
                 .logInWithReadPermissions(this, listOf("email", "public_profile"))
         }
 
         //normal login
         button_login.setOnClickListener {
+            login_error_message.text = null
             login()
         }
 
@@ -118,7 +118,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         )
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     val imm: InputMethodManager =
                         requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -126,9 +125,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     requireView().findNavController()
                         .navigate(R.id.action_loginFragment_to_mainFragment)
                 } else {
-                    // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
+                    login_error_message.text = task.exception?.message
                 }
             }
     }
@@ -152,10 +150,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     .navigate(R.id.action_loginFragment_to_mainFragment)
             } catch (e: ApiException) {
                 login_loading.visibility = View.GONE
-                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                login_error_message.text = e.message
             }
         }
     }
 }
-
-// show user errors
