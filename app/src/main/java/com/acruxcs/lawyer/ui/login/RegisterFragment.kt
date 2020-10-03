@@ -78,7 +78,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
                         requireActivity(), task.exception?.message,
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_LONG
                     ).show()
                 }
             }
