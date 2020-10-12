@@ -1,0 +1,14 @@
+package com.acruxcs.lawyer.model
+
+data class Lawyer(
+    var email: String = "",
+    var password: String = "",
+    var nickname: String = "",
+    var country: String = "",
+    var city: String = "",
+    var specialization: String = "",
+    var education: String = "",
+    var experience: Int = 0,
+    var won_cases: Int = 0,
+    var role: String = "lawyer",
+)

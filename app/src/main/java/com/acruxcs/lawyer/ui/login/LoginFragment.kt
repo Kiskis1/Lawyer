@@ -153,5 +153,3 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 }
-
-// show user errors

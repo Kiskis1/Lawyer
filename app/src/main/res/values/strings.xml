@@ -35,7 +35,18 @@
     <string name="call_dialog_title">Call a lawyer</string>
     <string name="call_dialog_message">Our lawyers and attorneys are ready to answer your questions!</string>
     <string name="call">Call</string>
+
     <string name="cancel">Cancel</string>
     <string name="empty_field">Field can\'t be empty</string>
+
     <string name="placeholder">Placeholder</string>
+
+    <string name="lawyer_name">Name: %s</string>
+    <string name="lawyer_specialization">Specialization: %s</string>
+    <string name="lawyer_education">Education: %s</string>
+    <string name="lawyer_number_of_won_cases">Number of won cases: %d</string>
+    <string name="lawyer_experience">Experience: %d years</string>
+    <string name="lawyer_desc_picture_of_lawyer">Picture of lawyer</string>
+
+
 </resources>

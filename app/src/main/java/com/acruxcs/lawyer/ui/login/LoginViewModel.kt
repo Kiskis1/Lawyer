@@ -1,8 +1,8 @@
 package com.acruxcs.lawyer.ui.login
 
 import androidx.lifecycle.ViewModel
-import com.acruxcs.lawyer.FirebaseRepository
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.ktx.auth

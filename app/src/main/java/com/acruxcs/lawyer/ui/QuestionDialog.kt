@@ -11,9 +11,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.acruxcs.lawyer.FirebaseRepository
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Question
+import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.google.android.material.textfield.TextInputLayout
 
 class QuestionDialog : DialogFragment() {

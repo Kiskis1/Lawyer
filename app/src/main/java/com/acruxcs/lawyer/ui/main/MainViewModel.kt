@@ -2,8 +2,8 @@ package com.acruxcs.lawyer.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.acruxcs.lawyer.FirebaseRepository
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

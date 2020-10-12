@@ -1,4 +1,4 @@
-package com.acruxcs.lawyer
+package com.acruxcs.lawyer.repository
 
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
@@ -15,4 +15,6 @@ object FirebaseRepository {
     fun getUser(userId: String) = db.child("users").child(userId)
 
     fun sendQuestion(question: Question) = db.child("questions").push().setValue(question)
+
+    fun getLawyers() = db.child("users").orderByChild("role").equalTo("lawyer")
 }
