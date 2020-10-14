@@ -34,14 +34,33 @@
         android:id="@+id/mainFragment"
         android:name="com.acruxcs.lawyer.ui.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_lawyersFragment"
+            app:destination="@id/lawyersFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/lawyersFragment"
         android:name="com.acruxcs.lawyer.ui.lawyers.LawyersFragment"
         android:label="lawyers_fragment"
-        tools:layout="@layout/fragment_lawyers" />
+        tools:layout="@layout/fragment_lawyers">
+        <argument
+            android:name="lawyer"
+            app:argType="com.acruxcs.lawyer.model.Lawyer" />
+        <action
+            android:id="@+id/action_lawyersFragment_to_lawyersInfoFragment"
+            app:destination="@id/lawyersInfoFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/lawyersInfoFragment"
+        android:name="com.acruxcs.lawyer.ui.lawyers.LawyerInfoFragment"
+        android:label="fragment_lawyers_info"
+        tools:layout="@layout/fragment_lawyers_info" />
 </navigation>

@@ -16,14 +16,11 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers), LawyersListAdapter.
         super.onViewCreated(view, savedInstanceState)
 
         val lawyersAdapter = LawyersListAdapter(this)
-        // lawyers_recycler.setHasFixedSize(true)
         lawyers_recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
         lawyers_recycler.adapter = lawyersAdapter
         viewModel.getLawyers().observe(viewLifecycleOwner, {
-            println(it)
             lawyersAdapter.swapData(it)
-            println("ADASDASDASDASDASDASD")
         })
     }
 

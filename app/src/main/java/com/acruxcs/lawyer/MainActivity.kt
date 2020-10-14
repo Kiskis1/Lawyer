@@ -2,9 +2,8 @@ package com.acruxcs.lawyer
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
-import com.acruxcs.lawyer.ui.lawyers.LawyersFragment
-import com.acruxcs.lawyer.ui.main.MainFragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -30,33 +29,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         bottomNavigation = findViewById(R.id.bottom_menu)
-        bottomNavigation.setOnNavigationItemSelectedListener(navListener)
-    }
-
-    private val navListener = BottomNavigationView.OnNavigationItemSelectedListener {
-        when (it.itemId) {
-            R.id.bottom_nav_home -> {
-                val fragment = MainFragment()
-                supportFragmentManager.commit {
-                    replace(R.id.nav_host_fragment, fragment, fragment.javaClass.simpleName)
-                }
-                true
-            }
-            R.id.bottom_nav_question -> {
-                val fragment = LawyersFragment()
-                supportFragmentManager.commit {
-                    replace(R.id.nav_host_fragment, fragment, fragment.javaClass.simpleName)
-                }
-                true
-            }
-            R.id.bottom_nav_lawyers -> {
-                val fragment = LawyersFragment()
-                supportFragmentManager.commit {
-                    replace(R.id.nav_host_fragment, fragment, fragment.javaClass.simpleName)
-                }
-                true
-            }
-            else -> false
-        }
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        findViewById<BottomNavigationView>(R.id.bottom_menu)
+            .setupWithNavController(navController)
     }
 }
+//TODO: fix back stack problems

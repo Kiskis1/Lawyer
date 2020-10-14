@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -39,13 +41,19 @@ class LawyersListAdapter(private val interaction: Interaction? = null) :
 
             if (adapterPosition == RecyclerView.NO_POSITION) return
 
-            // val clicked = getItem(adapterPosition)
+            val clicked = getItem(adapterPosition)
+            val bundle = bundleOf()
+            bundle.putParcelable("lawyer", clicked)
+            v!!.findNavController()
+                .navigate(R.id.action_lawyersFragment_to_lawyersInfoFragment, bundle)
         }
 
         fun bind(item: Lawyer) = with(itemView) {
             lawyers_text_name.text = resources.getString(R.string.lawyer_name, item.nickname)
             lawyers_text_education.text =
                 resources.getString(R.string.lawyer_education, item.education)
+            lawyers_text_specialization.text =
+                resources.getString(R.string.lawyer_specialization, item.specialization)
             lawyers_text_experience.text =
                 resources.getString(R.string.lawyer_experience, item.experience)
             lawyers_text_won_cases.text =

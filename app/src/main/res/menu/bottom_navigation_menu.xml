@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/bottom_nav_home"
-        android:title="@string/menu_home"
-        android:icon="@drawable/ic_home_24"/>
+        android:id="@+id/mainFragment"
+        android:icon="@drawable/ic_home_24"
+        android:title="@string/menu_home" />
     <item
-        android:id="@+id/bottom_nav_question"
-        android:title="@string/menu_ask_a_question"
-        android:icon="@drawable/ic_question_24"/>
+        android:id="@+id/lawyersFragment2"
+        android:icon="@drawable/ic_question_24"
+        android:title="@string/menu_ask_a_question" />
     <item
-        android:id="@+id/bottom_nav_lawyers"
-        android:title="@string/menu_lawyers"
-        android:icon="@drawable/ic_person_24"/>
+        android:id="@+id/lawyersFragment"
+        android:icon="@drawable/ic_person_24"
+        android:title="@string/menu_lawyers" />
 </menu>
