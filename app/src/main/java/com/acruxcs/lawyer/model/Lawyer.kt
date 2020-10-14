@@ -1,5 +1,9 @@
 package com.acruxcs.lawyer.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Lawyer(
     var email: String = "",
     var password: String = "",
@@ -11,4 +15,4 @@ data class Lawyer(
     var experience: Int = 0,
     var won_cases: Int = 0,
     var role: String = "lawyer",
-)
+) : Parcelable
