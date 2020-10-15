@@ -15,7 +15,7 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers), LawyersListAdapter.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val lawyersAdapter = LawyersListAdapter(this)
+        val lawyersAdapter = LawyersListAdapter(this, parentFragmentManager)
         lawyers_recycler.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
         lawyers_recycler.adapter = lawyersAdapter

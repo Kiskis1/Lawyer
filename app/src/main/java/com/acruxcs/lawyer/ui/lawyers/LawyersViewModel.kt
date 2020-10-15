@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 class LawyersViewModel : ViewModel() {
-
+    private val TAG = this::class.java.simpleName
     private val repository = FirebaseRepository
     private var lawyers = MutableLiveData<List<Lawyer>>()
 
@@ -18,7 +18,7 @@ class LawyersViewModel : ViewModel() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<Lawyer>()
                 for (lawyer in snapshot.children) {
-                    list.add(lawyer.getValue(Lawyer::class.java)!!)
+                    lawyer.getValue(Lawyer::class.java)?.let { list.add(it) }
                 }
                 lawyers.postValue(list)
             }
