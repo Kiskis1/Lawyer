@@ -54,13 +54,11 @@
             app:argType="com.acruxcs.lawyer.model.Lawyer" />
         <action
             android:id="@+id/action_lawyersFragment_to_lawyersInfoFragment"
-            app:destination="@id/lawyersInfoFragment"
-            app:popUpTo="@id/mainFragment"
-            app:popUpToInclusive="true" />
+            app:destination="@id/lawyersInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/lawyersInfoFragment"
-        android:name="com.acruxcs.lawyer.ui.lawyers.LawyerInfoFragment"
+        android:name="com.acruxcs.lawyer.ui.lawyersinfo.LawyersInfoFragment"
         android:label="fragment_lawyers_info"
         tools:layout="@layout/fragment_lawyers_info" />
 </navigation>

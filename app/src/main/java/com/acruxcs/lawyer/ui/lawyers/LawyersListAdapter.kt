@@ -5,15 +5,20 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Lawyer
+import com.acruxcs.lawyer.utils.Utils
 import kotlinx.android.synthetic.main.item_lawyer.view.*
 
-class LawyersListAdapter(private val interaction: Interaction? = null) :
+class LawyersListAdapter(
+    private val interaction: Interaction? = null,
+    private val manager: FragmentManager
+) :
     ListAdapter<Lawyer, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LawyerListViewHolder(
@@ -49,7 +54,7 @@ class LawyersListAdapter(private val interaction: Interaction? = null) :
         }
 
         fun bind(item: Lawyer) = with(itemView) {
-            lawyers_text_name.text = resources.getString(R.string.lawyer_name, item.nickname)
+            lawyers_text_name.text = resources.getString(R.string.lawyer_name, item.name)
             lawyers_text_education.text =
                 resources.getString(R.string.lawyer_education, item.education)
             lawyers_text_specialization.text =
@@ -58,6 +63,12 @@ class LawyersListAdapter(private val interaction: Interaction? = null) :
                 resources.getString(R.string.lawyer_experience, item.experience)
             lawyers_text_won_cases.text =
                 resources.getString(R.string.lawyer_number_of_won_cases, item.won_cases)
+            lawyers_button_call.setOnClickListener {
+                Utils.showCallDialog(itemView.context)
+            }
+            lawyers_button_question.setOnClickListener {
+                Utils.showQuestionDialog(manager)
+            }
         }
     }
 

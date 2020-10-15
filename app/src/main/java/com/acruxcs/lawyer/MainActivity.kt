@@ -3,11 +3,13 @@ package com.acruxcs.lawyer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private val TAG = this::class.java.simpleName
@@ -35,5 +37,14 @@ class MainActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.bottom_menu)
             .setupWithNavController(navController)
     }
+
+    override fun onBackPressed() {
+        if (nav_host_fragment.findNavController().currentDestination?.id == R.id.mainFragment ||
+            nav_host_fragment.findNavController().currentDestination?.id == R.id.lawyersFragment
+        ) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }
-//TODO: fix back stack problems

@@ -6,8 +6,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Lawyer(
     var email: String = "",
-    var password: String = "",
-    var nickname: String = "",
+    var name: String = "",
     var country: String = "",
     var city: String = "",
     var specialization: String = "",

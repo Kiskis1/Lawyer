@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fab_call_lawyer"
+        android:icon="@drawable/ic_home_24"
+        android:title="@string/call" />
+    <item
+        android:id="@+id/fab_message_lawyer"
+        android:icon="@drawable/ic_question_24"
+        android:title="@string/message" />
+</menu>
