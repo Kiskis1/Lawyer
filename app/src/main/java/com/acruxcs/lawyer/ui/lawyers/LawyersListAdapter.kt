@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
@@ -13,13 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.utils.Utils
+import com.acruxcs.lawyer.utils.Utils.removeFirst
 import kotlinx.android.synthetic.main.item_lawyer.view.*
 
 class LawyersListAdapter(
     private val interaction: Interaction? = null,
     private val manager: FragmentManager
 ) :
-    ListAdapter<Lawyer, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
+    ListAdapter<Lawyer, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()), Filterable {
+
+    private val dataCopy = mutableListOf<Lawyer>()
+    private val original = mutableListOf<Lawyer>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LawyerListViewHolder(
         LayoutInflater.from(parent.context)
@@ -30,7 +36,9 @@ class LawyersListAdapter(
         holder.bind(getItem(position))
 
     fun swapData(data: List<Lawyer>) {
-        submitList(data.toMutableList())
+        dataCopy.addAll(data)
+        original.addAll(data)
+        submitList(original.toMutableList())
     }
 
     inner class LawyerListViewHolder(
@@ -63,6 +71,7 @@ class LawyersListAdapter(
                 resources.getString(R.string.lawyer_experience, item.experience)
             lawyers_text_won_cases.text =
                 resources.getString(R.string.lawyer_number_of_won_cases, item.won_cases)
+            lawyers_text_city.text = item.city
             lawyers_button_call.setOnClickListener {
                 Utils.showCallDialog(itemView.context)
             }
@@ -72,19 +81,57 @@ class LawyersListAdapter(
         }
     }
 
-    interface Interaction {
-
-    }
+    interface Interaction
 
     private class LawyerDC : DiffUtil.ItemCallback<Lawyer>() {
         override fun areItemsTheSame(
             oldItem: Lawyer,
             newItem: Lawyer
-        ) = oldItem.email == newItem.email
+        ) = oldItem.specialization == newItem.specialization
 
         override fun areContentsTheSame(
             oldItem: Lawyer,
             newItem: Lawyer
         ) = oldItem == newItem
     }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(p0: CharSequence): FilterResults {
+                val filteredResults = mutableListOf<Lawyer>()
+                filteredResults.clear()
+                val constraint = Utils.convertString2Map(p0 as String)
+
+                if (!constraint["city"].equals("")) {
+                    filteredResults.addAll(original.filter { it.city == constraint["city"] })
+                }
+                if (!constraint["spec"].equals("") && filteredResults.isEmpty()) {
+                    filteredResults.addAll(original.filter { it.specialization == constraint["spec"] })
+                } else {
+                    filteredResults.addAll(filteredResults.filter { it.specialization == constraint["spec"] })
+                }
+                if (!constraint["exp"].equals("") && filteredResults.isEmpty()) {
+                    filteredResults.addAll(original.filter { it.experience == constraint["exp"]?.toIntOrNull() })
+                } else {
+                    filteredResults.addAll(filteredResults.filter { it.experience == constraint["exp"]?.toIntOrNull() })
+                }
+
+                filteredResults.removeFirst(original.size)
+
+                println(filteredResults)
+                val results = FilterResults()
+                results.values = filteredResults
+                return results
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(p0: CharSequence?, p1: FilterResults) {
+                println(p1.values as List<Lawyer>)
+                original.clear()
+                notifyDataSetChanged()
+                swapData(p1.values as List<Lawyer>)
+            }
+        }
+    }
 }
+
