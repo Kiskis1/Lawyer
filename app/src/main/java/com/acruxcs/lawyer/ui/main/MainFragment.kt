@@ -8,7 +8,6 @@ import androidx.navigation.findNavController
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.utils.MainApplication
-import com.acruxcs.lawyer.utils.Utils
 import com.facebook.login.LoginManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -28,11 +27,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         navBar.visibility = View.VISIBLE
 
         main_button_call.setOnClickListener {
-            Utils.showCallDialog(requireContext())
+            // Utils.showCallDialog(requireContext())
         }
 
         main_button_question.setOnClickListener {
-            Utils.showQuestionDialog(parentFragmentManager)
+            // Utils.showQuestionDialog(parentFragmentManager, item)
         }
 
         main_button_logout.setOnClickListener {

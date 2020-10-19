@@ -38,7 +38,7 @@ class LawyersListAdapter(
     fun swapData(data: List<Lawyer>) {
         dataCopy.addAll(data)
         original.addAll(data)
-        submitList(original.toMutableList())
+        submitList(data.toMutableList())
     }
 
     inner class LawyerListViewHolder(
@@ -73,10 +73,10 @@ class LawyersListAdapter(
                 resources.getString(R.string.lawyer_number_of_won_cases, item.won_cases)
             lawyers_text_city.text = item.city
             lawyers_button_call.setOnClickListener {
-                Utils.showCallDialog(itemView.context)
+                Utils.showCallDialog(itemView.context, item)
             }
             lawyers_button_question.setOnClickListener {
-                Utils.showQuestionDialog(manager)
+                Utils.showQuestionDialog(manager, item)
             }
         }
     }
@@ -100,36 +100,54 @@ class LawyersListAdapter(
             override fun performFiltering(p0: CharSequence): FilterResults {
                 val filteredResults = mutableListOf<Lawyer>()
                 filteredResults.clear()
+
+                //a map of of filters and values to filter by, doesnt return K, V if V is empty
                 val constraint = Utils.convertString2Map(p0 as String)
+                println(constraint)
 
-                if (!constraint["city"].equals("")) {
-                    filteredResults.addAll(original.filter { it.city == constraint["city"] })
+                //sometimes works sometimes doesnt depending what filters are used
+                if (constraint.containsKey("city")) {
+                    filteredResults.addAll(original.filter { it.city == constraint["city"].toString() })
                 }
-                if (!constraint["spec"].equals("") && filteredResults.isEmpty()) {
-                    filteredResults.addAll(original.filter { it.specialization == constraint["spec"] })
+                if (constraint.containsKey("spec") && filteredResults.isEmpty()) {
+                    filteredResults.addAll(original.filter { it.specialization == constraint["spec"].toString() })
                 } else {
-                    filteredResults.addAll(filteredResults.filter { it.specialization == constraint["spec"] })
+                    filteredResults.addAll(filteredResults.filter { it.specialization == constraint["spec"].toString() })
                 }
-                if (!constraint["exp"].equals("") && filteredResults.isEmpty()) {
-                    filteredResults.addAll(original.filter { it.experience == constraint["exp"]?.toIntOrNull() })
-                } else {
-                    filteredResults.addAll(filteredResults.filter { it.experience == constraint["exp"]?.toIntOrNull() })
+                if (constraint.containsKey("exp") && filteredResults.isEmpty()) {
+                    filteredResults.addAll(original.filter {
+                        it.experience >= constraint.getValue("exp").toInt()
+                    })
+                } else if (constraint.containsKey("exp")) {
+                    filteredResults.addAll(filteredResults.filter {
+                        it.experience >= constraint.getValue(
+                            "exp"
+                        ).toInt()
+                    })
                 }
 
-                filteredResults.removeFirst(original.size)
-
-                println(filteredResults)
                 val results = FilterResults()
-                results.values = filteredResults
+                results.values = filteredResults.removeFirst(original.size).distinct()
+
+                //doesnt work at all but seems nicer than above
+                // results.values = original.asSequence().filter {
+                //     constraint.containsKey("city") && it.city == constraint["city"]
+                // }.filter {
+                //     constraint.containsKey("spec") && it.city == constraint["spec"]
+                // }.filter {
+                //     constraint.containsKey("exp") && it.experience >= constraint.getValue("exp")
+                //         .toInt()
+                // }.toList()
+
                 return results
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(p0: CharSequence?, p1: FilterResults) {
                 println(p1.values as List<Lawyer>)
-                original.clear()
-                notifyDataSetChanged()
-                swapData(p1.values as List<Lawyer>)
+                // original.clear()
+                // notifyDataSetChanged()
+                submitList(p1.values as List<Lawyer>)
             }
         }
     }

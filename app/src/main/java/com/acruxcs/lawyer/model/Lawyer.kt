@@ -8,6 +8,7 @@ data class Lawyer(
     var email: String = "",
     var name: String = "",
     var country: String = "",
+    var phone: String = "",
     var city: String = "",
     var specialization: String = "",
     var education: String = "",

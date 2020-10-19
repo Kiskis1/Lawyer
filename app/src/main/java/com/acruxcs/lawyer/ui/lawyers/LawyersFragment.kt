@@ -27,6 +27,7 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers), LawyersListAdapter.
         })
 
         lawyers_fab.setOnClickListener {
+            lawyersAdapter.swapData(list)
             FilterDialog(this).show(parentFragmentManager, "Filter")
         }
     }

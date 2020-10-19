@@ -1,17 +1,16 @@
 package com.acruxcs.lawyer.ui.login
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.utils.Utils
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -118,9 +117,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "signInWithEmail:success")
-                    val imm: InputMethodManager =
-                        requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+                    Utils.hideKeyboard(requireContext(), requireView())
                     requireView().findNavController()
                         .navigate(R.id.action_loginFragment_to_mainFragment)
                 } else {

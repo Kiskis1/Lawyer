@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@id/register_text_register">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_email"
+            android:id="@+id/register_edit_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="32dp"
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@id/register_layout_edit_email">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_password"
+            android:id="@+id/register_edit_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="32dp"
@@ -77,16 +77,15 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_layout_edit_nickname"
         android:layout_width="match_parent"
-        android:layout_height="82dp"
+        android:layout_height="wrap_content"
         android:textColor="@color/background_color_reverse"
         android:textColorHint="@color/background_color_reverse"
         app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/register_layout_edit_password">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_nickname"
+            android:id="@+id/register_edit_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -102,54 +101,56 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_layout_edit_country"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/background_color_reverse"
         android:textColorHint="@color/background_color_reverse"
-        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/register_layout_edit_nickname">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_country"
+        <AutoCompleteTextView
+            android:id="@+id/register_spinner_country"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true"
             android:hint="@string/register_country_hint"
             android:imeOptions="actionNext"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:textColor="@color/background_color_reverse"
-            android:textColorHint="@color/background_color_reverse"
+            android:singleLine="true"
             android:textSize="20sp" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/register_layout_edit_city"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/background_color_reverse"
         android:textColorHint="@color/background_color_reverse"
-        app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/register_layout_edit_country">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_city"
+        <AutoCompleteTextView
+            android:id="@+id/register_spinner_city"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true"
             android:hint="@string/register_city_hint"
             android:imeOptions="actionDone"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:textColor="@color/background_color_reverse"
-            android:textColorHint="@color/background_color_reverse"
+            android:singleLine="true"
             android:textSize="20sp" />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

@@ -17,29 +17,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/filter_edit_specialization"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filter_layout_specialization"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:hint="Specialization"
-        android:imeOptions="actionNext"
-        android:singleLine="true"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter_edit_city" />
+        app:layout_constraintTop_toBottomOf="@id/filter_edit_city">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/filter_edit_experience"
+        <AutoCompleteTextView
+            android:id="@+id/filter_spinner_specialization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Specialization"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filter_layout_experience"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:hint="Experience"
-        android:imeOptions="actionDone"
-        android:inputType="number"
-        android:singleLine="true"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter_edit_specialization" />
+        app:layout_constraintTop_toBottomOf="@id/filter_layout_specialization">
+
+        <AutoCompleteTextView
+            android:id="@+id/filter_spinner_experience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Experience"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

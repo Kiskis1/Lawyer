@@ -1,22 +1,28 @@
 package com.acruxcs.lawyer.utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.ui.QuestionDialog
+import java.io.IOException
 
 object Utils {
 
-    fun showCallDialog(context: Context) {
+    const val ARG_LAWYER = "lawyer"
+
+    fun showCallDialog(context: Context, item: Lawyer) {
         val dialog = AlertDialog.Builder(context)
         dialog.setMessage(R.string.call_dialog_message)
         dialog.setTitle(R.string.call_dialog_title)
         dialog.setPositiveButton(R.string.call) { _, _ ->
-            val phone = "+37060000000"
-            val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
+            val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", item.phone, null))
             context.startActivity(intent)
         }
         dialog.setNegativeButton(R.string.cancel) { d, _ ->
@@ -25,8 +31,8 @@ object Utils {
         dialog.create().show()
     }
 
-    fun showQuestionDialog(manager: FragmentManager) {
-        QuestionDialog().show(manager, "Question")
+    fun showQuestionDialog(manager: FragmentManager, item: Lawyer) {
+        QuestionDialog.newInstance(item).show(manager, "Question")
     }
 
     fun <E> MutableList<E>.removeFirst(length: Int): MutableList<E> {
@@ -40,7 +46,7 @@ object Utils {
         return mapAsString.split(", ").associate {
             val (left, right) = it.split("=")
             left to right
-        }
+        }.filterValues { it != "" }
     }
 
     fun convertMap2String(map: Map<String, String>): String {
@@ -50,5 +56,27 @@ object Utils {
         }
         mapAsString.delete(mapAsString.length - 2, mapAsString.length).append("")
         return mapAsString.toString()
+    }
+
+    fun getJsonFromAssets(context: Context, fileName: String): String {
+        val jsonString: String
+        jsonString = try {
+            val stream = context.assets.open(fileName)
+            val size = stream.available()
+            val buffer = ByteArray(size)
+            stream.read(buffer)
+            stream.close()
+            String(buffer, charset("UTF-8"))
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return ""
+        }
+        return jsonString
+    }
+
+    fun hideKeyboard(context: Context, view: View) {
+        val imm: InputMethodManager =
+            context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

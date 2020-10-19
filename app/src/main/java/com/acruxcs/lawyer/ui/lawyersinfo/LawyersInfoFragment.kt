@@ -6,17 +6,16 @@ import androidx.fragment.app.Fragment
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.utils.Utils
+import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 import kotlinx.android.synthetic.main.fragment_lawyers_info.*
 
-private const val ARG_LAWYER = "lawyer"
-
 class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
-    private var lawyer: Lawyer? = null
+    private lateinit var lawyer: Lawyer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            lawyer = it.getParcelable(ARG_LAWYER)
+            lawyer = it.getParcelable(ARG_LAWYER)!!
         }
     }
 
@@ -26,25 +25,24 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
         lawyersinfo_speeddial.setOnActionSelectedListener { item ->
             when (item.id) {
                 R.id.fab_call_lawyer -> {
-                    Utils.showCallDialog(requireContext())
+                    Utils.showCallDialog(requireContext(), lawyer)
                     lawyersinfo_speeddial.close() // To close the Speed Dial with animation
                 }
                 R.id.fab_message_lawyer -> {
-                    Utils.showQuestionDialog(parentFragmentManager)
+                    Utils.showQuestionDialog(parentFragmentManager, lawyer)
                     lawyersinfo_speeddial.close() // To close the Speed Dial with animation
                 }
             }
             false
         }
 
-        lawyersinfo_text_city.text = lawyer!!.city
-        lawyersinfo_text_education.text = lawyer!!.education
-        lawyersinfo_text_name.text = lawyer!!.name
-        lawyersinfo_text_specialization.text = lawyer!!.specialization
+        lawyersinfo_text_city.text = lawyer.city
+        lawyersinfo_text_education.text = lawyer.education
+        lawyersinfo_text_name.text = lawyer.name
+        lawyersinfo_text_specialization.text = lawyer.specialization
     }
 
     companion object {
-        @JvmStatic
         fun newInstance(lawyer: Lawyer) =
             LawyersInfoFragment().apply {
                 arguments = Bundle().apply {
