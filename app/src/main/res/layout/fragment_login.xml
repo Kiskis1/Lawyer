@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@id/login_text_login">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_email"
+            android:id="@+id/login_edit_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -81,7 +81,7 @@
         app:layout_constraintTop_toBottomOf="@id/login_layout_edit_email">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_password"
+            android:id="@+id/login_edit_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="32dp"
@@ -108,7 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/login_layout_edit_password" />
 
     <Button
-        android:id="@+id/button_login"
+        android:id="@+id/login_button_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerInParent="true"
@@ -135,11 +135,11 @@
         android:layout_marginEnd="32dp"
         android:text="@string/login_no_account"
         android:textColor="@color/background_color_reverse"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.265"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_login" />
+        app:layout_constraintTop_toBottomOf="@id/login_button_login" />
 
     <TextView
         android:id="@+id/text_register_now"
@@ -153,9 +153,9 @@
         android:text="@string/login_register_now"
         android:textColor="@color/colorPrimary"
         android:textColorLink="@color/colorPrimary"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/login_text_no_account"
-        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+        app:layout_constraintTop_toBottomOf="@+id/login_button_login" />
 
     <TextView
         android:id="@+id/login_text_login_option"

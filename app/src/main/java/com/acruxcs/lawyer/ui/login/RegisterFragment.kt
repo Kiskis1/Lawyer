@@ -6,10 +6,11 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_register.*
 class RegisterFragment : Fragment(R.layout.fragment_register) {
     private val TAG = this::class.java.simpleName
 
-    private val viewModel: LoginViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +52,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         register_spinner_city.setOnItemClickListener { _, _, _, _ ->
             Utils.hideKeyboard(requireContext(), requireView())
         }
-
 
         register_button_register.setOnClickListener {
             register()
@@ -107,6 +107,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     viewModel.createNewUser(user)
+                    viewModel.setUser(user)
                     requireView().findNavController()
                         .navigate(R.id.action_registerFragment_to_mainFragment)
                 } else {

@@ -85,7 +85,7 @@
                 style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/menu_ask_a_question" />
+                android:text="@string/lawyer_ask_a_question" />
         </LinearLayout>
 
     </LinearLayout>

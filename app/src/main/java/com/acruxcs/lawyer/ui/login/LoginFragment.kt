@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -23,12 +25,13 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.fragment_login.*
 
+private const val RC_SIGN_IN = 1
+
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private val TAG = this::class.java.simpleName
 
-    private val RC_SIGN_IN = 1
     private lateinit var callbackManager: CallbackManager
-    private val viewModel: LoginViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,6 +46,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 .navigate(R.id.action_loginFragment_to_mainFragment)
         }
 
+        //facebook login
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance()
             .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
@@ -52,6 +56,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         .addOnCompleteListener(requireActivity()) { task ->
                             if (task.isSuccessful) {
                                 viewModel.createNewUser(task)
+                                viewModel.setLoggingIn(true)
                                 view.findNavController()
                                     .navigate(R.id.action_loginFragment_to_mainFragment)
                             } else {
@@ -85,45 +90,56 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         //normal login
-        button_login.setOnClickListener {
-            login_error_message.text = null
+        login_button_login.setOnClickListener {
             login()
         }
 
         text_register_now.setOnClickListener {
             view.findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+
+        login_edit_password.setOnEditorActionListener { _, i, _ ->
+            return@setOnEditorActionListener when (i) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    login()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun login() {
+        login_error_message.text = null
         login_layout_edit_email.error = null
         login_layout_edit_password.error = null
-        val email = edit_email.text.toString().trim()
-        val password = edit_password.text.toString().trim()
+        val email = login_edit_email.text.toString().trim()
+        val password = login_edit_password.text.toString().trim()
         if (email.isEmpty()) {
             login_layout_edit_email.error = getString(R.string.empty_field)
-            edit_email.requestFocus()
+            login_edit_email.requestFocus()
             return
         }
         if (password.isEmpty()) {
             login_layout_edit_password.error = getString(R.string.empty_field)
-            edit_password.requestFocus()
+            login_edit_password.requestFocus()
             return
         }
+
         viewModel.firebaseAuth.signInWithEmailAndPassword(
             email,
             password
-        )
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "signInWithEmail:success")
-                    Utils.hideKeyboard(requireContext(), requireView())
-                    requireView().findNavController()
-                        .navigate(R.id.action_loginFragment_to_mainFragment)
-                } else {
-                    login_error_message.text = task.exception?.message
-                }
+        ).addOnCompleteListener(requireActivity()) { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "signInWithEmail:success")
+                viewModel.setLoggingIn(true)
+                Utils.hideKeyboard(requireContext(), requireView())
+                requireView().findNavController()
+                    .navigate(R.id.action_loginFragment_to_mainFragment)
+            } else {
+                login_error_message.text = task.exception?.message
             }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -139,10 +155,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 viewModel.firebaseAuth.signInWithCredential(credential)
                     .addOnCompleteListener(requireActivity()) { task ->
                         viewModel.createNewUser(task)
+                        viewModel.setLoggingIn(true)
+                        login_loading.visibility = View.GONE
+                        requireView().findNavController()
+                            .navigate(R.id.action_loginFragment_to_mainFragment)
                     }
-                login_loading.visibility = View.GONE
-                requireView().findNavController()
-                    .navigate(R.id.action_loginFragment_to_mainFragment)
             } catch (e: ApiException) {
                 login_loading.visibility = View.GONE
                 login_error_message.text = e.message

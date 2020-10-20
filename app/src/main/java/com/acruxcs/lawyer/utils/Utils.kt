@@ -16,6 +16,8 @@ import java.io.IOException
 object Utils {
 
     const val ARG_LAWYER = "lawyer"
+    const val SHARED_KEY = "userdata"
+    const val SHARED_USER_DATA = "user"
 
     fun showCallDialog(context: Context, item: Lawyer) {
         val dialog = AlertDialog.Builder(context)

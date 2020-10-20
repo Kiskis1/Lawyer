@@ -145,8 +145,6 @@ class LawyersListAdapter(
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(p0: CharSequence?, p1: FilterResults) {
                 println(p1.values as List<Lawyer>)
-                // original.clear()
-                // notifyDataSetChanged()
                 submitList(p1.values as List<Lawyer>)
             }
         }

@@ -19,7 +19,7 @@
     <string name="register_city_hint">City</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_ask_a_question">Ask A Question</string>
+    <string name="menu_profile">Profile</string>
     <string name="menu_lawyers">Lawyers</string>
 
     <string name="question_description">Question description</string>
@@ -47,8 +47,12 @@
     <string name="lawyer_number_of_won_cases">Number of won cases: %d</string>
     <string name="lawyer_experience">Experience: %d years</string>
     <string name="lawyer_desc_picture_of_lawyer">Picture of lawyer</string>
+    <string name="lawyer_ask_a_question">Ask A Question</string>
 
     <string name="message">Message</string>
     <string name="filter">Filter</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

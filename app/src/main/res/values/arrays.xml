@@ -14,7 +14,7 @@
         <item>DK</item>
     </string-array>
 
-    <integer-array name="Experience" id="@+id/array_experience">
+    <integer-array name="Experience">
         <item>0</item>
         <item>5</item>
         <item>10</item>
@@ -25,6 +25,7 @@
         <item>35</item>
         <item>40</item>
     </integer-array>
+
 
     <!--    administracine-->
     <!--    civiline-->

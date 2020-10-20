@@ -17,6 +17,7 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers), LawyersListAdapter.
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //TODO: add progress bar later
 
         lawyersAdapter = LawyersListAdapter(this, parentFragmentManager)
         lawyers_recycler.adapter = lawyersAdapter

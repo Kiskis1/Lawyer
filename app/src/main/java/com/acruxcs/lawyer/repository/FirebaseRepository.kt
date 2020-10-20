@@ -12,7 +12,7 @@ object FirebaseRepository {
 
     fun getUserCollection() = db.child("users")
 
-    fun getUser(userId: String) = db.child("users").child(userId)
+    fun getUser(userId: String?) = userId?.let { db.child("users").child(it) }
 
     fun sendQuestion(question: Question) = db.child("questions").push().setValue(question)
 

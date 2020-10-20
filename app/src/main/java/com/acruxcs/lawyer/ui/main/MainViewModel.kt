@@ -4,10 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 
 class MainViewModel : ViewModel() {
@@ -15,23 +14,32 @@ class MainViewModel : ViewModel() {
 
     private val repository = FirebaseRepository
     val firebaseAuth = Firebase.auth
-    private var user = MutableLiveData<User>()
+    var user = MutableLiveData<User>()
+    val loggingIn = MutableLiveData<Boolean>().also { it.value = false }
 
-    fun getUserData(userId: String): MutableLiveData<User> {
-        val userListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                user.value = snapshot.getValue(User::class.java)
-                println(user.value)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                println(error.message)
-            }
-        }
-
-        repository.getUser(userId)
-            .addValueEventListener(userListener)
-
-        return user
+    fun setUser(newUser: User) {
+        user.value = newUser
     }
+
+    fun createNewUser(task: Task<AuthResult>) {
+        val profile = task.result!!.user
+        if (task.result!!.additionalUserInfo!!.isNewUser) {
+            val newUser = User(
+                email = profile!!.email!!,
+                nickname = profile.displayName!!
+            )
+            user.value = newUser
+            repository.writeNewUser(profile.uid, newUser)
+        }
+    }
+
+    fun setLoggingIn(bool: Boolean) {
+        loggingIn.value = bool
+    }
+
+    fun createNewUser(user: User) {
+        repository.writeNewUser(firebaseAuth.currentUser!!.uid, user)
+    }
+
+    fun getCurrentUser() = firebaseAuth.currentUser
 }

@@ -5,11 +5,11 @@
         android:icon="@drawable/ic_home_24"
         android:title="@string/menu_home" />
     <item
-        android:id="@+id/lawyersFragment2"
-        android:icon="@drawable/ic_question_24"
-        android:title="@string/menu_ask_a_question" />
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_person_24"
+        android:title="@string/menu_profile" />
     <item
         android:id="@+id/lawyersFragment"
-        android:icon="@drawable/ic_person_24"
+        android:icon="@drawable/ic_suitcase_24"
         android:title="@string/menu_lawyers" />
 </menu>
