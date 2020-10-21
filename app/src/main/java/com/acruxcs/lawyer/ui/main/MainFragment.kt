@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.findNavController
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.utils.Utils
-import com.facebook.login.LoginManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -26,7 +24,7 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (viewModel.loggingIn.value == false) {
+        if (viewModel.loggedIn.value == false) {
             main_loading.visibility = View.VISIBLE
         }
 
@@ -45,30 +43,18 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
             // Utils.showQuestionDialog(parentFragmentManager, item)
         }
 
-        main_button_logout.setOnClickListener {
-            logout()
-
-        }
-
-        viewModel.loggingIn.observe(viewLifecycleOwner, {
+        viewModel.loggedIn.observe(viewLifecycleOwner, {
             if (it) {
                 main_loading.visibility = View.GONE
             }
         })
     }
 
-    private fun logout() {
-        viewModel.firebaseAuth.signOut()
-        LoginManager.getInstance()?.logOut()
-        (activity as MainActivity).googleSignInClient.signOut()
-        requireView().findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
-    }
-
     override fun dataLoaded() {
         val userJson = sh.getString(Utils.SHARED_USER_DATA, null)
         val user = Gson().fromJson(userJson, User::class.java)
         viewModel.setUser(user)
-        viewModel.loggingIn.value = true
+        viewModel.loggedIn.value = true
         main_loading.visibility = View.GONE
     }
 }

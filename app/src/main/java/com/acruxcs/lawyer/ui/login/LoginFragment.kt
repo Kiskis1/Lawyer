@@ -56,7 +56,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         .addOnCompleteListener(requireActivity()) { task ->
                             if (task.isSuccessful) {
                                 viewModel.createNewUser(task)
-                                viewModel.setLoggingIn(true)
+                                viewModel.setLoggedIn(true)
                                 view.findNavController()
                                     .navigate(R.id.action_loginFragment_to_mainFragment)
                             } else {
@@ -132,7 +132,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         ).addOnCompleteListener(requireActivity()) { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "signInWithEmail:success")
-                viewModel.setLoggingIn(true)
+                viewModel.setLoggedIn(true)
                 Utils.hideKeyboard(requireContext(), requireView())
                 requireView().findNavController()
                     .navigate(R.id.action_loginFragment_to_mainFragment)
@@ -155,7 +155,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 viewModel.firebaseAuth.signInWithCredential(credential)
                     .addOnCompleteListener(requireActivity()) { task ->
                         viewModel.createNewUser(task)
-                        viewModel.setLoggingIn(true)
+                        viewModel.setLoggedIn(true)
                         login_loading.visibility = View.GONE
                         requireView().findNavController()
                             .navigate(R.id.action_loginFragment_to_mainFragment)

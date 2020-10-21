@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.utils.Utils
-import com.acruxcs.lawyer.utils.Utils.removeFirst
 import kotlinx.android.synthetic.main.item_lawyer.view.*
 
 class LawyersListAdapter(
@@ -24,7 +23,6 @@ class LawyersListAdapter(
 ) :
     ListAdapter<Lawyer, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()), Filterable {
 
-    private val dataCopy = mutableListOf<Lawyer>()
     private val original = mutableListOf<Lawyer>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LawyerListViewHolder(
@@ -36,7 +34,7 @@ class LawyersListAdapter(
         holder.bind(getItem(position))
 
     fun swapData(data: List<Lawyer>) {
-        dataCopy.addAll(data)
+        original.clear()
         original.addAll(data)
         submitList(data.toMutableList())
     }
@@ -98,54 +96,21 @@ class LawyersListAdapter(
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(p0: CharSequence): FilterResults {
-                val filteredResults = mutableListOf<Lawyer>()
-                filteredResults.clear()
-
-                //a map of of filters and values to filter by, doesnt return K, V if V is empty
                 val constraint = Utils.convertString2Map(p0 as String)
-                println(constraint)
-
-                //sometimes works sometimes doesnt depending what filters are used
-                if (constraint.containsKey("city")) {
-                    filteredResults.addAll(original.filter { it.city == constraint["city"].toString() })
+                return FilterResults().apply {
+                    values = original.filter {
+                        constraint.containsKey("city") && it.city == constraint["city"] ||
+                            constraint.containsKey("spec") && it.specialization == constraint["spec"] ||
+                            constraint.containsKey("exp") && it.experience >= constraint.getValue("exp")
+                            .toInt()
+                    }
                 }
-                if (constraint.containsKey("spec") && filteredResults.isEmpty()) {
-                    filteredResults.addAll(original.filter { it.specialization == constraint["spec"].toString() })
-                } else {
-                    filteredResults.addAll(filteredResults.filter { it.specialization == constraint["spec"].toString() })
-                }
-                if (constraint.containsKey("exp") && filteredResults.isEmpty()) {
-                    filteredResults.addAll(original.filter {
-                        it.experience >= constraint.getValue("exp").toInt()
-                    })
-                } else if (constraint.containsKey("exp")) {
-                    filteredResults.addAll(filteredResults.filter {
-                        it.experience >= constraint.getValue(
-                            "exp"
-                        ).toInt()
-                    })
-                }
-
-                val results = FilterResults()
-                results.values = filteredResults.removeFirst(original.size).distinct()
-
-                //doesnt work at all but seems nicer than above
-                // results.values = original.asSequence().filter {
-                //     constraint.containsKey("city") && it.city == constraint["city"]
-                // }.filter {
-                //     constraint.containsKey("spec") && it.city == constraint["spec"]
-                // }.filter {
-                //     constraint.containsKey("exp") && it.experience >= constraint.getValue("exp")
-                //         .toInt()
-                // }.toList()
-
-                return results
             }
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(p0: CharSequence?, p1: FilterResults) {
                 println(p1.values as List<Lawyer>)
-                submitList(p1.values as List<Lawyer>)
+                swapData(p1.values as List<Lawyer>)
             }
         }
     }

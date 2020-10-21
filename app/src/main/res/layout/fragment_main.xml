@@ -41,7 +41,7 @@
         android:id="@+id/main_button_call"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Call"
+        android:text="@string/call"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,17 +50,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="Question"
+        android:text="@string/lawyer_ask_a_question"
         app:layout_constraintStart_toEndOf="@+id/main_button_call"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/main_button_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:text="Logout"
-        app:layout_constraintStart_toEndOf="@+id/main_button_question"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
