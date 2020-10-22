@@ -12,14 +12,33 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.model.Lawyer
 import com.google.android.gms.common.util.ArrayUtils
 import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.android.synthetic.main.dialog_filter.view.*
+import java.util.function.Predicate
 
 class FilterDialog(private val fragment: Fragment) : DialogFragment() {
 
     private lateinit var listener: OnFilterButtonClickListener
     private lateinit var thisView: View
+
+    private val cityPredicate by lazy {
+        Predicate<Lawyer> { l: Lawyer -> l.city == filter_edit_city.text.toString() }
+    }
+
+    private val specPredicate by lazy {
+        Predicate<Lawyer> { l: Lawyer ->
+            l.specialization == filter_spinner_specialization.editableText.toString()
+        }
+    }
+
+    private val expPredicate by lazy {
+        Predicate<Lawyer> { l: Lawyer ->
+            l.experience >= filter_spinner_experience.editableText.toString().toInt()
+        }
+    }
+    private val allPredicates = mutableListOf<Predicate<Lawyer>>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,8 +50,8 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
 
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
-            val builder = AlertDialog.Builder(it)
+        return activity?.let { activity ->
+            val builder = AlertDialog.Builder(activity)
             val inflater = requireActivity().layoutInflater
             thisView = inflater.inflate(R.layout.dialog_filter, null)
 
@@ -46,24 +65,27 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
             }
 
             val experience = ArrayUtils.toWrapperArray(resources.getIntArray(R.array.Experience))
-            val adapter = ArrayAdapter<Int>(
+            val experienceAdapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_item, experience
             )
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            thisView.filter_spinner_experience.setAdapter(adapter)
+            experienceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            thisView.filter_spinner_experience.setAdapter(experienceAdapter)
 
             builder.setView(thisView)
                 .setPositiveButton(
                     R.string.filter
                 ) { dialog, _ ->
-                    listener.onFilterButtonClick(
-                        mapOf(
-                            "city" to filter_edit_city.text.toString().trim(),
-                            "spec" to filter_spinner_specialization.editableText.toString(),
-                            "exp" to filter_spinner_experience.editableText.toString()
-                        )
-                    )
+                    if (filter_edit_city.text.toString().isNotEmpty()) {
+                        allPredicates.add(cityPredicate)
+                    }
+                    if (filter_spinner_specialization.editableText.toString().isNotEmpty()) {
+                        allPredicates.add(specPredicate)
+                    }
+                    if (filter_spinner_experience.editableText.toString().isNotEmpty()) {
+                        allPredicates.add(expPredicate)
+                    }
+                    listener.onFilterButtonClick(allPredicates)
                     dialog.cancel()
                 }
                 .setNegativeButton(
@@ -86,6 +108,6 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
     }
 
     interface OnFilterButtonClickListener {
-        fun onFilterButtonClick(filter: Map<String, String>)
+        fun onFilterButtonClick(filter: MutableList<Predicate<Lawyer>>)
     }
 }

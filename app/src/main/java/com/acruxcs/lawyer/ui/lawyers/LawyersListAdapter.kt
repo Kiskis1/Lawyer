@@ -4,8 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
@@ -18,16 +16,15 @@ import com.acruxcs.lawyer.utils.Utils
 import kotlinx.android.synthetic.main.item_lawyer.view.*
 
 class LawyersListAdapter(
-    private val interaction: Interaction? = null,
     private val manager: FragmentManager
 ) :
-    ListAdapter<Lawyer, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()), Filterable {
+    ListAdapter<Lawyer, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
 
     private val original = mutableListOf<Lawyer>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LawyerListViewHolder(
         LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_lawyer, parent, false), interaction
+            .inflate(R.layout.item_lawyer, parent, false)
     )
 
     override fun onBindViewHolder(holder: LawyerListViewHolder, position: Int) =
@@ -41,7 +38,6 @@ class LawyersListAdapter(
 
     inner class LawyerListViewHolder(
         itemView: View,
-        private val interaction: Interaction?
     ) : RecyclerView.ViewHolder(itemView), OnClickListener {
 
         init {
@@ -79,40 +75,16 @@ class LawyersListAdapter(
         }
     }
 
-    interface Interaction
-
     private class LawyerDC : DiffUtil.ItemCallback<Lawyer>() {
         override fun areItemsTheSame(
             oldItem: Lawyer,
             newItem: Lawyer
-        ) = oldItem.specialization == newItem.specialization
+        ) = oldItem.email == newItem.email
 
         override fun areContentsTheSame(
             oldItem: Lawyer,
             newItem: Lawyer
         ) = oldItem == newItem
-    }
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(p0: CharSequence): FilterResults {
-                val constraint = Utils.convertString2Map(p0 as String)
-                return FilterResults().apply {
-                    values = original.filter {
-                        constraint.containsKey("city") && it.city == constraint["city"] ||
-                            constraint.containsKey("spec") && it.specialization == constraint["spec"] ||
-                            constraint.containsKey("exp") && it.experience >= constraint.getValue("exp")
-                            .toInt()
-                    }
-                }
-            }
-
-            @Suppress("UNCHECKED_CAST")
-            override fun publishResults(p0: CharSequence?, p1: FilterResults) {
-                println(p1.values as List<Lawyer>)
-                swapData(p1.values as List<Lawyer>)
-            }
-        }
     }
 }
 
