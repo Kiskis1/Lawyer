@@ -1,11 +1,11 @@
 package com.acruxcs.lawyer.model
 
-import java.util.Date
-
 data class Case(
-    var date: Date = Date(),
+    var shortDesc: String = "",
+    var court: String = "",
     var area: String = "",
     var type: String = "",
     var outcome: String = "",
-    var shortDesc: String = "",
+    var date: Long = 0,
+    var user: String = "",
 )

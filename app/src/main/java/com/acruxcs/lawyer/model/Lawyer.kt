@@ -15,4 +15,4 @@ data class Lawyer(
     var experience: Int = 0,
     var wonCases: Int = 0,
     var role: String = "lawyer",
-) : Parcelable
+) : Parcelable, AppUser

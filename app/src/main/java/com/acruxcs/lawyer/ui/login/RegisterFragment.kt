@@ -19,6 +19,11 @@ import kotlinx.android.synthetic.main.fragment_register.*
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private val viewModel: MainViewModel by activityViewModels()
+    private lateinit var email: String
+    private lateinit var password: String
+    private lateinit var nickname: String
+    private lateinit var country: String
+    private lateinit var city: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,47 +63,52 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     }
 
     private fun register() {
-        val email = register_edit_email.text.toString().trim()
-        val password = register_edit_password.text.toString().trim()
-        val nickname = register_edit_nickname.text.toString().trim()
-        val country = register_spinner_country.editableText.toString()
-        val city = register_spinner_city.editableText.toString()
+        email = register_edit_email.text.toString().trim()
+        password = register_edit_password.text.toString().trim()
+        nickname = register_edit_nickname.text.toString().trim()
+        country = register_spinner_country.editableText.toString()
+        city = register_spinner_city.editableText.toString()
+        if (isValid()) {
+            val user = User(
+                email, password, nickname, country, city
+            )
+            createAccount(user)
+        }
+    }
 
+    private fun isValid(): Boolean {
+        var valid = true
         if (email.isEmpty()) {
             register_layout_edit_email.error = getString(R.string.empty_field)
             register_edit_email.requestFocus()
-            return
+            valid = false
         }
         if (password.isEmpty()) {
             register_layout_edit_password.error = getString(R.string.empty_field)
             register_edit_password.requestFocus()
-            return
+            valid = false
         }
         if (password.length < MIN_PASS_LENGTH) {
             register_layout_edit_password.error = getString(R.string.empty_field)
             register_edit_password.requestFocus()
-            return
+            valid = false
         }
         if (nickname.isEmpty()) {
             register_layout_edit_nickname.error = getString(R.string.empty_field)
             register_edit_nickname.requestFocus()
-            return
+            valid = false
         }
         if (country.isEmpty()) {
             register_layout_edit_country.error = getString(R.string.empty_field)
             register_spinner_country.requestFocus()
-            return
+            valid = false
         }
         if (city.isEmpty()) {
             register_layout_edit_city.error = getString(R.string.empty_field)
             register_spinner_city.requestFocus()
-            return
+            valid = false
         }
-        val user = User(
-            email, password, nickname, country, city
-        )
-
-        createAccount(user)
+        return valid
     }
 
     private fun createAccount(user: User) {

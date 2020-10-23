@@ -58,5 +58,21 @@
     <string name="logout">Logout</string>
     <string name="todo">TODO</string>
     <string name="switch_dark_mode">Switch Dark Mode</string>
+    <string name="add">Add</string>
+
+    <string name="case_short_description">Short description</string>
+    <string name="case_hint_court">Court</string>
+    <string name="case_hint_area">Area</string>
+    <string name="case_hint_type">Type</string>
+    <string name="case_hint_outcome">Outcome</string>
+
+
+    <string name="short_description">Short description:</string>
+    <string name="court">Court:</string>
+    <string name="type">Type:</string>
+    <string name="area">Area:</string>
+    <string name="outcome">Outcome:</string>
+    <string name="date">Date:</string>
+    <string name="case_hint_date">Date</string>
 
 </resources>

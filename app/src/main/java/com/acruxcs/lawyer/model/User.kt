@@ -7,4 +7,4 @@ data class User(
     var country: String = "",
     var city: String = "",
     var role: String = "user"
-)
+) : AppUser

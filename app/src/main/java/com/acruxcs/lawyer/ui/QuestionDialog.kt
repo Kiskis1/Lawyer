@@ -51,15 +51,14 @@ class QuestionDialog : DialogFragment() {
             builder.setView(thisView)
             thisView.question_button_send.setOnClickListener {
 
-                if (inputCheck()) {
+                if (isValid()) {
                     question.description = question_edit_description.text.toString().trim()
                     question.country = question_edit_location_country.text.toString().trim()
                     question.city = question_edit_location_city.text.toString().trim()
                     question.phone = question_edit_phone.text.toString().trim()
                     question.name = question_edit_name.text.toString().trim()
                     question.destinationEmail = lawyer.email
-
-                    repository.sendQuestion(question)
+                    repository.postQuestion(question)
                     Utils.hideKeyboard(requireContext(), thisView)
                     Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                     dismiss()
@@ -69,32 +68,33 @@ class QuestionDialog : DialogFragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
-    private fun inputCheck(): Boolean {
+    private fun isValid(): Boolean {
+        var valid = true
         if (TextUtils.isEmpty(question_edit_description.text)) {
             question_layout_description.error = getString(R.string.empty_field)
-            return false
+            valid = false
         } else question_layout_description.error = null
 
         if (TextUtils.isEmpty(question_edit_location_country.text)) {
             question_layout_location_country.error = getString(R.string.empty_field)
-            return false
+            valid = false
         } else question_edit_location_country.error = null
 
         if (TextUtils.isEmpty(question_edit_location_city.text)) {
             question_layout_location_city.error = getString(R.string.empty_field)
-            return false
+            valid = false
         } else question_layout_location_city.error = null
 
         if (TextUtils.isEmpty(question_edit_phone.text)) {
             question_layout_phone.error = getString(R.string.empty_field)
-            return false
+            valid = false
         } else question_layout_phone.error = null
 
         if (TextUtils.isEmpty(question_edit_name.text)) {
             question_layout_name.error = getString(R.string.empty_field)
-            return false
+            valid = false
         } else question_layout_name.error = null
-        return true
+        return valid
     }
 
     companion object {

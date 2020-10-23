@@ -2,6 +2,7 @@ package com.acruxcs.lawyer.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.utils.SingleLiveEvent
@@ -62,6 +63,11 @@ class MainViewModel : ViewModel() {
 
     fun getStatus(): SingleLiveEvent<Status> {
         return status
+    }
+
+    fun postCase(case: Case) {
+        case.user = firebaseAuth.currentUser!!.uid
+        repository.postCase(case)
     }
 
     companion object {

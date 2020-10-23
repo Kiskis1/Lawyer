@@ -17,7 +17,12 @@ import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.edit
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_profile_user.*
+import kotlinx.android.synthetic.main.fragment_profile_lawyer.*
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_button_edit_picture
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_button_logout
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_edit_password
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_layout_password
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_switch_dark_mode
 
 class ProfileFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
@@ -41,7 +46,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getStatus().observe(this, { handleStatus(it) })
         profile_button_edit_picture.setOnClickListener {
-
+            throw NotImplementedError()
         }
         profile_layout_password.setEndIconOnClickListener {
             val password = profile_edit_password.text.toString().trim()
@@ -69,6 +74,9 @@ class ProfileFragment : Fragment() {
                 it.putBoolean(Utils.SHARED_DARK_MODE_ON, b)
             }
             Utils.switchDarkMode(b)
+        }
+        profile_fab_add_case?.setOnClickListener {
+            NewCaseDialog(this).show(parentFragmentManager, "newcase")
         }
     }
 
