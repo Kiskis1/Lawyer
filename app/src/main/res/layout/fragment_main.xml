@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
     tools:context=".ui.main.MainFragment">
 
     <FrameLayout
@@ -35,7 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@string/placeholder" />
+        android:text="@string/placeholder"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColor" />
 
     <Button
         android:id="@+id/main_button_call"

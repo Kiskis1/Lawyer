@@ -46,9 +46,7 @@ class LawyersCaseAdapter(private val interaction: Interaction? = null) :
         }
     }
 
-    interface Interaction {
-
-    }
+    interface Interaction
 
     private class CaseDC : DiffUtil.ItemCallback<Case>() {
         override fun areItemsTheSame(

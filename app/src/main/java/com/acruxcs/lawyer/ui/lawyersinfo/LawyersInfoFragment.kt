@@ -41,16 +41,4 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
         lawyersinfo_text_name.text = lawyer.name
         lawyersinfo_text_specialization.text = lawyer.specialization
     }
-
-    companion object {
-        fun newInstance(lawyer: Lawyer) =
-            LawyersInfoFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARG_LAWYER, lawyer)
-
-                }
-            }
-
-        val TAG = this::class.java.simpleName
-    }
 }

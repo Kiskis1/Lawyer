@@ -34,9 +34,7 @@
                 android:layout_height="150dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:src="@mipmap/ic_launcher_round"
-                app:civ_border_color="#FFFFFF"
-                app:civ_border_width="2dp" />
+                android:src="@mipmap/ic_launcher_round" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/profile_button_edit_picture"
@@ -61,7 +59,8 @@
                 android:id="@+id/profile_layout_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColor"
                 app:endIconContentDescription="TODO"
                 app:endIconDrawable="@drawable/ic_send_24"
                 app:endIconMode="custom">
@@ -89,7 +88,8 @@
                     android:layout_marginBottom="16dp"
                     android:hint="@string/todo"
                     android:imeOptions="actionDone"
-                    android:textColorHint="@color/colorPrimary" />
+                    android:textColor="@color/textColor"
+                    android:textColorHint="@color/textColor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,7 +105,8 @@
                     android:layout_marginBottom="16dp"
                     android:hint="@string/todo"
                     android:imeOptions="actionDone"
-                    android:textColorHint="@color/colorPrimary" />
+                    android:textColor="@color/textColor"
+                    android:textColorHint="@color/textColor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,6 +117,14 @@
                 android:text="@string/logout"
                 app:layout_constraintStart_toEndOf="@+id/main_button_question"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/profile_switch_dark_mode"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/switch_dark_mode"
+                android:textColor="@color/textColor" />
 
 
         </LinearLayout>

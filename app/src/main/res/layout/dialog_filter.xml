@@ -4,18 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/filter_edit_city"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filter_layout_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:hint="City"
-        android:imeOptions="actionNext"
-        android:singleLine="true"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/filter_edit_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/city"
+            android:imeOptions="actionNext"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/filter_layout_specialization"
@@ -24,14 +30,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filter_edit_city">
+        app:layout_constraintTop_toBottomOf="@id/filter_layout_city">
 
         <AutoCompleteTextView
             android:id="@+id/filter_spinner_specialization"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Specialization"
+            android:hint="@string/specialization"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,6 +50,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filter_layout_specialization">
 
@@ -49,7 +59,7 @@
             android:id="@+id/filter_spinner_experience"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Experience"
+            android:hint="@string/experience"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 

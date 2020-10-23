@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
     tools:context=".ui.login.RegisterFragment">
 
     <TextView
@@ -27,8 +26,8 @@
         android:id="@+id/register_layout_edit_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/background_color_reverse"
-        android:textColorHint="@color/background_color_reverse"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColor"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,8 +50,8 @@
         android:id="@+id/register_layout_edit_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/background_color_reverse"
-        android:textColorHint="@color/background_color_reverse"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColor"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -69,8 +68,8 @@
             android:imeOptions="actionNext"
             android:importantForAutofill="no"
             android:inputType="textPassword"
-            android:textColor="@color/background_color_reverse"
-            android:textColorHint="@color/background_color_reverse"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColor"
             android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,8 +77,8 @@
         android:id="@+id/register_layout_edit_nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/background_color_reverse"
-        android:textColorHint="@color/background_color_reverse"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColor"
         app:errorEnabled="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/register_layout_edit_password">
@@ -94,8 +93,8 @@
             android:imeOptions="actionNext"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:textColor="@color/background_color_reverse"
-            android:textColorHint="@color/background_color_reverse"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/textColor"
             android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,8 +103,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/background_color_reverse"
-        android:textColorHint="@color/background_color_reverse"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/register_layout_edit_nickname">
@@ -131,8 +130,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/background_color_reverse"
-        android:textColorHint="@color/background_color_reverse"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/register_layout_edit_country">
@@ -146,7 +145,7 @@
             android:layout_marginBottom="16dp"
             android:clickable="true"
             android:focusable="true"
-            android:hint="@string/register_city_hint"
+            android:hint="@string/city"
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:textSize="20sp" />

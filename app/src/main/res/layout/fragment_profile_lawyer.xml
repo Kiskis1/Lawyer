@@ -61,7 +61,8 @@
                 android:id="@+id/profile_layout_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColor"
                 app:endIconContentDescription="TODO"
                 app:endIconDrawable="@drawable/ic_send_24"
                 app:endIconMode="custom">
@@ -81,7 +82,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary">
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColor">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -97,7 +99,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary">
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColor">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"

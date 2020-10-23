@@ -13,6 +13,6 @@ data class Lawyer(
     var specialization: String = "",
     var education: String = "",
     var experience: Int = 0,
-    var won_cases: Int = 0,
+    var wonCases: Int = 0,
     var role: String = "lawyer",
 ) : Parcelable

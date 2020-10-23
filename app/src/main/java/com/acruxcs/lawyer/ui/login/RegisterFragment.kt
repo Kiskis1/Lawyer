@@ -1,7 +1,6 @@
 package com.acruxcs.lawyer.ui.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -12,12 +11,12 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
+import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_register.*
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
-    private val TAG = this::class.java.simpleName
 
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -75,7 +74,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             register_edit_password.requestFocus()
             return
         }
-        if (password.length < 6) {
+        if (password.length < MIN_PASS_LENGTH) {
             register_layout_edit_password.error = getString(R.string.empty_field)
             register_edit_password.requestFocus()
             return
@@ -112,7 +111,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                         .navigate(R.id.action_registerFragment_to_mainFragment)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
                         requireActivity(), task.exception?.message,
                         Toast.LENGTH_LONG
@@ -121,3 +119,5 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
     }
 }
+
+//TODO when selecting country remove edit ability, return when choosing again

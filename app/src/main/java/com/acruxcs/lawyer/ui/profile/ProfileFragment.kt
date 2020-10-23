@@ -13,6 +13,8 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.ui.main.MainViewModel.Companion.Status
 import com.acruxcs.lawyer.utils.Utils
+import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
+import com.acruxcs.lawyer.utils.Utils.edit
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_profile_user.*
@@ -30,9 +32,9 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return if (viewModel.user.value!!.role == "user")
-            inflater.inflate(R.layout.fragment_profile_user, container, false)
-        else inflater.inflate(R.layout.fragment_profile_lawyer, container, false)
+        return if (viewModel.user.value!!.role == "lawyer")
+            inflater.inflate(R.layout.fragment_profile_lawyer, container, false)
+        else inflater.inflate(R.layout.fragment_profile_user, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +49,7 @@ class ProfileFragment : Fragment() {
                 profile_layout_password.error = getString(R.string.empty_field)
                 profile_edit_password.requestFocus()
                 return@setEndIconOnClickListener
-            } else if (password.length < 6) {
+            } else if (password.length < MIN_PASS_LENGTH) {
                 profile_layout_password.error = getString(R.string.password_not_long_enough)
                 profile_edit_password.requestFocus()
                 return@setEndIconOnClickListener
@@ -58,6 +60,15 @@ class ProfileFragment : Fragment() {
 
         profile_button_logout.setOnClickListener {
             logout()
+        }
+
+        profile_switch_dark_mode.isChecked =
+            Utils.preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false)
+        profile_switch_dark_mode.setOnCheckedChangeListener { _, b ->
+            Utils.preferences.edit {
+                it.putBoolean(Utils.SHARED_DARK_MODE_ON, b)
+            }
+            Utils.switchDarkMode(b)
         }
     }
 
@@ -96,14 +107,6 @@ class ProfileFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-    }
-
-    companion object {
-        fun newInstance() =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
     }
 }
 

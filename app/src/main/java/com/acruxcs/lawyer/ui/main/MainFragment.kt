@@ -13,9 +13,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedListener {
-    private val TAG = this::class.java.simpleName
     private val viewModel: MainViewModel by activityViewModels()
-    private val sh by lazy { requireActivity().getSharedPreferences(Utils.SHARED_KEY, 0) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +33,6 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
         val navBar: BottomNavigationView = requireActivity().findViewById(R.id.bottom_menu)
         navBar.visibility = View.VISIBLE
 
-        main_button_call.setOnClickListener {
-            // Utils.showCallDialog(requireContext())
-        }
-
-        main_button_question.setOnClickListener {
-            // Utils.showQuestionDialog(parentFragmentManager, item)
-        }
-
         viewModel.loggedIn.observe(viewLifecycleOwner, {
             if (it) {
                 main_loading.visibility = View.GONE
@@ -51,11 +41,11 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
     }
 
     override fun dataLoaded() {
-        val userJson = sh.getString(Utils.SHARED_USER_DATA, null)
+        val userJson = Utils.preferences.getString(Utils.SHARED_USER_DATA, null)
         val user = Gson().fromJson(userJson, User::class.java)
         viewModel.setUser(user)
         viewModel.loggedIn.value = true
-        main_loading.visibility = View.GONE
+        main_loading?.visibility = View.GONE
     }
 }
 

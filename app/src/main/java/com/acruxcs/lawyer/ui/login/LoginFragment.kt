@@ -28,8 +28,6 @@ import kotlinx.android.synthetic.main.fragment_login.*
 private const val RC_SIGN_IN = 1
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
-    private val TAG = this::class.java.simpleName
-
     private lateinit var callbackManager: CallbackManager
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -131,7 +129,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             password
         ).addOnCompleteListener(requireActivity()) { task ->
             if (task.isSuccessful) {
-                Log.d(TAG, "signInWithEmail:success")
                 viewModel.setLoggedIn(true)
                 Utils.hideKeyboard(requireContext(), requireView())
                 requireView().findNavController()

@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.dialog_question.*
 import kotlinx.android.synthetic.main.dialog_question.view.*
 
 class QuestionDialog : DialogFragment() {
-    private val TAG = this::class.java.simpleName
     private val repository = FirebaseRepository
 
     private var question = Question()

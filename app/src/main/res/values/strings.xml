@@ -16,28 +16,19 @@
     <string name="register_email_hint">Email</string>
     <string name="register_password_hint">Password</string>
     <string name="register_country_hint">Country</string>
-    <string name="register_city_hint">City</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_lawyers">Lawyers</string>
 
-    <string name="question_description">Question description</string>
-    <string name="question_location">Location:</string>
     <string name="question_hint_description">Description</string>
     <string name="question_hint_country">Country</string>
-    <string name="question_hint_city">City</string>
-    <string name="question_text_contacts">Contacts:</string>
     <string name="question_hint_phone">Phone</string>
     <string name="question_hint_name">Name</string>
     <string name="question_send">Send</string>
 
     <string name="call_dialog_title">Call a lawyer</string>
     <string name="call_dialog_message">Our lawyers and attorneys are ready to answer your questions!</string>
-    <string name="call">Call</string>
-
-    <string name="cancel">Cancel</string>
-    <string name="empty_field">Field can\'t be empty</string>
 
     <string name="placeholder">Placeholder</string>
 
@@ -45,18 +36,27 @@
     <string name="lawyer_specialization">Specialization: %s</string>
     <string name="lawyer_education">Education: %s</string>
     <string name="lawyer_number_of_won_cases">Number of won cases: %d</string>
-    <string name="lawyer_experience">Experience: %d years</string>
+
+    <plurals name="lawyer_experience">
+        <item quantity="one">Experience: %d year</item>
+        <item quantity="other">Experience: %d years</item>
+    </plurals>
     <string name="lawyer_desc_picture_of_lawyer">Picture of lawyer</string>
     <string name="lawyer_ask_a_question">Ask A Question</string>
 
     <string name="message">Message</string>
     <string name="filter">Filter</string>
+    <string name="call">Call</string>
+    <string name="cancel">Cancel</string>
+    <string name="empty_field">Field can\'t be empty</string>
+    <string name="city">City</string>
+    <string name="specialization">Specialization</string>
+    <string name="experience">Experience</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile_new_password">New Password</string>
     <string name="password_not_long_enough">Password must be longer than 6 symbols</string>
     <string name="logout">Logout</string>
     <string name="todo">TODO</string>
+    <string name="switch_dark_mode">Switch Dark Mode</string>
 
 </resources>

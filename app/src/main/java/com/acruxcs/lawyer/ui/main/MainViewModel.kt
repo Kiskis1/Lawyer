@@ -13,8 +13,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class MainViewModel : ViewModel() {
-    private val TAG = this::class.java.simpleName
-
     private val repository = FirebaseRepository
     val firebaseAuth = Firebase.auth
     var user = MutableLiveData<User>()

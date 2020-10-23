@@ -10,8 +10,6 @@ object FirebaseRepository {
 
     fun writeNewUser(userId: String, user: User) = db.child("users").child(userId).setValue(user)
 
-    fun getUserCollection() = db.child("users")
-
     fun getUser(userId: String?) = userId?.let { db.child("users").child(it) }
 
     fun sendQuestion(question: Question) = db.child("questions").push().setValue(question)

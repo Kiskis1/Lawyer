@@ -8,7 +8,6 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Lawyer
 import kotlinx.android.synthetic.main.fragment_lawyers.*
 import java.util.function.Predicate
-import java.util.stream.Collectors
 
 class LawyersFragment : Fragment(R.layout.fragment_lawyers),
     FilterDialog.OnFilterButtonClickListener {
@@ -34,18 +33,8 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers),
         }
     }
 
-    companion object {
-        val TAG = this::class.java.simpleName
-        fun newInstance() = LawyersFragment()
-    }
-
     override fun onFilterButtonClick(filter: MutableList<Predicate<Lawyer>>) {
-        if (filter.size == 0) return
-        val composite = filter.stream()
-            .reduce({ w -> true }) { pred1, pred2 ->
-                pred1.and(pred2)
-            }
-        val filtered = list.stream().filter(composite).collect(Collectors.toList())
-        lawyersAdapter.swapData(filtered)
+        lawyersAdapter.swapData(viewModel.filter(list, filter))
     }
 }
+
