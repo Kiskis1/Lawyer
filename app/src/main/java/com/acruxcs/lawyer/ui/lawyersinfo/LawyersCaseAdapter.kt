@@ -9,13 +9,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Case
+import kotlinx.android.synthetic.main.item_case.view.*
+import java.text.DateFormat
 
-class LawyersCaseAdapter(private val interaction: Interaction? = null) :
+class LawyersCaseAdapter :
     ListAdapter<Case, LawyersCaseAdapter.LawyersCaseViewHolder>(CaseDC()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LawyersCaseViewHolder(
         LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_case, parent, false), interaction
+            .inflate(R.layout.item_case, parent, false)
     )
 
     override fun onBindViewHolder(holder: LawyersCaseViewHolder, position: Int) =
@@ -27,7 +29,6 @@ class LawyersCaseAdapter(private val interaction: Interaction? = null) :
 
     inner class LawyersCaseViewHolder(
         itemView: View,
-        private val interaction: Interaction?
     ) : RecyclerView.ViewHolder(itemView), OnClickListener {
 
         init {
@@ -38,21 +39,28 @@ class LawyersCaseAdapter(private val interaction: Interaction? = null) :
 
             if (adapterPosition == RecyclerView.NO_POSITION) return
 
-            val clicked = getItem(adapterPosition)
         }
 
         fun bind(item: Case) = with(itemView) {
-            // TODO: Bind the data with View
+            item_case_text_area.text = resources.getString(R.string.item_case_area, item.area)
+            item_case_text_court.text = resources.getString(R.string.item_case_court, item.court)
+            item_case_text_date.text = resources.getString(
+                R.string.item_case_date,
+                DateFormat.getDateInstance().format(item.date)
+            )
+            item_case_text_desc.text =
+                resources.getString(R.string.item_case_short_description, item.shortDesc)
+            item_case_text_outcome.text =
+                resources.getString(R.string.item_case_outcome, item.outcome)
+            item_case_text_type.text = resources.getString(R.string.item_case_type, item.type)
         }
     }
-
-    interface Interaction
 
     private class CaseDC : DiffUtil.ItemCallback<Case>() {
         override fun areItemsTheSame(
             oldItem: Case,
             newItem: Case
-        ) = oldItem == newItem
+        ) = oldItem.shortDesc == newItem.shortDesc
 
         override fun areContentsTheSame(
             oldItem: Case,

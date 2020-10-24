@@ -18,4 +18,6 @@ object FirebaseRepository {
     fun getLawyers() = db.child("users").orderByChild("role").equalTo("lawyer")
 
     fun postCase(case: Case) = db.child("cases").push().setValue(case)
+
+    fun getLawyersCases(uid: String) = db.child("cases").orderByChild("user").equalTo(uid)
 }

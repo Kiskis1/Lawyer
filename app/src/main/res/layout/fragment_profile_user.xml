@@ -1,132 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".ui.profile.ProfileFragment">
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/profile_picture_background"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="@color/colorPrimary" />
-
-        <RelativeLayout
-            android:id="@+id/profile_picture"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="25dp">
+            tools:context=".ui.profile.ProfileFragment">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image_picture"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:src="@mipmap/ic_launcher_round" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/profile_button_edit_picture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/profile_image_picture"
-                android:layout_alignParentBottom="true"
-                android:src="@drawable/ic_edit_24" />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/profile_picture_background"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/profile_layout_password"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/profile_constraint_picture"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor"
-                app:endIconContentDescription="TODO"
-                app:endIconDrawable="@drawable/ic_send_24"
-                app:endIconMode="custom">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/profile_edit_password"
+                <View
+                    android:id="@+id/profile_picture_background"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/profile_new_password"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:textColorHint="@color/colorPrimary" />
+                    android:layout_height="200dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <RelativeLayout
+                    android:id="@+id/profile_picture"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="25dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputLayout
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_image_picture"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:src="@mipmap/ic_launcher_round" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/profile_button_edit_picture"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/profile_image_picture"
+                        android:layout_alignParentBottom="true"
+                        android:src="@drawable/ic_edit_24" />
+                </RelativeLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/profile_constraint_settings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary">
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_constraint_picture">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/profile_layout_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/todo"
-                    android:imeOptions="actionDone"
                     android:textColor="@color/textColor"
-                    android:textColorHint="@color/textColor" />
+                    android:textColorHint="@color/textColor"
+                    app:endIconContentDescription="TODO"
+                    app:endIconDrawable="@drawable/ic_send_24"
+                    app:endIconMode="custom"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/profile_edit_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/profile_new_password"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:textColorHint="@color/colorPrimary" />
 
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/profile_switch_dark_mode"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/todo"
-                    android:imeOptions="actionDone"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/switch_dark_mode"
                     android:textColor="@color/textColor"
-                    android:textColorHint="@color/textColor" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_layout_password" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <Button
+                    android:id="@+id/profile_button_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/logout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_switch_dark_mode" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/profile_switch_dark_mode"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="@string/switch_dark_mode"
-                android:textColor="@color/textColor" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/profile_button_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/logout"
-                app:layout_constraintStart_toEndOf="@+id/main_button_question"
-                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </RelativeLayout>
+    </ScrollView>
 
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

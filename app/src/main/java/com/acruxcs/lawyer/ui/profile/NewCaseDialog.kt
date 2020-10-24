@@ -56,7 +56,7 @@ class NewCaseDialog(private val fragment: Fragment) : DialogFragment() {
                 }
             }
             thisView.case_edit_date.setOnClickListener {
-                picker.show(fragment.parentFragmentManager, "datepicker")
+                picker.show(fragment.parentFragmentManager, "date_picker")
                 picker.addOnPositiveButtonClickListener {
                     case.date = it
                     case_edit_date.setText(picker.headerText)

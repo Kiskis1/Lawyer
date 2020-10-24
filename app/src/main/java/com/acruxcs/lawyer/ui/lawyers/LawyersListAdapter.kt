@@ -20,8 +20,6 @@ class LawyersListAdapter(
 ) :
     ListAdapter<Lawyer, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
 
-    private val original = mutableListOf<Lawyer>()
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LawyerListViewHolder(
         LayoutInflater.from(parent.context)
             .inflate(R.layout.item_lawyer, parent, false)
@@ -31,8 +29,6 @@ class LawyersListAdapter(
         holder.bind(getItem(position))
 
     fun swapData(data: List<Lawyer>) {
-        original.clear()
-        original.addAll(data)
         submitList(data.toMutableList())
     }
 

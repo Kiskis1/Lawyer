@@ -67,12 +67,14 @@
     <string name="case_hint_outcome">Outcome</string>
 
 
-    <string name="short_description">Short description:</string>
-    <string name="court">Court:</string>
-    <string name="type">Type:</string>
-    <string name="area">Area:</string>
-    <string name="outcome">Outcome:</string>
-    <string name="date">Date:</string>
+    <string name="item_case_short_description">Short description: %s</string>
+    <string name="item_case_court">Court: %s</string>
+    <string name="item_case_type">Type: %s</string>
+    <string name="item_case_area">Area: %s</string>
+    <string name="item_case_outcome">Outcome: %s</string>
+    <string name="item_case_date">Date: %s</string>
     <string name="case_hint_date">Date</string>
+    <string name="profile_your_cases">Your cases:</string>
+    <string name="lawyersinfo_notable_cases">Notable cases:</string>
 
 </resources>

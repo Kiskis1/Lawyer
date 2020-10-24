@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.model.Case
+import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
+import com.acruxcs.lawyer.ui.lawyersinfo.LawyersCaseAdapter
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.ui.main.MainViewModel.Companion.Status
 import com.acruxcs.lawyer.utils.Utils
@@ -26,6 +30,9 @@ import kotlinx.android.synthetic.main.fragment_profile_user.profile_switch_dark_
 
 class ProfileFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
+    private lateinit var lawyersCasesAdapter: LawyersCaseAdapter
+    private val list = mutableListOf<Case>()
+    private val lawyersViewModel: LawyersViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,8 +83,16 @@ class ProfileFragment : Fragment() {
             Utils.switchDarkMode(b)
         }
         profile_fab_add_case?.setOnClickListener {
-            NewCaseDialog(this).show(parentFragmentManager, "newcase")
+            NewCaseDialog(this).show(parentFragmentManager, "new_case")
         }
+
+        lawyersCasesAdapter = LawyersCaseAdapter()
+        profile_recycler.adapter = lawyersCasesAdapter
+        lawyersViewModel.getLawyersCases().observe(viewLifecycleOwner, {
+            list.clear()
+            list.addAll(it)
+            lawyersCasesAdapter.swapData(list)
+        })
     }
 
     private fun logout() {
@@ -117,5 +132,3 @@ class ProfileFragment : Fragment() {
         }
     }
 }
-
-//TODO https://www.geeksforgeeks.org/how-to-implement-dark-night-mode-in-android-app/
