@@ -50,9 +50,19 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
             lawyersCasesAdapter.swapData(list)
         })
 
-        lawyersinfo_text_city.text = lawyer.city
-        lawyersinfo_text_education.text = lawyer.education
-        lawyersinfo_text_name.text = lawyer.name
-        lawyersinfo_text_specialization.text = lawyer.specialization
+        lawyersinfo_text_name.text = resources.getString(R.string.lawyer_name, lawyer.name)
+        lawyersinfo_text_education.text =
+            resources.getString(R.string.lawyer_education, lawyer.education)
+        lawyersinfo_text_specialization.text =
+            resources.getString(R.string.lawyer_specialization, lawyer.specialization)
+        lawyersinfo_text_city.text = resources.getString(R.string.lawyer_city, lawyer.city)
+        lawyersinfo_text_experience.text =
+            resources.getQuantityString(
+                R.plurals.lawyer_experience,
+                lawyer.experience,
+                lawyer.experience
+            )
+        lawyersinfo_text_won_cases.text =
+            resources.getString(R.string.lawyer_number_of_won_cases, lawyer.wonCases)
     }
 }

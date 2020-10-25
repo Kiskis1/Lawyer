@@ -36,11 +36,12 @@
     <string name="lawyer_specialization">Specialization: %s</string>
     <string name="lawyer_education">Education: %s</string>
     <string name="lawyer_number_of_won_cases">Number of won cases: %d</string>
-
+    <string name="lawyer_city">City: %s</string>
     <plurals name="lawyer_experience">
         <item quantity="one">Experience: %d year</item>
         <item quantity="other">Experience: %d years</item>
     </plurals>
+
     <string name="lawyer_desc_picture_of_lawyer">Picture of lawyer</string>
     <string name="lawyer_ask_a_question">Ask A Question</string>
 
@@ -76,5 +77,6 @@
     <string name="case_hint_date">Date</string>
     <string name="profile_your_cases">Your cases:</string>
     <string name="lawyersinfo_notable_cases">Notable cases:</string>
+    <string name="main_text_user_info">Welcome: %s!</string>
 
 </resources>

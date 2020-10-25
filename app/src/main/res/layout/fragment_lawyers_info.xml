@@ -35,22 +35,19 @@
                     android:id="@+id/lawyersinfo_text_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/textColor"
-                    android:textColorHint="@color/textColor" />
+                    android:textColor="@color/textColor" />
 
                 <TextView
                     android:id="@+id/lawyersinfo_text_city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/textColor"
-                    android:textColorHint="@color/textColor" />
+                    android:textColor="@color/textColor" />
 
                 <TextView
-                    android:id="@+id/lawyersinfo_text_number"
+                    android:id="@+id/lawyersinfo_text_education"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/textColor"
-                    android:textColorHint="@color/textColor" />
+                    android:textColor="@color/textColor" />
 
             </LinearLayout>
         </LinearLayout>
@@ -61,25 +58,22 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/lawyersinfo_text_education"
+                android:id="@+id/lawyersinfo_text_won_cases"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor" />
+                android:textColor="@color/textColor" />
 
             <TextView
                 android:id="@+id/lawyersinfo_text_specialization"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor" />
+                android:textColor="@color/textColor" />
 
             <TextView
                 android:id="@+id/lawyersinfo_text_experience"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor" />
+                android:textColor="@color/textColor" />
         </LinearLayout>
     </LinearLayout>
 
@@ -110,9 +104,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom|end"
+        app:sdMainFabClosedBackgroundColor="@color/colorPrimary"
+        app:sdMainFabOpenedBackgroundColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:sdMainFabClosedSrc="@drawable/ic_share_24"
         app:sdMainFabOpenedSrc="@drawable/ic_close_24" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

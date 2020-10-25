@@ -65,7 +65,7 @@ class LawyersListAdapter(
                 )
             lawyers_text_won_cases.text =
                 resources.getString(R.string.lawyer_number_of_won_cases, item.wonCases)
-            lawyers_text_city.text = item.city
+            lawyers_text_city.text = resources.getString(R.string.lawyer_city, item.city)
             lawyers_button_call.setOnClickListener {
                 Utils.showCallDialog(itemView.context, item)
             }

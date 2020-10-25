@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedListener {
     private val viewModel: MainViewModel by activityViewModels()
+    private lateinit var navBar: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,20 +23,19 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navBar = requireActivity().findViewById(R.id.bottom_menu)
         if (viewModel.loggedIn.value == false) {
             main_loading.visibility = View.VISIBLE
         }
 
         viewModel.user.observe(viewLifecycleOwner, {
-            text_main_fragment.text = it.role
+            text_main_fragment.text = resources.getString(R.string.main_text_user_info, it.role)
         })
-
-        val navBar: BottomNavigationView = requireActivity().findViewById(R.id.bottom_menu)
-        navBar.visibility = View.VISIBLE
 
         viewModel.loggedIn.observe(viewLifecycleOwner, {
             if (it) {
                 main_loading.visibility = View.GONE
+                navBar.visibility = View.VISIBLE
             }
         })
     }
@@ -45,8 +45,5 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
         val user = Gson().fromJson(userJson, User::class.java)
         viewModel.setUser(user)
         viewModel.loggedIn.value = true
-        main_loading?.visibility = View.GONE
     }
 }
-
-//TODO: better loading screen (login and main)

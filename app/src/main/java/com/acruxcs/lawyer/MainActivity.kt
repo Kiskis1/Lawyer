@@ -1,6 +1,7 @@
 package com.acruxcs.lawyer
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.NavHostFragment
@@ -13,7 +14,6 @@ import com.acruxcs.lawyer.utils.Utils.edit
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,10 +24,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var bottomNavigation: BottomNavigationView
     lateinit var googleSignInClient: GoogleSignInClient
     private var user = MutableLiveData<User>()
-    var dataLoadedListener: DataLoadedListener? = null
+    private var dataLoadedListener: DataLoadedListener? = null
 
     override fun onStart() {
         super.onStart()
@@ -44,14 +43,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Utils.init(this)
 
-        bottomNavigation = findViewById(R.id.bottom_menu)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         bottom_menu.setupWithNavController(navHostFragment.navController)
 
         Utils.switchDarkMode(Utils.preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false))
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
+            bottom_menu.visibility = View.GONE
             getUserData(Firebase.auth.currentUser?.uid)
+        }
     }
 
     override fun onBackPressed() {
