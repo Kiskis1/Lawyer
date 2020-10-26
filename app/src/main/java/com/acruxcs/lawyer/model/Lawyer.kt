@@ -9,6 +9,7 @@ data class Lawyer(
     var name: String = "",
     var country: String = "",
     var phone: String = "",
+    var uid: String = "",
     var city: String = "",
     var specialization: String = "",
     var education: String = "",

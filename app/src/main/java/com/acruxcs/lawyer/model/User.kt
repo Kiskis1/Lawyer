@@ -6,5 +6,6 @@ data class User(
     var nickname: String = "",
     var country: String = "",
     var city: String = "",
+    var uid: String = "",
     var role: String = "user"
 ) : AppUser

@@ -8,8 +8,11 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
+import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
+import com.google.firebase.storage.StorageReference
+import io.github.rosariopfernandes.firecoil.load
 import kotlinx.android.synthetic.main.fragment_lawyers_info.*
 
 class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
@@ -64,5 +67,13 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
             )
         lawyersinfo_text_won_cases.text =
             resources.getString(R.string.lawyer_number_of_won_cases, lawyer.wonCases)
+        viewModel.getImageRef(lawyer.uid, object : MainViewModel.Companion.ImageCallback {
+            override fun onCallback(value: StorageReference) {
+                lawyersinfo_image_profile.load(value) {
+                    crossfade(true)
+                    error(R.drawable.ic_person_24)
+                }
+            }
+        })
     }
 }

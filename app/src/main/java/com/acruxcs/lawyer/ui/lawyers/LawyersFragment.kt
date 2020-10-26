@@ -19,7 +19,7 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers),
         super.onViewCreated(view, savedInstanceState)
         //TODO: add progress bar later
 
-        lawyersAdapter = LawyersListAdapter(parentFragmentManager)
+        lawyersAdapter = LawyersListAdapter(parentFragmentManager, viewModel)
         lawyers_recycler.adapter = lawyersAdapter
         viewModel.getLawyers().observe(viewLifecycleOwner, {
             list.clear()

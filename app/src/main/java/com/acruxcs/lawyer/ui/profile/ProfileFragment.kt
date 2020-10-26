@@ -1,5 +1,8 @@
 package com.acruxcs.lawyer.ui.profile
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import coil.request.CachePolicy
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Case
@@ -21,7 +25,10 @@ import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.edit
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.storage.StorageReference
+import io.github.rosariopfernandes.firecoil.load
 import kotlinx.android.synthetic.main.fragment_profile_lawyer.*
+import kotlinx.android.synthetic.main.fragment_profile_lawyer.profile_image_picture
 import kotlinx.android.synthetic.main.fragment_profile_user.profile_button_edit_picture
 import kotlinx.android.synthetic.main.fragment_profile_user.profile_button_logout
 import kotlinx.android.synthetic.main.fragment_profile_user.profile_edit_password
@@ -30,7 +37,7 @@ import kotlinx.android.synthetic.main.fragment_profile_user.profile_switch_dark_
 
 class ProfileFragment : Fragment() {
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var lawyersCasesAdapter: LawyersCaseAdapter
+    private val lawyersCasesAdapter = LawyersCaseAdapter()
     private val list = mutableListOf<Case>()
     private val lawyersViewModel: LawyersViewModel by viewModels()
 
@@ -53,7 +60,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getStatus().observe(this, { handleStatus(it) })
         profile_button_edit_picture.setOnClickListener {
-            throw NotImplementedError()
+            selectImage()
         }
         profile_layout_password.setEndIconOnClickListener {
             val password = profile_edit_password.text.toString().trim()
@@ -86,13 +93,26 @@ class ProfileFragment : Fragment() {
             NewCaseDialog(this).show(parentFragmentManager, "new_case")
         }
 
-        lawyersCasesAdapter = LawyersCaseAdapter()
+        loadProfileImage()
+
         profile_recycler.adapter = lawyersCasesAdapter
         lawyersViewModel.getLawyersCases().observe(viewLifecycleOwner, {
             list.clear()
             list.addAll(it)
             lawyersCasesAdapter.swapData(list)
         })
+    }
+
+    private fun loadProfileImage() {
+        viewModel.getImageRef(
+            viewModel.user.value!!.uid,
+            object : MainViewModel.Companion.ImageCallback {
+                override fun onCallback(value: StorageReference) {
+                    profile_image_picture.load(value) {
+                        memoryCachePolicy(CachePolicy.DISABLED)
+                    }
+                }
+            })
     }
 
     private fun logout() {
@@ -102,13 +122,42 @@ class ProfileFragment : Fragment() {
         requireView().findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
     }
 
+    private fun selectImage() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(
+            Intent.createChooser(
+                intent,
+                "Select Image from here..."
+            ),
+            PICK_IMAGE_REQUEST
+        )
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(
+            requestCode,
+            resultCode,
+            data
+        )
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
+            val filePath = data.data!!
+            profile_image_picture.invalidate()
+            uploadImage(filePath)
+        }
+    }
+
+    private fun uploadImage(filePath: Uri) {
+        viewModel.uploadImage(filePath)
+    }
+
     private fun handleStatus(status: Status?) {
         when (status) {
-            Status.INVALID_URI -> Toast.makeText(
-                context,
-                "Unable to load the photo",
-                Toast.LENGTH_SHORT
-            ).show()
             Status.SUCCESS ->
                 Snackbar.make(requireView(), "Success", Snackbar.LENGTH_LONG).show()
             Status.ERROR -> Toast.makeText(
@@ -124,11 +173,18 @@ class ProfileFragment : Fragment() {
                 ).show()
                 logout()
             }
+            Status.PICTURE_CHANGE_SUCCESS -> {
+                loadProfileImage()
+            }
             else -> Toast.makeText(
                 context,
                 "Something went wrong, please try again!",
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    companion object {
+        private const val PICK_IMAGE_REQUEST = 22
     }
 }

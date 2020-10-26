@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.repository.FirebaseRepository
+import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -54,6 +55,15 @@ class LawyersViewModel : ViewModel() {
         }
         repository.getLawyersCases(user.uid).addValueEventListener(listener)
         return cases
+    }
+
+    fun getImageRef(uid: String, ic: MainViewModel.Companion.ImageCallback) {
+        val reference = repository.getImageRef(uid)
+        reference.downloadUrl.addOnSuccessListener {
+            ic.onCallback(reference)
+        }.addOnFailureListener {
+            ic.onCallback(repository.getDefaultImageRef())
+        }
     }
 
     @SuppressLint("NewApi")

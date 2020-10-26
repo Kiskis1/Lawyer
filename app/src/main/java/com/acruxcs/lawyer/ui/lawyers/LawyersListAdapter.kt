@@ -12,11 +12,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Lawyer
+import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
+import com.google.firebase.storage.StorageReference
+import io.github.rosariopfernandes.firecoil.load
 import kotlinx.android.synthetic.main.item_lawyer.view.*
 
 class LawyersListAdapter(
-    private val manager: FragmentManager
+    private val manager: FragmentManager,
+    private val viewModel: LawyersViewModel
 ) :
     ListAdapter<Lawyer, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
 
@@ -69,6 +73,14 @@ class LawyersListAdapter(
             lawyers_button_call.setOnClickListener {
                 Utils.showCallDialog(itemView.context, item)
             }
+            viewModel.getImageRef(item.uid, object : MainViewModel.Companion.ImageCallback {
+                override fun onCallback(value: StorageReference) {
+                    lawyers_image_profile.load(value) {
+                        crossfade(true)
+                        error(R.drawable.ic_person_24)
+                    }
+                }
+            })
             lawyers_button_question.setOnClickListener {
                 Utils.showQuestionDialog(manager, item)
             }

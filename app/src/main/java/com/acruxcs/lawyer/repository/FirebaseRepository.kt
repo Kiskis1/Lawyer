@@ -1,13 +1,17 @@
 package com.acruxcs.lawyer.repository
 
+import android.net.Uri
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
 
 object FirebaseRepository {
     private val db = Firebase.database.reference
+    private val storage = Firebase.storage.reference.child("images")
 
     fun writeNewUser(userId: String, user: User) = db.child("users").child(userId).setValue(user)
 
@@ -20,4 +24,13 @@ object FirebaseRepository {
     fun postCase(case: Case) = db.child("cases").push().setValue(case)
 
     fun getLawyersCases(uid: String) = db.child("cases").orderByChild("user").equalTo(uid)
+
+    fun uploadImage(file: Uri, uid: String): UploadTask {
+        val reference = storage.child(uid)
+        return reference.putFile(file)
+    }
+
+    fun getImageRef(uid: String) = storage.child(uid)
+
+    fun getDefaultImageRef() = storage.child("default.png")
 }
