@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.utils.Utils
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -30,7 +31,13 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
 
         viewModel.user.observe(viewLifecycleOwner, {
             text_main_fragment.text = resources.getString(R.string.main_text_user_info, it.role)
+            // main_loading.visibility = View.GONE
+            // navBar.visibility = View.VISIBLE
         })
+        if (arguments?.getBoolean("isNewUser") == true) {
+            main_loading.visibility = View.GONE
+            navBar.visibility = View.VISIBLE
+        }
 
         viewModel.loggedIn.observe(viewLifecycleOwner, {
             if (it) {
@@ -41,9 +48,15 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
     }
 
     override fun dataLoaded() {
+        // viewModel.firebaseAuth.signOut()
         val userJson = Utils.preferences.getString(Utils.SHARED_USER_DATA, null)
-        val user = Gson().fromJson(userJson, User::class.java)
-        viewModel.setUser(user)
+        if (userJson?.contains("role\" : \"user", true) == true) {
+            val user = Gson().fromJson(userJson, User::class.java)
+            viewModel.setUser(user)
+        } else {
+            val user = Gson().fromJson(userJson, Lawyer::class.java)
+            viewModel.setUser(user)
+        }
         viewModel.loggedIn.value = true
     }
 }

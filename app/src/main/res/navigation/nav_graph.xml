@@ -35,9 +35,10 @@
         android:name="com.acruxcs.lawyer.ui.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
-        <action
-            android:id="@+id/action_mainFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+        <argument
+            android:name="isNewUser"
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_mainFragment_to_lawyersFragment"
             app:destination="@id/lawyersFragment"
@@ -67,5 +68,9 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.acruxcs.lawyer.ui.profile.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment">
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.model.AppUser
+import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
@@ -21,9 +24,12 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var email: String
     private lateinit var password: String
-    private lateinit var nickname: String
+    private lateinit var fullname: String
     private lateinit var country: String
     private lateinit var city: String
+    private lateinit var phone: String
+
+    private lateinit var user: AppUser
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,14 +71,22 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private fun register() {
         email = register_edit_email.text.toString().trim()
         password = register_edit_password.text.toString().trim()
-        nickname = register_edit_nickname.text.toString().trim()
+        fullname = register_edit_full_name.text.toString().trim()
+        phone = register_edit_phone.text.toString().trim()
         country = register_spinner_country.editableText.toString()
         city = register_spinner_city.editableText.toString()
         if (isValid()) {
-            val user = User(
-                email, password, nickname, country, city
-            )
-            createAccount(user)
+            if (!register_checkbox_lawyer.isChecked) {
+                user = User(
+                    email, fullname, country, city, phone
+                )
+                createAccount(user as User)
+            } else {
+                user = Lawyer(
+                    email, fullname, country, city, phone
+                )
+                createAccount(user as Lawyer)
+            }
         }
     }
 
@@ -93,9 +107,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             register_edit_password.requestFocus()
             valid = false
         }
-        if (nickname.isEmpty()) {
-            register_layout_edit_nickname.error = getString(R.string.empty_field)
-            register_edit_nickname.requestFocus()
+        if (fullname.isEmpty()) {
+            register_layout_edit_full_name.error = getString(R.string.empty_field)
+            register_edit_full_name.requestFocus()
+            valid = false
+        }
+        if (phone.isEmpty()) {
+            register_layout_edit_phone.error = getString(R.string.empty_field)
+            register_edit_phone.requestFocus()
             valid = false
         }
         if (country.isEmpty()) {
@@ -111,14 +130,18 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         return valid
     }
 
-    private fun createAccount(user: User) {
-        viewModel.firebaseAuth.createUserWithEmailAndPassword(user.email, user.password)
+    private fun createAccount(user: AppUser) {
+        viewModel.firebaseAuth.createUserWithEmailAndPassword(user.email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
+                    user.uid = task.result?.user!!.uid
                     viewModel.createNewUser(user)
                     viewModel.setUser(user)
                     requireView().findNavController()
-                        .navigate(R.id.action_registerFragment_to_mainFragment)
+                        .navigate(
+                            R.id.action_registerFragment_to_mainFragment,
+                            bundleOf("isNewUser" to true)
+                        )
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(

@@ -95,7 +95,7 @@ class ProfileFragment : Fragment() {
 
         loadProfileImage()
 
-        profile_recycler.adapter = lawyersCasesAdapter
+        profile_recycler?.adapter = lawyersCasesAdapter
         lawyersViewModel.getLawyersCases().observe(viewLifecycleOwner, {
             list.clear()
             list.addAll(it)
@@ -119,7 +119,7 @@ class ProfileFragment : Fragment() {
         viewModel.firebaseAuth.signOut()
         LoginManager.getInstance()?.logOut()
         (activity as MainActivity).googleSignInClient.signOut()
-        requireView().findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+        requireView().findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
     }
 
     private fun selectImage() {

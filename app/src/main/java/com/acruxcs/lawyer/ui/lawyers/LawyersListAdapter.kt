@@ -56,7 +56,7 @@ class LawyersListAdapter(
         }
 
         fun bind(item: Lawyer) = with(itemView) {
-            lawyers_text_name.text = resources.getString(R.string.lawyer_name, item.name)
+            lawyers_text_name.text = resources.getString(R.string.lawyer_name, item.fullname)
             lawyers_text_education.text =
                 resources.getString(R.string.lawyer_education, item.education)
             lawyers_text_specialization.text =

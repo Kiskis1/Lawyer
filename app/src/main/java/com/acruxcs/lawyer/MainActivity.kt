@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.acruxcs.lawyer.model.AppUser
+import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.utils.Utils
@@ -25,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     lateinit var googleSignInClient: GoogleSignInClient
-    private var user = MutableLiveData<User>()
+    private var user = MutableLiveData<AppUser>()
     private var dataLoadedListener: DataLoadedListener? = null
 
     override fun onStart() {
@@ -65,12 +67,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUserData(userId: String?): MutableLiveData<User> {
+    private fun getUserData(userId: String?): MutableLiveData<AppUser> {
         val userListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                user.value = snapshot.getValue(User::class.java)
-                Utils.preferences
-                    .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(user.value)) }
+                val temp = snapshot.getValue(User::class.java)
+                if (temp?.role == "user") {
+                    user.value = snapshot.getValue(User::class.java)
+                    Utils.preferences
+                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(user.value)) }
+                } else {
+                    user.value = snapshot.getValue(Lawyer::class.java)
+                    Utils.preferences
+                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(user.value)) }
+                }
                 dataLoadedListener?.dataLoaded()
             }
 

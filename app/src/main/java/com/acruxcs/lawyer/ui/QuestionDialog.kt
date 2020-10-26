@@ -56,7 +56,7 @@ class QuestionDialog : DialogFragment() {
                     question.country = question_edit_location_country.text.toString().trim()
                     question.city = question_edit_location_city.text.toString().trim()
                     question.phone = question_edit_phone.text.toString().trim()
-                    question.name = question_edit_name.text.toString().trim()
+                    question.fullname = question_edit_name.text.toString().trim()
                     question.destinationEmail = lawyer.email
                     repository.postQuestion(question)
                     Utils.hideKeyboard(requireContext(), thisView)

@@ -53,7 +53,7 @@ android {
         implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
         implementation 'com.google.android.gms:play-services-auth:18.1.0'
-        implementation 'com.google.android.material:material:1.2.1'
+        implementation 'com.google.android.material:material:1.2.0-alpha02'
         implementation 'com.google.firebase:firebase-auth:19.4.0'
         implementation 'com.google.firebase:firebase-auth-ktx:19.4.0'
         implementation 'com.google.firebase:firebase-database-ktx:19.5.1'

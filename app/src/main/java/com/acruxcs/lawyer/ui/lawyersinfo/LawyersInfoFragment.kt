@@ -53,7 +53,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
             lawyersCasesAdapter.swapData(list)
         })
 
-        lawyersinfo_text_name.text = resources.getString(R.string.lawyer_name, lawyer.name)
+        lawyersinfo_text_name.text = resources.getString(R.string.lawyer_name, lawyer.fullname)
         lawyersinfo_text_education.text =
             resources.getString(R.string.lawyer_education, lawyer.education)
         lawyersinfo_text_specialization.text =

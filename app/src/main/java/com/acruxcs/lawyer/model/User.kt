@@ -1,11 +1,11 @@
 package com.acruxcs.lawyer.model
 
 data class User(
-    var email: String = "",
-    var password: String = "",
-    var nickname: String = "",
-    var country: String = "",
-    var city: String = "",
-    var uid: String = "",
-    var role: String = "user"
+    override var email: String = "",
+    override var fullname: String = "",
+    override var country: String = "",
+    override var city: String = "",
+    override var phone: String = "",
+    override var uid: String = "",
+    override var role: String = "user"
 ) : AppUser

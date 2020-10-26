@@ -78,5 +78,8 @@
     <string name="profile_your_cases">Your cases:</string>
     <string name="lawyersinfo_notable_cases">Notable cases:</string>
     <string name="main_text_user_info">Welcome: %s!</string>
+    <string name="register_as_lawyer">Register as lawyer:</string>
+    <string name="register_hint_full_name">Full name</string>
+    <string name="register_hint_phone">Phone</string>
 
 </resources>

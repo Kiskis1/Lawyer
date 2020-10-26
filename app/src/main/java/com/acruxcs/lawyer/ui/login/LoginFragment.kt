@@ -38,7 +38,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         if (navBar != null) {
             navBar.visibility = View.GONE
         }
-        val user = viewModel.getCurrentUser()
+        val user = viewModel.firebaseUser
         if (user != null) {
             view.findNavController()
                 .navigate(R.id.action_loginFragment_to_mainFragment)
@@ -129,7 +129,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             password
         ).addOnCompleteListener(requireActivity()) { task ->
             if (task.isSuccessful) {
-                viewModel.setLoggedIn(true)
+                viewModel.getUserData(task.result!!.user!!.uid)
                 Utils.hideKeyboard(requireContext(), requireView())
                 requireView().findNavController()
                     .navigate(R.id.action_loginFragment_to_mainFragment)
