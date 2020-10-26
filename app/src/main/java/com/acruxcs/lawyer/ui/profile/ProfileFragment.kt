@@ -28,11 +28,17 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.StorageReference
 import io.github.rosariopfernandes.firecoil.load
 import kotlinx.android.synthetic.main.fragment_profile_lawyer.*
-import kotlinx.android.synthetic.main.fragment_profile_lawyer.profile_image_picture
 import kotlinx.android.synthetic.main.fragment_profile_user.profile_button_edit_picture
 import kotlinx.android.synthetic.main.fragment_profile_user.profile_button_logout
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_edit_city
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_edit_country
 import kotlinx.android.synthetic.main.fragment_profile_user.profile_edit_password
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_edit_phone
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_image_picture
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_layout_city
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_layout_country
 import kotlinx.android.synthetic.main.fragment_profile_user.profile_layout_password
+import kotlinx.android.synthetic.main.fragment_profile_user.profile_layout_phone
 import kotlinx.android.synthetic.main.fragment_profile_user.profile_switch_dark_mode
 
 class ProfileFragment : Fragment() {
@@ -63,18 +69,7 @@ class ProfileFragment : Fragment() {
             selectImage()
         }
         profile_layout_password.setEndIconOnClickListener {
-            val password = profile_edit_password.text.toString().trim()
-            if (password.isEmpty()) {
-                profile_layout_password.error = getString(R.string.empty_field)
-                profile_edit_password.requestFocus()
-                return@setEndIconOnClickListener
-            } else if (password.length < MIN_PASS_LENGTH) {
-                profile_layout_password.error = getString(R.string.password_not_long_enough)
-                profile_edit_password.requestFocus()
-                return@setEndIconOnClickListener
-            }
-            viewModel.updatePassword(password)
-            Utils.hideKeyboard(requireContext(), requireView())
+            updatePassword()
         }
 
         profile_button_logout.setOnClickListener {
@@ -89,11 +84,28 @@ class ProfileFragment : Fragment() {
             }
             Utils.switchDarkMode(b)
         }
+        loadProfileImage()
+
+        profile_edit_country.setText(viewModel.user.value!!.country)
+        profile_edit_city.setText(viewModel.user.value!!.city)
+        profile_edit_phone.setText(viewModel.user.value!!.phone)
+
+        profile_layout_country.setEndIconOnClickListener {
+            updateCountry()
+        }
+
+        profile_layout_city.setEndIconOnClickListener {
+            updateCity()
+        }
+
+        profile_layout_phone.setEndIconOnClickListener {
+            updatePhone()
+        }
+
+        //lawyers profile views
         profile_fab_add_case?.setOnClickListener {
             NewCaseDialog(this).show(parentFragmentManager, "new_case")
         }
-
-        loadProfileImage()
 
         profile_recycler?.adapter = lawyersCasesAdapter
         lawyersViewModel.getLawyersCases().observe(viewLifecycleOwner, {
@@ -101,6 +113,54 @@ class ProfileFragment : Fragment() {
             list.addAll(it)
             lawyersCasesAdapter.swapData(list)
         })
+    }
+
+    private fun updatePassword() {
+        val password = profile_edit_password.text.toString().trim()
+        if (password.isEmpty()) {
+            profile_layout_password.error = getString(R.string.empty_field)
+            profile_edit_password.requestFocus()
+            return
+        } else if (password.length < MIN_PASS_LENGTH) {
+            profile_layout_password.error = getString(R.string.password_not_long_enough)
+            profile_edit_password.requestFocus()
+            return
+        }
+        viewModel.updatePassword(password)
+        Utils.hideKeyboard(requireContext(), requireView())
+    }
+
+    private fun updateCountry() {
+        val country = profile_edit_country.text.toString().trim()
+        if (country.isEmpty()) {
+            profile_layout_country.error = getString(R.string.empty_field)
+            profile_layout_country.requestFocus()
+            return
+        }
+        Utils.hideKeyboard(requireContext(), requireView())
+        viewModel.updateCountry(country)
+    }
+
+    private fun updateCity() {
+        val city = profile_edit_city.text.toString().trim()
+        if (city.isEmpty()) {
+            profile_layout_city.error = getString(R.string.empty_field)
+            profile_layout_city.requestFocus()
+            return
+        }
+        Utils.hideKeyboard(requireContext(), requireView())
+        viewModel.updateCity(city)
+    }
+
+    private fun updatePhone() {
+        val phone = profile_edit_phone.text.toString().trim()
+        if (phone.isEmpty()) {
+            profile_layout_phone.error = getString(R.string.empty_field)
+            profile_layout_phone.requestFocus()
+            return
+        }
+        Utils.hideKeyboard(requireContext(), requireView())
+        viewModel.updatePhone(phone)
     }
 
     private fun loadProfileImage() {

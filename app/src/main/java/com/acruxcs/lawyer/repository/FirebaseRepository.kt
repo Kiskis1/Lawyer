@@ -33,4 +33,13 @@ object FirebaseRepository {
     fun getImageRef(uid: String) = storage.child(uid)
 
     fun getDefaultImageRef() = storage.child("default.png")
+
+    fun updateCountry(country: String, uid: String) =
+        db.child("users").child(uid).child("country").setValue(country)
+
+    fun updateCity(city: String, uid: String) =
+        db.child("users").child(uid).child("city").setValue(city)
+
+    fun updatePhone(phone: String, uid: String) =
+        db.child("users").child(uid).child("phone").setValue(phone)
 }

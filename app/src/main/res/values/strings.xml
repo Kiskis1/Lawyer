@@ -81,5 +81,8 @@
     <string name="register_as_lawyer">Register as lawyer:</string>
     <string name="register_hint_full_name">Full name</string>
     <string name="register_hint_phone">Phone</string>
+    <string name="profile_update_phone_number">Update Phone Number</string>
+    <string name="profile_update_country">Update Country</string>
+    <string name="profile_update_city">Update City</string>
 
 </resources>

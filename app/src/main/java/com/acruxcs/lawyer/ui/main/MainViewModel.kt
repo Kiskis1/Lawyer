@@ -124,6 +124,30 @@ class MainViewModel : ViewModel() {
         repository.postCase(case)
     }
 
+    fun updateCountry(country: String) {
+        repository.updateCountry(country, firebaseUser!!.uid).addOnSuccessListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
+    }
+
+    fun updateCity(city: String) {
+        repository.updateCity(city, firebaseUser!!.uid).addOnSuccessListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
+    }
+
+    fun updatePhone(phone: String) {
+        repository.updatePhone(phone, firebaseUser!!.uid).addOnSuccessListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
+    }
+
     companion object {
         interface ImageCallback {
             fun onCallback(value: StorageReference)
