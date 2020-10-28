@@ -81,8 +81,13 @@
     <string name="register_as_lawyer">Register as lawyer:</string>
     <string name="register_hint_full_name">Full name</string>
     <string name="register_hint_phone">Phone</string>
+
     <string name="profile_update_phone_number">Update Phone Number</string>
     <string name="profile_update_country">Update Country</string>
     <string name="profile_update_city">Update City</string>
+    <string name="profile_update_specialization">Update Specialization</string>
+    <string name="profile_update_education">Update Education</string>
+    <string name="profile_update_experience">Update Experience</string>
+    <string name="profile_update_won_cases">Update Won Cases</string>
 
 </resources>

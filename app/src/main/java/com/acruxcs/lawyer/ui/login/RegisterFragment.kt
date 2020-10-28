@@ -136,7 +136,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 if (task.isSuccessful) {
                     user.uid = task.result?.user!!.uid
                     viewModel.createNewUser(user)
-                    viewModel.setUser(user)
+                    if (register_checkbox_lawyer.isChecked) {
+                        viewModel.setLawyer(user as Lawyer)
+                    }
+                    viewModel.setUser(user as User)
+
                     requireView().findNavController()
                         .navigate(
                             R.id.action_registerFragment_to_mainFragment,

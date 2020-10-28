@@ -1,6 +1,5 @@
 package com.acruxcs.lawyer.ui.main
 
-import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.AppUser
@@ -8,13 +7,10 @@ import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
-import com.acruxcs.lawyer.utils.SingleLiveEvent
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.edit
 import com.google.android.gms.tasks.Task
-import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -28,12 +24,15 @@ class MainViewModel : ViewModel() {
     val firebaseAuth = Firebase.auth
     val firebaseUser = Firebase.auth.currentUser
     var user = MutableLiveData<AppUser>()
+    var lawyer = MutableLiveData<Lawyer>()
     val loggedIn = MutableLiveData<Boolean>().also { it.value = false }
-
-    private val status = SingleLiveEvent<Status>()
 
     fun setUser(newUser: AppUser) {
         user.value = newUser
+    }
+
+    fun setLawyer(l: Lawyer) {
+        lawyer.value = l
     }
 
     fun setLoggedIn(bool: Boolean) {
@@ -86,26 +85,6 @@ class MainViewModel : ViewModel() {
         repository.writeNewUser(newUser)
     }
 
-    fun updatePassword(password: String) {
-        firebaseUser!!.updatePassword(password).addOnSuccessListener {
-            status.value = Status.SUCCESS
-        }.addOnFailureListener {
-            when (it) {
-                is FirebaseAuthRecentLoginRequiredException -> status.value = Status.REAUTHENTICATE
-                is FirebaseNetworkException -> status.value = Status.NO_NETWORK
-                else -> status.value = Status.ERROR
-            }
-        }
-    }
-
-    fun uploadImage(uri: Uri) {
-        repository.uploadImage(uri, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.PICTURE_CHANGE_SUCCESS
-        }.addOnFailureListener {
-            status.value = Status.ERROR
-        }
-    }
-
     fun getImageRef(uid: String, ic: ImageCallback) {
         val reference = repository.getImageRef(uid)
         reference.downloadUrl.addOnSuccessListener {
@@ -115,37 +94,9 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun getStatus(): SingleLiveEvent<Status> {
-        return status
-    }
-
     fun postCase(case: Case) {
         case.user = firebaseUser!!.uid
         repository.postCase(case)
-    }
-
-    fun updateCountry(country: String) {
-        repository.updateCountry(country, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.SUCCESS
-        }.addOnFailureListener {
-            status.value = Status.ERROR
-        }
-    }
-
-    fun updateCity(city: String) {
-        repository.updateCity(city, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.SUCCESS
-        }.addOnFailureListener {
-            status.value = Status.ERROR
-        }
-    }
-
-    fun updatePhone(phone: String) {
-        repository.updatePhone(phone, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.SUCCESS
-        }.addOnFailureListener {
-            status.value = Status.ERROR
-        }
     }
 
     companion object {

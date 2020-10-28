@@ -42,4 +42,16 @@ object FirebaseRepository {
 
     fun updatePhone(phone: String, uid: String) =
         db.child("users").child(uid).child("phone").setValue(phone)
+
+    fun updateWonCases(wonCases: Int, uid: String) =
+        db.child("users").child(uid).child("wonCases").setValue(wonCases)
+
+    fun updateExperience(experience: Int, uid: String) =
+        db.child("users").child(uid).child("experience").setValue(experience)
+
+    fun updateSpecialization(specialization: String, uid: String) =
+        db.child("users").child(uid).child("specialization").setValue(specialization)
+
+    fun updateEducation(education: String, uid: String) =
+        db.child("users").child(uid).child("education").setValue(education)
 }

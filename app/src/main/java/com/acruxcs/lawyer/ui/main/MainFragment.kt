@@ -56,6 +56,7 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
         } else {
             val user = Gson().fromJson(userJson, Lawyer::class.java)
             viewModel.setUser(user)
+            viewModel.setLawyer(user)
         }
         viewModel.loggedIn.value = true
     }

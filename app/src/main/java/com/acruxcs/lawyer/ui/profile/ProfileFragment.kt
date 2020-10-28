@@ -46,6 +46,7 @@ class ProfileFragment : Fragment() {
     private val lawyersCasesAdapter = LawyersCaseAdapter()
     private val list = mutableListOf<Case>()
     private val lawyersViewModel: LawyersViewModel by viewModels()
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +65,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getStatus().observe(this, { handleStatus(it) })
+        profileViewModel.getStatus().observe(this, { handleStatus(it) })
         profile_button_edit_picture.setOnClickListener {
             selectImage()
         }
@@ -89,6 +90,10 @@ class ProfileFragment : Fragment() {
         profile_edit_country.setText(viewModel.user.value!!.country)
         profile_edit_city.setText(viewModel.user.value!!.city)
         profile_edit_phone.setText(viewModel.user.value!!.phone)
+        profile_edit_specialization?.setText(viewModel.lawyer.value!!.specialization)
+        profile_edit_education?.setText(viewModel.lawyer.value!!.education)
+        profile_edit_experience?.setText(viewModel.lawyer.value!!.experience.toString())
+        profile_edit_won_cases?.setText(viewModel.lawyer.value!!.wonCases.toString())
 
         profile_layout_country.setEndIconOnClickListener {
             updateCountry()
@@ -103,6 +108,19 @@ class ProfileFragment : Fragment() {
         }
 
         //lawyers profile views
+        profile_layout_specialization?.setEndIconOnClickListener {
+            updateSpec()
+        }
+        profile_layout_education?.setEndIconOnClickListener {
+            updateEducation()
+        }
+        profile_layout_experience?.setEndIconOnClickListener {
+            updateExperience()
+        }
+        profile_layout_won_cases?.setEndIconOnClickListener {
+            updateWonCases()
+        }
+
         profile_fab_add_case?.setOnClickListener {
             NewCaseDialog(this).show(parentFragmentManager, "new_case")
         }
@@ -113,6 +131,50 @@ class ProfileFragment : Fragment() {
             list.addAll(it)
             lawyersCasesAdapter.swapData(list)
         })
+    }
+
+    private fun updateWonCases() {
+        val wonCases = Integer.parseInt(profile_edit_won_cases.text.toString().trim())
+        if (profile_edit_won_cases.text.toString().isEmpty()) {
+            profile_layout_won_cases.error = getString(R.string.empty_field)
+            profile_layout_won_cases.requestFocus()
+            return
+        }
+        Utils.hideKeyboard(requireContext(), requireView())
+        profileViewModel.updateWonCases(wonCases)
+    }
+
+    private fun updateExperience() {
+        val experience = Integer.parseInt(profile_edit_experience.text.toString().trim())
+        if (profile_edit_experience.text.toString().isEmpty()) {
+            profile_layout_experience.error = getString(R.string.empty_field)
+            profile_layout_experience.requestFocus()
+            return
+        }
+        Utils.hideKeyboard(requireContext(), requireView())
+        profileViewModel.updateExperience(experience)
+    }
+
+    private fun updateEducation() {
+        val education = profile_edit_education.text.toString().trim()
+        if (education.isEmpty()) {
+            profile_layout_education.error = getString(R.string.empty_field)
+            profile_layout_education.requestFocus()
+            return
+        }
+        Utils.hideKeyboard(requireContext(), requireView())
+        profileViewModel.updateEducation(education)
+    }
+
+    private fun updateSpec() {
+        val specialization = profile_edit_specialization.text.toString().trim()
+        if (specialization.isEmpty()) {
+            profile_layout_specialization.error = getString(R.string.empty_field)
+            profile_layout_specialization.requestFocus()
+            return
+        }
+        Utils.hideKeyboard(requireContext(), requireView())
+        profileViewModel.updateSpecialization(specialization)
     }
 
     private fun updatePassword() {
@@ -126,7 +188,7 @@ class ProfileFragment : Fragment() {
             profile_edit_password.requestFocus()
             return
         }
-        viewModel.updatePassword(password)
+        profileViewModel.updatePassword(password)
         Utils.hideKeyboard(requireContext(), requireView())
     }
 
@@ -138,7 +200,7 @@ class ProfileFragment : Fragment() {
             return
         }
         Utils.hideKeyboard(requireContext(), requireView())
-        viewModel.updateCountry(country)
+        profileViewModel.updateCountry(country)
     }
 
     private fun updateCity() {
@@ -149,7 +211,7 @@ class ProfileFragment : Fragment() {
             return
         }
         Utils.hideKeyboard(requireContext(), requireView())
-        viewModel.updateCity(city)
+        profileViewModel.updateCity(city)
     }
 
     private fun updatePhone() {
@@ -160,7 +222,7 @@ class ProfileFragment : Fragment() {
             return
         }
         Utils.hideKeyboard(requireContext(), requireView())
-        viewModel.updatePhone(phone)
+        profileViewModel.updatePhone(phone)
     }
 
     private fun loadProfileImage() {
@@ -213,7 +275,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun uploadImage(filePath: Uri) {
-        viewModel.uploadImage(filePath)
+        profileViewModel.uploadImage(filePath)
     }
 
     private fun handleStatus(status: Status?) {
