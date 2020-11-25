@@ -19,7 +19,7 @@ object FirebaseRepository {
 
     fun postQuestion(question: Question) = db.child("questions").push().setValue(question)
 
-    fun getLawyers() = db.child("users").orderByChild("role").equalTo("lawyer")
+    fun getLawyers() = db.child("users").orderByChild("role").equalTo("Lawyer")
 
     fun postCase(case: Case) = db.child("cases").push().setValue(case)
 

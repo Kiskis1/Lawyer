@@ -19,7 +19,7 @@ import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.lawyersinfo.LawyersCaseAdapter
 import com.acruxcs.lawyer.ui.main.MainViewModel
-import com.acruxcs.lawyer.ui.main.MainViewModel.Companion.Status
+import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.edit

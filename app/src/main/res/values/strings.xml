@@ -89,5 +89,7 @@
     <string name="profile_update_education">Update Education</string>
     <string name="profile_update_experience">Update Experience</string>
     <string name="profile_update_won_cases">Update Won Cases</string>
+    <string name="content_desc_profile_change_profile_picture">Change profile picture</string>
+    <string name="content_desc_profile_add_your_case">Add your case</string>
 
 </resources>
