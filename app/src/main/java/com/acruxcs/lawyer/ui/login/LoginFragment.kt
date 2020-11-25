@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -30,11 +31,13 @@ private const val RC_SIGN_IN = 1
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var callbackManager: CallbackManager
     private val viewModel: MainViewModel by activityViewModels()
+    private lateinit var progressLayout: FrameLayout
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progressLayout = requireActivity().findViewById(R.id.activity_main_loading)
 
-        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_menu)
+        val navBar: BottomNavigationView? = requireActivity().findViewById(R.id.bottom_menu)
         if (navBar != null) {
             navBar.visibility = View.GONE
         }
@@ -60,7 +63,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 } else {
                                     viewModel.getUserData(task.result!!.user!!.uid)
                                 }
-                                login_loading.visibility = View.GONE
+
+                                progressLayout.visibility = View.GONE
                                 viewModel.setLoggedIn(true)
                                 view.findNavController()
                                     .navigate(R.id.action_loginFragment_to_mainFragment)
@@ -82,7 +86,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         //google sign in
         login_button_login_google.setOnClickListener {
             login_error_message.text = null
-            login_loading.visibility = View.VISIBLE
+            progressLayout.visibility = View.VISIBLE
             val signInIntent = (activity as MainActivity).googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
@@ -96,6 +100,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         //normal login
         login_button_login.setOnClickListener {
+            progressLayout.visibility = View.VISIBLE
             login()
         }
 
@@ -167,14 +172,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         } else {
                             viewModel.getUserData(task.result!!.user!!.uid)
                         }
-                        login_loading.visibility = View.GONE
+
+                        progressLayout.visibility = View.GONE
                         viewModel.setLoggedIn(true)
                         requireView().findNavController()
                             .navigate(R.id.action_loginFragment_to_mainFragment)
 
                     }
             } catch (e: ApiException) {
-                login_loading.visibility = View.GONE
+                progressLayout.visibility = View.GONE
                 login_error_message.text = e.message
             }
         }

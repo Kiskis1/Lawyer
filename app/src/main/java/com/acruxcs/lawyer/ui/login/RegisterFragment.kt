@@ -3,8 +3,8 @@ package com.acruxcs.lawyer.ui.login
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
@@ -30,8 +30,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private lateinit var user: User
 
+    private lateinit var progressLayout: FrameLayout
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progressLayout = requireActivity().findViewById(R.id.activity_main_loading)
         val jsonString = Utils.getJsonFromAssets(requireContext(), "countries.min.json")
         val mapType = object : TypeToken<Map<String, List<String>>>() {}.type
         val countryList =
@@ -83,6 +86,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             } else {
                 user.role = UserTypes.Lawyer
             }
+
+            progressLayout.visibility = View.VISIBLE
             createAccount(user)
         }
     }
@@ -134,14 +139,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     user.uid = task.result?.user!!.uid
                     viewModel.createNewUser(user)
                     viewModel.setUser(user)
-
+                    progressLayout.visibility = View.GONE
                     requireView().findNavController()
                         .navigate(
-                            R.id.action_registerFragment_to_mainFragment,
-                            bundleOf("isNewUser" to true)
+                            R.id.action_registerFragment_to_mainFragment
                         )
                 } else {
                     // If sign in fails, display a message to the user.
+                    progressLayout.visibility = View.GONE
                     Toast.makeText(
                         requireActivity(), task.exception?.message,
                         Toast.LENGTH_LONG

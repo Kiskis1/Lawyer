@@ -25,6 +25,7 @@
         android:src="@drawable/ic_filter_list_24"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/content_desc_lawyers_filter_lawyers_by_categories"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

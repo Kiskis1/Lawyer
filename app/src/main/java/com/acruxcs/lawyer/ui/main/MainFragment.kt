@@ -2,6 +2,7 @@ package com.acruxcs.lawyer.ui.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.acruxcs.lawyer.MainActivity
@@ -16,6 +17,7 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var navBar: BottomNavigationView
     private lateinit var questionAdapter: QuestionListAdapter
+    private lateinit var progressLayout: FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,24 +27,21 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navBar = requireActivity().findViewById(R.id.bottom_menu)
+        progressLayout = requireActivity().findViewById(R.id.activity_main_loading)
         if (viewModel.loggedIn.value == false) {
-            main_loading.visibility = View.VISIBLE
+            progressLayout.visibility = View.VISIBLE
         }
         questionAdapter = QuestionListAdapter()
         main_asked_questions_recycler.adapter = questionAdapter
-        viewModel.user.observe(viewLifecycleOwner, {
-            text_main_fragment.text = resources.getString(R.string.main_text_user_info, it.role)
-            viewModel.getAskedQuestions(it.email)
+        viewModel.user.observe(viewLifecycleOwner, { user ->
+            text_main_fragment.text = resources.getString(R.string.main_text_user_info, user.role)
+            viewModel.getAskedQuestions(user.email)
                 .observe(viewLifecycleOwner, {
                     questionAdapter.swapData(it)
                 })
-            main_loading.visibility = View.GONE
+            progressLayout.visibility = View.GONE
             navBar.visibility = View.VISIBLE
         })
-        if (arguments?.getBoolean("isNewUser") == true) {
-            main_loading.visibility = View.GONE
-            navBar.visibility = View.VISIBLE
-        }
     }
 
     override fun dataLoaded() {
