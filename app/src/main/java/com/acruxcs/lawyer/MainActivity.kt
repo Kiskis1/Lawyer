@@ -3,11 +3,9 @@ package com.acruxcs.lawyer
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.acruxcs.lawyer.model.AppUser
 import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
@@ -27,7 +25,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     lateinit var googleSignInClient: GoogleSignInClient
-    private var user = MutableLiveData<AppUser>()
     private var dataLoadedListener: DataLoadedListener? = null
 
     override fun onStart() {
@@ -40,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
+        // setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Utils.init(this)
@@ -59,7 +56,8 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (nav_host_fragment.findNavController().currentDestination?.id == R.id.mainFragment ||
             nav_host_fragment.findNavController().currentDestination?.id == R.id.lawyersFragment ||
-            nav_host_fragment.findNavController().currentDestination?.id == R.id.profileFragment
+            nav_host_fragment.findNavController().currentDestination?.id == R.id.profileFragment ||
+            nav_host_fragment.findNavController().currentDestination?.id == R.id.loginFragment
         ) {
             finish()
         } else {
@@ -67,18 +65,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUserData(userId: String?): MutableLiveData<AppUser> {
+    private fun getUserData(userId: String?) {
+        bottom_menu.visibility = View.GONE
         val userListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val temp = snapshot.getValue(User::class.java)
                 if (temp?.role == "user") {
-                    user.value = snapshot.getValue(User::class.java)
                     Utils.preferences
-                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(user.value)) }
+                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp)) }
                 } else {
-                    user.value = snapshot.getValue(Lawyer::class.java)
+                    val lawyer = snapshot.getValue(Lawyer::class.java)
                     Utils.preferences
-                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(user.value)) }
+                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(lawyer)) }
                 }
                 dataLoadedListener?.dataLoaded()
             }
@@ -90,8 +88,6 @@ class MainActivity : AppCompatActivity() {
 
         FirebaseRepository.getUser(userId)
             ?.addValueEventListener(userListener)
-
-        return user
     }
 
     interface DataLoadedListener {

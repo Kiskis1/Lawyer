@@ -16,6 +16,8 @@ import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.dialog_question.*
 import kotlinx.android.synthetic.main.dialog_question.view.*
 
@@ -37,7 +39,7 @@ class QuestionDialog : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return thisView
     }
 
@@ -58,6 +60,7 @@ class QuestionDialog : DialogFragment() {
                     question.phone = question_edit_phone.text.toString().trim()
                     question.fullname = question_edit_name.text.toString().trim()
                     question.destinationEmail = lawyer.email
+                    question.sender = Firebase.auth.currentUser!!.email.toString()
                     repository.postQuestion(question)
                     Utils.hideKeyboard(requireContext(), thisView)
                     Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()

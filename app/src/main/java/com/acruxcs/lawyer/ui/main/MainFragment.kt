@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedListener {
     private val viewModel: MainViewModel by activityViewModels()
     private lateinit var navBar: BottomNavigationView
+    private lateinit var questionAdapter: QuestionListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +45,16 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
                 main_loading.visibility = View.GONE
                 navBar.visibility = View.VISIBLE
             }
+        })
+
+        questionAdapter = QuestionListAdapter()
+        main_asked_questions_recycler.adapter = questionAdapter
+        viewModel.loggedIn.observe(viewLifecycleOwner, { it1 ->
+            if (it1)
+                viewModel.getAskedQuestions(viewModel.user.value!!.email)
+                    .observe(viewLifecycleOwner, {
+                        questionAdapter.swapData(it)
+                    })
         })
     }
 

@@ -7,11 +7,9 @@ import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.ui.main.MainViewModel
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
@@ -19,7 +17,6 @@ class LawyersViewModel : ViewModel() {
     private val repository = FirebaseRepository
     private val lawyers = MutableLiveData<List<Lawyer>>()
     private val cases = MutableLiveData<List<Case>>()
-    private val user = Firebase.auth.currentUser!!
 
     fun getLawyers(): MutableLiveData<List<Lawyer>> {
         val listener = object : ValueEventListener {
@@ -39,7 +36,7 @@ class LawyersViewModel : ViewModel() {
         return lawyers
     }
 
-    fun getLawyersCases(): MutableLiveData<List<Case>> {
+    fun getLawyersCases(uid: String): MutableLiveData<List<Case>> {
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<Case>()
@@ -53,7 +50,7 @@ class LawyersViewModel : ViewModel() {
                 println(error.message)
             }
         }
-        repository.getLawyersCases(user.uid).addValueEventListener(listener)
+        repository.getLawyersCases(uid).addValueEventListener(listener)
         return cases
     }
 

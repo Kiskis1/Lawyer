@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="Specializations">
-        <item>Admiralty Law</item>
-        <item>Business Law</item>
-        <item>Constitutional Law</item>
-        <item>Criminal Law</item>
-        <item>Environmental Law</item>
-        <item>First Amendment Law</item>
-        <item>Health Care Law</item>
-        <item>Intellectual Property Law</item>
-        <item>Joint Degree Programs</item>
-        <item>Patent Law</item>
-        <item>DK</item>
-    </string-array>
+    <!--    <string-array name="Specializations">-->
+    <!--        <item>Admiralty Law</item>-->
+    <!--        <item>Business Law</item>-->
+    <!--        <item>Constitutional Law</item>-->
+    <!--        <item>Criminal Law</item>-->
+    <!--        <item>Environmental Law</item>-->
+    <!--        <item>First Amendment Law</item>-->
+    <!--        <item>Health Care Law</item>-->
+    <!--        <item>Intellectual Property Law</item>-->
+    <!--        <item>Joint Degree Programs</item>-->
+    <!--        <item>Patent Law</item>-->
+    <!--        <item>DK</item>-->
+    <!--    </string-array>-->
 
     <integer-array name="Experience">
         <item>0</item>
@@ -26,14 +26,15 @@
         <item>40</item>
     </integer-array>
 
-
-    <!--    administracine-->
-    <!--    civiline-->
-    <!--    civilinio proceso-->
-    <!--    baudziamoji-->
-    <!--    baudziamoji proceso-->
-    <!--    zemes-->
-    <!--    finansu-->
-    <!--    darbo-->
+    <string-array name="Specializations">
+        <item>Administracine</item>
+        <item>Civiline</item>
+        <item>Civilinio proceso</item>
+        <item>Baudziamoji</item>
+        <item>Baudziamoji proceso</item>
+        <item>Zemes</item>
+        <item>Finansu</item>
+        <item>Darbo</item>
+    </string-array>
 
 </resources>

@@ -6,5 +6,6 @@ data class Question(
     var city: String = "",
     var phone: String = "",
     var fullname: String = "",
-    var destinationEmail: String = ""
+    var destinationEmail: String = "",
+    var sender: String = ""
 )

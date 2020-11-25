@@ -44,6 +44,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 .navigate(R.id.action_loginFragment_to_mainFragment)
         }
 
+        login_button_login.isEnabled = true
+
         //facebook login
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance()
@@ -53,7 +55,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     viewModel.firebaseAuth.signInWithCredential(credential)
                         .addOnCompleteListener(requireActivity()) { task ->
                             if (task.isSuccessful) {
-                                viewModel.createNewUser(task)
+                                if (task.result!!.additionalUserInfo!!.isNewUser) {
+                                    viewModel.createNewUser(task)
+                                } else {
+                                    viewModel.getUserData(task.result!!.user!!.uid)
+                                }
+                                login_loading.visibility = View.GONE
                                 viewModel.setLoggedIn(true)
                                 view.findNavController()
                                     .navigate(R.id.action_loginFragment_to_mainFragment)
@@ -108,6 +115,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun login() {
+        login_button_login.isEnabled = false
         login_error_message.text = null
         login_layout_edit_email.error = null
         login_layout_edit_password.error = null
@@ -116,11 +124,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         if (email.isEmpty()) {
             login_layout_edit_email.error = getString(R.string.empty_field)
             login_edit_email.requestFocus()
+            login_button_login.isEnabled = true
             return
         }
         if (password.isEmpty()) {
             login_layout_edit_password.error = getString(R.string.empty_field)
             login_edit_password.requestFocus()
+            login_button_login.isEnabled = true
             return
         }
 
@@ -135,6 +145,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     .navigate(R.id.action_loginFragment_to_mainFragment)
             } else {
                 login_error_message.text = task.exception?.message
+                login_button_login.isEnabled = true
             }
         }
     }
@@ -151,11 +162,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 val credential = GoogleAuthProvider.getCredential(result!!.idToken!!, null)
                 viewModel.firebaseAuth.signInWithCredential(credential)
                     .addOnCompleteListener(requireActivity()) { task ->
-                        viewModel.createNewUser(task)
-                        viewModel.setLoggedIn(true)
+                        if (task.result!!.additionalUserInfo!!.isNewUser) {
+                            viewModel.createNewUser(task)
+                        } else {
+                            viewModel.getUserData(task.result!!.user!!.uid)
+                        }
                         login_loading.visibility = View.GONE
+                        viewModel.setLoggedIn(true)
                         requireView().findNavController()
                             .navigate(R.id.action_loginFragment_to_mainFragment)
+
                     }
             } catch (e: ApiException) {
                 login_loading.visibility = View.GONE

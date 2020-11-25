@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import coil.request.CachePolicy
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
@@ -58,7 +57,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return if (viewModel.user.value!!.role == "lawyer")
+        return if (viewModel.user.value?.role == "lawyer" || viewModel.lawyer.value?.role == "lawyer")
             inflater.inflate(R.layout.fragment_profile_lawyer, container, false)
         else inflater.inflate(R.layout.fragment_profile_user, container, false)
     }
@@ -126,7 +125,7 @@ class ProfileFragment : Fragment() {
         }
 
         profile_recycler?.adapter = lawyersCasesAdapter
-        lawyersViewModel.getLawyersCases().observe(viewLifecycleOwner, {
+        lawyersViewModel.getLawyersCases(viewModel.lawyer.value!!.uid).observe(viewLifecycleOwner, {
             list.clear()
             list.addAll(it)
             lawyersCasesAdapter.swapData(list)
@@ -238,10 +237,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logout() {
+        // requireView().findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         viewModel.firebaseAuth.signOut()
         LoginManager.getInstance()?.logOut()
         (activity as MainActivity).googleSignInClient.signOut()
-        requireView().findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+        requireActivity().finish()
     }
 
     private fun selectImage() {

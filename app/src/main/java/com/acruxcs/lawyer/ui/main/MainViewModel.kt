@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.AppUser
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Lawyer
+import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.utils.Utils
@@ -26,6 +27,12 @@ class MainViewModel : ViewModel() {
     var user = MutableLiveData<AppUser>()
     var lawyer = MutableLiveData<Lawyer>()
     val loggedIn = MutableLiveData<Boolean>().also { it.value = false }
+
+    //advokatui
+    private val askedQuestions = MutableLiveData<List<Question>>()
+
+    //naudotojo
+    private val sentQuestions = MutableLiveData<List<Question>>()
 
     fun setUser(newUser: AppUser) {
         user.value = newUser
@@ -52,19 +59,21 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun getUserData(userId: String?): MutableLiveData<AppUser> {
+    fun getUserData(userId: String?) {
         val userListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val temp = snapshot.getValue(User::class.java)
                 if (temp?.role == "user") {
-                    user.value = snapshot.getValue(User::class.java)
+                    user.postValue(temp)
                     Utils.preferences
-                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(user.value)) }
+                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp)) }
                     setLoggedIn(true)
                 } else {
-                    user.value = snapshot.getValue(Lawyer::class.java)
+                    val lawyerFromDB = snapshot.getValue(Lawyer::class.java)
+                    user.postValue(lawyerFromDB)
+                    lawyer.postValue(lawyerFromDB)
                     Utils.preferences
-                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(user.value)) }
+                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(lawyerFromDB)) }
                     setLoggedIn(true)
                 }
             }
@@ -76,8 +85,6 @@ class MainViewModel : ViewModel() {
 
         FirebaseRepository.getUser(userId)
             ?.addValueEventListener(userListener)
-
-        return user
     }
 
     fun createNewUser(newUser: AppUser) {
@@ -97,6 +104,44 @@ class MainViewModel : ViewModel() {
     fun postCase(case: Case) {
         case.user = firebaseUser!!.uid
         repository.postCase(case)
+    }
+
+    //advokatui uzduoti klaus
+    fun getAskedQuestions(email: String): MutableLiveData<List<Question>> {
+        val listener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val list = mutableListOf<Question>()
+                for (question in snapshot.children) {
+                    question.getValue(Question::class.java)?.let { list.add(it) }
+                }
+                askedQuestions.postValue(list)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println(error.message)
+            }
+        }
+        repository.getAskedQuestions(email).addValueEventListener(listener)
+        return askedQuestions
+    }
+
+    //naudotojo uzduoti klaus
+    fun getSentQuestions(email: String): MutableLiveData<List<Question>> {
+        val listener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val list = mutableListOf<Question>()
+                for (question in snapshot.children) {
+                    question.getValue(Question::class.java)?.let { list.add(it) }
+                }
+                sentQuestions.postValue(list)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println(error.message)
+            }
+        }
+        repository.getSentQuestions(email).addValueEventListener(listener)
+        return sentQuestions
     }
 
     companion object {

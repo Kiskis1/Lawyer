@@ -54,4 +54,12 @@ object FirebaseRepository {
 
     fun updateEducation(education: String, uid: String) =
         db.child("users").child(uid).child("education").setValue(education)
+
+    //gauti advokatui uzduotus klausimus
+    fun getAskedQuestions(email: String) =
+        db.child("questions").orderByChild("destinationEmail").equalTo(email)
+
+    //gauti naudotojo uzduotus klausimus
+    fun getSentQuestions(email: String) =
+        db.child("questions").orderByChild("sender").equalTo(email)
 }

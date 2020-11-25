@@ -47,7 +47,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
 
         lawyersCasesAdapter = LawyersCaseAdapter()
         lawyersinfo_recycler.adapter = lawyersCasesAdapter
-        viewModel.getLawyersCases().observe(viewLifecycleOwner, {
+        viewModel.getLawyersCases(lawyer.uid).observe(viewLifecycleOwner, {
             list.clear()
             list.addAll(it)
             lawyersCasesAdapter.swapData(list)
