@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.utils.Utils
@@ -70,14 +69,8 @@ class MainActivity : AppCompatActivity() {
         val userListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val temp = snapshot.getValue(User::class.java)
-                if (temp?.role == "user") {
-                    Utils.preferences
-                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp)) }
-                } else {
-                    val lawyer = snapshot.getValue(Lawyer::class.java)
-                    Utils.preferences
-                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(lawyer)) }
-                }
+                Utils.preferences
+                    .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp)) }
                 dataLoadedListener?.dataLoaded()
             }
 

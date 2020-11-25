@@ -11,8 +11,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.acruxcs.lawyer.R
-import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.model.Question
+import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
@@ -26,7 +26,7 @@ class QuestionDialog : DialogFragment() {
 
     private var question = Question()
     private lateinit var thisView: View
-    private lateinit var lawyer: Lawyer
+    private lateinit var lawyer: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,7 +101,7 @@ class QuestionDialog : DialogFragment() {
     }
 
     companion object {
-        fun newInstance(lawyer: Lawyer) =
+        fun newInstance(lawyer: User) =
             QuestionDialog().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_LAWYER, lawyer)

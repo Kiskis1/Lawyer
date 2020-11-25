@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.Case
-import com.acruxcs.lawyer.model.Lawyer
+import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.google.firebase.database.DataSnapshot
@@ -15,15 +15,15 @@ import java.util.stream.Collectors
 
 class LawyersViewModel : ViewModel() {
     private val repository = FirebaseRepository
-    private val lawyers = MutableLiveData<List<Lawyer>>()
+    private val lawyers = MutableLiveData<List<User>>()
     private val cases = MutableLiveData<List<Case>>()
 
-    fun getLawyers(): MutableLiveData<List<Lawyer>> {
+    fun getLawyers(): MutableLiveData<List<User>> {
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val list = mutableListOf<Lawyer>()
+                val list = mutableListOf<User>()
                 for (lawyer in snapshot.children) {
-                    lawyer.getValue(Lawyer::class.java)?.let { list.add(it) }
+                    lawyer.getValue(User::class.java)?.let { list.add(it) }
                 }
                 lawyers.postValue(list)
             }
@@ -64,7 +64,7 @@ class LawyersViewModel : ViewModel() {
     }
 
     @SuppressLint("NewApi")
-    fun filter(list: List<Lawyer>, filter: MutableList<Predicate<Lawyer>>): List<Lawyer> {
+    fun filter(list: List<User>, filter: MutableList<Predicate<User>>): List<User> {
         if (filter.size == 0) return listOf()
         val composite = filter.stream()
             .reduce({ _ -> true }) { p1, p2 ->

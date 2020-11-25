@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Case
-import com.acruxcs.lawyer.model.Lawyer
+import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
@@ -16,7 +16,7 @@ import io.github.rosariopfernandes.firecoil.load
 import kotlinx.android.synthetic.main.fragment_lawyers_info.*
 
 class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
-    private lateinit var lawyer: Lawyer
+    private lateinit var lawyer: User
     private lateinit var lawyersCasesAdapter: LawyersCaseAdapter
     private val list = mutableListOf<Case>()
     private val viewModel: LawyersViewModel by viewModels()

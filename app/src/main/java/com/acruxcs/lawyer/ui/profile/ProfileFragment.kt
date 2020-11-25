@@ -15,6 +15,7 @@ import coil.request.CachePolicy
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.Case
+import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.lawyersinfo.LawyersCaseAdapter
 import com.acruxcs.lawyer.ui.main.MainViewModel
@@ -57,7 +58,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return if (viewModel.user.value?.role == "lawyer" || viewModel.lawyer.value?.role == "lawyer")
+        return if (viewModel.user.value?.role == UserTypes.Lawyer)
             inflater.inflate(R.layout.fragment_profile_lawyer, container, false)
         else inflater.inflate(R.layout.fragment_profile_user, container, false)
     }
@@ -89,10 +90,10 @@ class ProfileFragment : Fragment() {
         profile_edit_country.setText(viewModel.user.value!!.country)
         profile_edit_city.setText(viewModel.user.value!!.city)
         profile_edit_phone.setText(viewModel.user.value!!.phone)
-        profile_edit_specialization?.setText(viewModel.lawyer.value!!.specialization)
-        profile_edit_education?.setText(viewModel.lawyer.value!!.education)
-        profile_edit_experience?.setText(viewModel.lawyer.value!!.experience.toString())
-        profile_edit_won_cases?.setText(viewModel.lawyer.value!!.wonCases.toString())
+        profile_edit_specialization?.setText(viewModel.user.value!!.specialization)
+        profile_edit_education?.setText(viewModel.user.value!!.education)
+        profile_edit_experience?.setText(viewModel.user.value!!.experience.toString())
+        profile_edit_won_cases?.setText(viewModel.user.value!!.wonCases.toString())
 
         profile_layout_country.setEndIconOnClickListener {
             updateCountry()
@@ -125,7 +126,7 @@ class ProfileFragment : Fragment() {
         }
 
         profile_recycler?.adapter = lawyersCasesAdapter
-        lawyersViewModel.getLawyersCases(viewModel.lawyer.value!!.uid).observe(viewLifecycleOwner, {
+        lawyersViewModel.getLawyersCases(viewModel.user.value!!.uid).observe(viewLifecycleOwner, {
             list.clear()
             list.addAll(it)
             lawyersCasesAdapter.swapData(list)

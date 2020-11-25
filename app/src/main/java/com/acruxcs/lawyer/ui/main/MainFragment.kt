@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
-import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.utils.Utils
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -29,46 +28,29 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
         if (viewModel.loggedIn.value == false) {
             main_loading.visibility = View.VISIBLE
         }
-
+        questionAdapter = QuestionListAdapter()
+        main_asked_questions_recycler.adapter = questionAdapter
         viewModel.user.observe(viewLifecycleOwner, {
             text_main_fragment.text = resources.getString(R.string.main_text_user_info, it.role)
-            // main_loading.visibility = View.GONE
-            // navBar.visibility = View.VISIBLE
+            viewModel.getAskedQuestions(it.email)
+                .observe(viewLifecycleOwner, {
+                    questionAdapter.swapData(it)
+                })
+            main_loading.visibility = View.GONE
+            navBar.visibility = View.VISIBLE
         })
         if (arguments?.getBoolean("isNewUser") == true) {
             main_loading.visibility = View.GONE
             navBar.visibility = View.VISIBLE
         }
-
-        viewModel.loggedIn.observe(viewLifecycleOwner, {
-            if (it) {
-                main_loading.visibility = View.GONE
-                navBar.visibility = View.VISIBLE
-            }
-        })
-
-        questionAdapter = QuestionListAdapter()
-        main_asked_questions_recycler.adapter = questionAdapter
-        viewModel.loggedIn.observe(viewLifecycleOwner, { it1 ->
-            if (it1)
-                viewModel.getAskedQuestions(viewModel.user.value!!.email)
-                    .observe(viewLifecycleOwner, {
-                        questionAdapter.swapData(it)
-                    })
-        })
     }
 
     override fun dataLoaded() {
         // viewModel.firebaseAuth.signOut()
         val userJson = Utils.preferences.getString(Utils.SHARED_USER_DATA, null)
-        if (userJson?.contains("role\" : \"user", true) == true) {
-            val user = Gson().fromJson(userJson, User::class.java)
-            viewModel.setUser(user)
-        } else {
-            val user = Gson().fromJson(userJson, Lawyer::class.java)
-            viewModel.setUser(user)
-            viewModel.setLawyer(user)
-        }
+        val user = Gson().fromJson(userJson, User::class.java)
+        viewModel.setUser(user)
+
         viewModel.loggedIn.value = true
     }
 }

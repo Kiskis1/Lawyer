@@ -9,9 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.acruxcs.lawyer.R
-import com.acruxcs.lawyer.model.AppUser
-import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
@@ -29,7 +28,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private lateinit var city: String
     private lateinit var phone: String
 
-    private lateinit var user: AppUser
+    private lateinit var user: User
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,17 +75,15 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         country = register_spinner_country.editableText.toString()
         city = register_spinner_city.editableText.toString()
         if (isValid()) {
+            user = User(
+                email, fullname, country, city, phone
+            )
             if (!register_checkbox_lawyer.isChecked) {
-                user = User(
-                    email, fullname, country, city, phone
-                )
-                createAccount(user as User)
+                user.role = UserTypes.User
             } else {
-                user = Lawyer(
-                    email, fullname, country, city, phone
-                )
-                createAccount(user as Lawyer)
+                user.role = UserTypes.Lawyer
             }
+            createAccount(user)
         }
     }
 
@@ -130,16 +127,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         return valid
     }
 
-    private fun createAccount(user: AppUser) {
+    private fun createAccount(user: User) {
         viewModel.firebaseAuth.createUserWithEmailAndPassword(user.email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     user.uid = task.result?.user!!.uid
                     viewModel.createNewUser(user)
-                    if (register_checkbox_lawyer.isChecked) {
-                        viewModel.setLawyer(user as Lawyer)
-                    }
-                    viewModel.setUser(user as User)
+                    viewModel.setUser(user)
 
                     requireView().findNavController()
                         .navigate(

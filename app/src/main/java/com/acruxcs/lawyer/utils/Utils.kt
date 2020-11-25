@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
 import com.acruxcs.lawyer.R
-import com.acruxcs.lawyer.model.Lawyer
+import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.QuestionDialog
 import java.io.IOException
 
@@ -28,7 +28,7 @@ object Utils {
         preferences = activity.getSharedPreferences(SHARED_KEY, 0)
     }
 
-    fun showCallDialog(context: Context, item: Lawyer) {
+    fun showCallDialog(context: Context, item: User) {
         val dialog = AlertDialog.Builder(context)
         dialog.setMessage(R.string.call_dialog_message)
         dialog.setTitle(R.string.call_dialog_title)
@@ -42,7 +42,7 @@ object Utils {
         dialog.create().show()
     }
 
-    fun showQuestionDialog(manager: FragmentManager, item: Lawyer) {
+    fun showQuestionDialog(manager: FragmentManager, item: User) {
         QuestionDialog.newInstance(item).show(manager, "Question")
     }
 

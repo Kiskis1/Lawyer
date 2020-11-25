@@ -47,7 +47,7 @@
         tools:layout="@layout/fragment_lawyers">
         <argument
             android:name="lawyer"
-            app:argType="com.acruxcs.lawyer.model.Lawyer" />
+            app:argType="com.acruxcs.lawyer.model.User" />
         <action
             android:id="@+id/action_lawyersFragment_to_lawyersInfoFragment"
             app:destination="@id/lawyersInfoFragment" />

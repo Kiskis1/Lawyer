@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.acruxcs.lawyer.R
-import com.acruxcs.lawyer.model.Lawyer
+import com.acruxcs.lawyer.model.User
 import com.google.android.gms.common.util.ArrayUtils
 import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.android.synthetic.main.dialog_filter.view.*
@@ -24,27 +24,27 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
     private lateinit var thisView: View
 
     private val cityPredicate by lazy {
-        Predicate<Lawyer> { l: Lawyer -> l.city == filter_edit_city.text.toString() }
+        Predicate<User> { l: User -> l.city == filter_edit_city.text.toString() }
     }
 
     private val specPredicate by lazy {
-        Predicate<Lawyer> { l: Lawyer ->
+        Predicate<User> { l: User ->
             l.specialization == filter_spinner_specialization.editableText.toString()
         }
     }
 
     private val expPredicate by lazy {
-        Predicate<Lawyer> { l: Lawyer ->
+        Predicate<User> { l: User ->
             l.experience >= filter_spinner_experience.editableText.toString().toInt()
         }
     }
-    private val allPredicates = mutableListOf<Predicate<Lawyer>>()
+    private val allPredicates = mutableListOf<Predicate<User>>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return thisView
     }
 
@@ -108,6 +108,6 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
     }
 
     interface OnFilterButtonClickListener {
-        fun onFilterButtonClick(filter: MutableList<Predicate<Lawyer>>)
+        fun onFilterButtonClick(filter: MutableList<Predicate<User>>)
     }
 }

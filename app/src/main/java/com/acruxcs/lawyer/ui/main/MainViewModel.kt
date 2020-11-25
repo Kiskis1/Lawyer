@@ -2,9 +2,7 @@ package com.acruxcs.lawyer.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.acruxcs.lawyer.model.AppUser
 import com.acruxcs.lawyer.model.Case
-import com.acruxcs.lawyer.model.Lawyer
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
@@ -24,8 +22,7 @@ class MainViewModel : ViewModel() {
     private val repository = FirebaseRepository
     val firebaseAuth = Firebase.auth
     val firebaseUser = Firebase.auth.currentUser
-    var user = MutableLiveData<AppUser>()
-    var lawyer = MutableLiveData<Lawyer>()
+    var user = MutableLiveData<User>()
     val loggedIn = MutableLiveData<Boolean>().also { it.value = false }
 
     //advokatui
@@ -34,12 +31,8 @@ class MainViewModel : ViewModel() {
     //naudotojo
     private val sentQuestions = MutableLiveData<List<Question>>()
 
-    fun setUser(newUser: AppUser) {
+    fun setUser(newUser: User) {
         user.value = newUser
-    }
-
-    fun setLawyer(l: Lawyer) {
-        lawyer.value = l
     }
 
     fun setLoggedIn(bool: Boolean) {
@@ -63,19 +56,10 @@ class MainViewModel : ViewModel() {
         val userListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val temp = snapshot.getValue(User::class.java)
-                if (temp?.role == "user") {
-                    user.postValue(temp)
-                    Utils.preferences
-                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp)) }
-                    setLoggedIn(true)
-                } else {
-                    val lawyerFromDB = snapshot.getValue(Lawyer::class.java)
-                    user.postValue(lawyerFromDB)
-                    lawyer.postValue(lawyerFromDB)
-                    Utils.preferences
-                        .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(lawyerFromDB)) }
-                    setLoggedIn(true)
-                }
+                user.postValue(temp)
+                Utils.preferences
+                    .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp)) }
+                setLoggedIn(true)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -87,7 +71,7 @@ class MainViewModel : ViewModel() {
             ?.addValueEventListener(userListener)
     }
 
-    fun createNewUser(newUser: AppUser) {
+    fun createNewUser(newUser: User) {
         user.value = newUser
         repository.writeNewUser(newUser)
     }

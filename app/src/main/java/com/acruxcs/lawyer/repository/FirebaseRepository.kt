@@ -1,9 +1,9 @@
 package com.acruxcs.lawyer.repository
 
 import android.net.Uri
-import com.acruxcs.lawyer.model.AppUser
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Question
+import com.acruxcs.lawyer.model.User
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.UploadTask
@@ -13,7 +13,7 @@ object FirebaseRepository {
     private val db = Firebase.database.reference
     private val storage = Firebase.storage.reference.child("images")
 
-    fun writeNewUser(user: AppUser) = db.child("users").child(user.uid).setValue(user)
+    fun writeNewUser(user: User) = db.child("users").child(user.uid).setValue(user)
 
     fun getUser(userId: String?) = userId?.let { db.child("users").child(it) }
 

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
-import com.acruxcs.lawyer.model.Lawyer
+import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.google.firebase.storage.StorageReference
@@ -22,7 +22,7 @@ class LawyersListAdapter(
     private val manager: FragmentManager,
     private val viewModel: LawyersViewModel
 ) :
-    ListAdapter<Lawyer, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
+    ListAdapter<User, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LawyerListViewHolder(
         LayoutInflater.from(parent.context)
@@ -32,7 +32,7 @@ class LawyersListAdapter(
     override fun onBindViewHolder(holder: LawyerListViewHolder, position: Int) =
         holder.bind(getItem(position))
 
-    fun swapData(data: List<Lawyer>) {
+    fun swapData(data: List<User>) {
         submitList(data.toMutableList())
     }
 
@@ -55,7 +55,7 @@ class LawyersListAdapter(
                 .navigate(R.id.action_lawyersFragment_to_lawyersInfoFragment, bundle)
         }
 
-        fun bind(item: Lawyer) = with(itemView) {
+        fun bind(item: User) = with(itemView) {
             lawyers_text_name.text = resources.getString(R.string.lawyer_name, item.fullname)
             lawyers_text_education.text =
                 resources.getString(R.string.lawyer_education, item.education)
@@ -87,15 +87,15 @@ class LawyersListAdapter(
         }
     }
 
-    private class LawyerDC : DiffUtil.ItemCallback<Lawyer>() {
+    private class LawyerDC : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(
-            oldItem: Lawyer,
-            newItem: Lawyer
+            oldItem: User,
+            newItem: User
         ) = oldItem.email == newItem.email
 
         override fun areContentsTheSame(
-            oldItem: Lawyer,
-            newItem: Lawyer
+            oldItem: User,
+            newItem: User
         ) = oldItem == newItem
     }
 }
