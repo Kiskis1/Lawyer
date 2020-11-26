@@ -1,32 +1,28 @@
 package com.acruxcs.lawyer.ui
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.databinding.DialogQuestionBinding
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
+import com.acruxcs.lawyer.utils.Utils.checkFieldsIfEmpty
+import com.acruxcs.lawyer.utils.Utils.no
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.dialog_question.*
-import kotlinx.android.synthetic.main.dialog_question.view.*
 
 class QuestionDialog : DialogFragment() {
     private val repository = FirebaseRepository
 
     private var question = Question()
-    private lateinit var thisView: View
     private lateinit var lawyer: User
+    private lateinit var binding: DialogQuestionBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,36 +31,26 @@ class QuestionDialog : DialogFragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return thisView
-    }
-
-    @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        binding = DialogQuestionBinding.inflate(LayoutInflater.from(requireContext()))
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            val inflater = requireActivity().layoutInflater
-            thisView = inflater.inflate(R.layout.dialog_question, null)
-
-            builder.setView(thisView)
-            thisView.question_button_send.setOnClickListener {
-
-                if (isValid()) {
-                    question.description = question_edit_description.text.toString().trim()
-                    question.country = question_edit_location_country.text.toString().trim()
-                    question.city = question_edit_location_city.text.toString().trim()
-                    question.phone = question_edit_phone.text.toString().trim()
-                    question.fullname = question_edit_name.text.toString().trim()
-                    question.destinationEmail = lawyer.email
-                    question.sender = Firebase.auth.currentUser!!.email.toString()
-                    repository.postQuestion(question)
-                    Utils.hideKeyboard(requireContext(), thisView)
-                    Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
-                    dismiss()
+            builder.setView(binding.root)
+            with(binding) {
+                questionButtonSend.setOnClickListener {
+                    if (isValid()) {
+                        question.description = questionEditDescription.text.toString().trim()
+                        question.country = questionEditLocationCountry.text.toString().trim()
+                        question.city = questionEditLocationCity.text.toString().trim()
+                        question.phone = questionEditPhone.text.toString().trim()
+                        question.fullname = questionEditName.text.toString().trim()
+                        question.destinationEmail = lawyer.email
+                        question.sender = Firebase.auth.currentUser!!.email.toString()
+                        repository.postQuestion(question)
+                        Utils.hideKeyboard(requireContext(), binding.root)
+                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+                        dismiss()
+                    }
                 }
             }
             builder.create()
@@ -73,30 +59,23 @@ class QuestionDialog : DialogFragment() {
 
     private fun isValid(): Boolean {
         var valid = true
-        if (TextUtils.isEmpty(question_edit_description.text)) {
-            question_layout_description.error = getString(R.string.empty_field)
-            valid = false
-        } else question_layout_description.error = null
-
-        if (TextUtils.isEmpty(question_edit_location_country.text)) {
-            question_layout_location_country.error = getString(R.string.empty_field)
-            valid = false
-        } else question_edit_location_country.error = null
-
-        if (TextUtils.isEmpty(question_edit_location_city.text)) {
-            question_layout_location_city.error = getString(R.string.empty_field)
-            valid = false
-        } else question_layout_location_city.error = null
-
-        if (TextUtils.isEmpty(question_edit_phone.text)) {
-            question_layout_phone.error = getString(R.string.empty_field)
-            valid = false
-        } else question_layout_phone.error = null
-
-        if (TextUtils.isEmpty(question_edit_name.text)) {
-            question_layout_name.error = getString(R.string.empty_field)
-            valid = false
-        } else question_layout_name.error = null
+        with(binding) {
+            checkFieldsIfEmpty(
+                questionEditDescription, questionLayoutDescription, requireContext()
+            ).no { valid = false }
+            checkFieldsIfEmpty(
+                questionEditLocationCountry, questionLayoutLocationCountry, requireContext()
+            ).no { valid = false }
+            checkFieldsIfEmpty(
+                questionEditLocationCity, questionLayoutLocationCity, requireContext()
+            ).no { valid = false }
+            checkFieldsIfEmpty(
+                questionEditPhone, questionLayoutPhone, requireContext()
+            ).no { valid = false }
+            checkFieldsIfEmpty(
+                questionEditName, questionLayoutName, requireContext()
+            ).no { valid = false }
+        }
         return valid
     }
 
@@ -105,7 +84,6 @@ class QuestionDialog : DialogFragment() {
             QuestionDialog().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_LAWYER, lawyer)
-
                 }
             }
     }

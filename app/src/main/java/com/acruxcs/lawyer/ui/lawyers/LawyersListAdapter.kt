@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.databinding.ItemLawyerBinding
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.google.firebase.storage.StorageReference
 import io.github.rosariopfernandes.firecoil.load
-import kotlinx.android.synthetic.main.item_lawyer.view.*
 
 class LawyersListAdapter(
     private val manager: FragmentManager,
@@ -25,8 +25,7 @@ class LawyersListAdapter(
     ListAdapter<User, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LawyerListViewHolder(
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_lawyer, parent, false)
+        ItemLawyerBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
     )
 
     override fun onBindViewHolder(holder: LawyerListViewHolder, position: Int) =
@@ -56,33 +55,35 @@ class LawyersListAdapter(
         }
 
         fun bind(item: User) = with(itemView) {
-            lawyers_text_name.text = resources.getString(R.string.lawyer_name, item.fullname)
-            lawyers_text_education.text =
-                resources.getString(R.string.lawyer_education, item.education)
-            lawyers_text_specialization.text =
-                resources.getString(R.string.lawyer_specialization, item.specialization)
-            lawyers_text_experience.text =
-                resources.getQuantityString(
-                    R.plurals.lawyer_experience,
-                    item.experience,
-                    item.experience
-                )
-            lawyers_text_won_cases.text =
-                resources.getString(R.string.lawyer_number_of_won_cases, item.wonCases)
-            lawyers_text_city.text = resources.getString(R.string.lawyer_city, item.city)
-            lawyers_button_call.setOnClickListener {
-                Utils.showCallDialog(itemView.context, item)
-            }
-            viewModel.getImageRef(item.uid, object : MainViewModel.Companion.ImageCallback {
-                override fun onCallback(value: StorageReference) {
-                    lawyers_image_profile.load(value) {
-                        crossfade(true)
-                        error(R.drawable.ic_person_24)
-                    }
+            with(ItemLawyerBinding.bind(itemView)) {
+                lawyersTextName.text = resources.getString(R.string.lawyer_name, item.fullname)
+                lawyersTextEducation.text =
+                    resources.getString(R.string.lawyer_education, item.education)
+                lawyersTextSpecialization.text =
+                    resources.getString(R.string.lawyer_specialization, item.specialization)
+                lawyersTextExperience.text =
+                    resources.getQuantityString(
+                        R.plurals.lawyer_experience,
+                        item.experience,
+                        item.experience
+                    )
+                lawyersTextWonCases.text =
+                    resources.getString(R.string.lawyer_number_of_won_cases, item.wonCases)
+                lawyersTextCity.text = resources.getString(R.string.lawyer_city, item.city)
+                lawyersButtonCall.setOnClickListener {
+                    Utils.showCallDialog(itemView.context, item)
                 }
-            })
-            lawyers_button_question.setOnClickListener {
-                Utils.showQuestionDialog(manager, item)
+                viewModel.getImageRef(item.uid, object : MainViewModel.Companion.ImageCallback {
+                    override fun onCallback(value: StorageReference) {
+                        lawyersImageProfile.load(value) {
+                            crossfade(true)
+                            error(R.drawable.ic_person_24)
+                        }
+                    }
+                })
+                lawyersButtonQuestion.setOnClickListener {
+                    Utils.showQuestionDialog(manager, item)
+                }
             }
         }
     }

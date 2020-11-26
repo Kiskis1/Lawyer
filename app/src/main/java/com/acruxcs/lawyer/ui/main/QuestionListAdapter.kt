@@ -7,16 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.databinding.ItemQuestionBinding
 import com.acruxcs.lawyer.model.Question
-import kotlinx.android.synthetic.main.item_question.view.*
 
 class QuestionListAdapter :
     ListAdapter<Question, QuestionListAdapter.QuestionListViewHolder>(QuestionDC()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = QuestionListViewHolder(
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_question, parent, false)
+        ItemQuestionBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
     )
 
     override fun onBindViewHolder(holder: QuestionListViewHolder, position: Int) =
@@ -37,17 +35,17 @@ class QuestionListAdapter :
         override fun onClick(v: View?) {
 
             if (adapterPosition == RecyclerView.NO_POSITION) return
-
-            val clicked = getItem(adapterPosition)
         }
 
         fun bind(item: Question) = with(itemView) {
-            main_asked_description.text = item.description
-            main_asked_country.text = item.country
-            main_asked_city.text = item.city
-            main_asked_phone.text = item.phone
-            main_asked_fullname.text = item.fullname
-            main_asked_sender.text = item.sender
+            with(ItemQuestionBinding.bind(itemView)) {
+                mainAskedDescription.text = item.description
+                mainAskedCountry.text = item.country
+                mainAskedCity.text = item.city
+                mainAskedPhone.text = item.phone
+                mainAskedFullname.text = item.fullname
+                mainAskedSender.text = item.sender
+            }
         }
     }
 

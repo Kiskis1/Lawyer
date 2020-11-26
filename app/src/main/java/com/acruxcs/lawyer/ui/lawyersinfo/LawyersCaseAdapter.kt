@@ -8,16 +8,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
+import com.acruxcs.lawyer.databinding.ItemCaseBinding
 import com.acruxcs.lawyer.model.Case
-import kotlinx.android.synthetic.main.item_case.view.*
 import java.text.DateFormat
 
 class LawyersCaseAdapter :
     ListAdapter<Case, LawyersCaseAdapter.LawyersCaseViewHolder>(CaseDC()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LawyersCaseViewHolder(
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_case, parent, false)
+        ItemCaseBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
     )
 
     override fun onBindViewHolder(holder: LawyersCaseViewHolder, position: Int) =
@@ -38,21 +37,22 @@ class LawyersCaseAdapter :
         override fun onClick(v: View?) {
 
             if (adapterPosition == RecyclerView.NO_POSITION) return
-
         }
 
         fun bind(item: Case) = with(itemView) {
-            item_case_text_area.text = resources.getString(R.string.item_case_area, item.area)
-            item_case_text_court.text = resources.getString(R.string.item_case_court, item.court)
-            item_case_text_date.text = resources.getString(
-                R.string.item_case_date,
-                DateFormat.getDateInstance().format(item.date)
-            )
-            item_case_text_desc.text =
-                resources.getString(R.string.item_case_short_description, item.shortDesc)
-            item_case_text_outcome.text =
-                resources.getString(R.string.item_case_outcome, item.outcome)
-            item_case_text_type.text = resources.getString(R.string.item_case_type, item.type)
+            with(ItemCaseBinding.bind(itemView)) {
+                itemCaseTextArea.text = resources.getString(R.string.item_case_area, item.area)
+                itemCaseTextCourt.text = resources.getString(R.string.item_case_court, item.court)
+                itemCaseTextDate.text = resources.getString(
+                    R.string.item_case_date,
+                    DateFormat.getDateInstance().format(item.date)
+                )
+                itemCaseTextDesc.text =
+                    resources.getString(R.string.item_case_short_description, item.shortDesc)
+                itemCaseTextOutcome.text =
+                    resources.getString(R.string.item_case_outcome, item.outcome)
+                itemCaseTextType.text = resources.getString(R.string.item_case_type, item.type)
+            }
         }
     }
 

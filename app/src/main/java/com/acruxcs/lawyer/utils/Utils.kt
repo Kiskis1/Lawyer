@@ -5,14 +5,19 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.FragmentManager
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.QuestionDialog
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import java.io.IOException
 
 object Utils {
@@ -82,4 +87,24 @@ object Utils {
         operation(editor)
         editor.apply()
     }
+
+    inline fun Boolean.no(block: () -> Unit) = also { if (!it) block() }
+
+    fun checkFieldsIfEmpty(
+        edit: TextInputEditText,
+        layout: TextInputLayout,
+        context: Context
+    ): Boolean {
+        if (TextUtils.isEmpty(edit.text)) {
+            edit.error = context.resources.getString(R.string.empty_field)
+            edit.requestFocus()
+            return false
+        } else layout.error = null
+        return true
+    }
+}
+
+@BindingAdapter("app:goneUnless")
+fun goneUnless(view: View, role: UserTypes?) {
+    view.visibility = if (role == UserTypes.Lawyer) View.VISIBLE else View.GONE
 }

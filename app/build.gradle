@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: "kotlin-kapt"
 
 
 android {
@@ -35,6 +36,18 @@ android {
         }
     }
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+    }
+
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
     dependencies {
         implementation fileTree(dir: "libs", include: ["*.jar"])
         implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -65,6 +78,9 @@ android {
         implementation "com.leinardi.android:speed-dial:3.1.1"
         implementation 'de.hdodenhof:circleimageview:2.2.0'
         implementation 'com.github.rosariopfernandes:firecoil:0.3.0'
+
+        def utilsVersion = "2.1.16"
+        implementation "com.github.FunkyMuse.KAHelpers:viewbinding:$utilsVersion"
 
         coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.1'
 

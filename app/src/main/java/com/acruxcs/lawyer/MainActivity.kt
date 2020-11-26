@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.acruxcs.lawyer.databinding.ActivityMainBinding
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.edit
+import com.crazylegend.viewbinding.viewBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -19,12 +21,17 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var googleSignInClient: GoogleSignInClient
     private var dataLoadedListener: DataLoadedListener? = null
+
+    private val _binding by viewBinding(ActivityMainBinding::inflate)
+
+    val binding get() = _binding
+
+    private lateinit var navHostFragment: NavHostFragment
 
     override fun onStart() {
         super.onStart()
@@ -38,34 +45,39 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         Utils.init(this)
 
-        val navHostFragment =
+        navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        bottom_menu.setupWithNavController(navHostFragment.navController)
+        navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.loginFragment || destination.id == R.id.registerFragment) {
+                binding.bottomMenu.visibility = View.GONE
+            } else {
+                binding.bottomMenu.visibility = View.VISIBLE
+            }
+        }
+        binding.bottomMenu.setupWithNavController(navHostFragment.navController)
 
         Utils.switchDarkMode(Utils.preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false))
         if (savedInstanceState == null) {
-            bottom_menu.visibility = View.GONE
+            binding.bottomMenu.visibility = View.GONE
             getUserData(Firebase.auth.currentUser?.uid)
         }
     }
 
     override fun onBackPressed() {
-        if (nav_host_fragment.findNavController().currentDestination?.id == R.id.mainFragment ||
-            nav_host_fragment.findNavController().currentDestination?.id == R.id.lawyersFragment ||
-            nav_host_fragment.findNavController().currentDestination?.id == R.id.profileFragment ||
-            nav_host_fragment.findNavController().currentDestination?.id == R.id.loginFragment
-        ) {
-            finish()
-        } else {
-            super.onBackPressed()
+        when (navHostFragment.findNavController().currentDestination?.id) {
+            R.id.mainFragment,
+            R.id.lawyersFragment,
+            R.id.profileFragment,
+            R.id.loginFragment -> finish()
+            else -> super.onBackPressed()
         }
     }
 
     private fun getUserData(userId: String?) {
-        bottom_menu.visibility = View.GONE
+        // binding.bottomMenu.visibility = View.GONE
         val userListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val temp = snapshot.getValue(User::class.java)
