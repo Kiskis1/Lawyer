@@ -20,7 +20,9 @@ import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
+import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
 import com.acruxcs.lawyer.utils.Utils.edit
+import com.acruxcs.lawyer.utils.Utils.preferences
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
@@ -50,6 +52,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_lawyer) {
             profileButtonEditPicture.setOnClickListener {
                 selectImage()
             }
+            if (!preferences.getStringSet(SHARED_AUTH_PROVIDER, setOf<String>())
+                    ?.contains("password")!!
+            ) {
+                profileLayoutPassword.visibility = View.GONE
+            }
+
             profileLayoutPassword.setEndIconOnClickListener {
                 updatePassword()
             }
@@ -57,9 +65,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_lawyer) {
                 logout()
             }
             profileSwitchDarkMode.isChecked =
-                Utils.preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false)
+                preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false)
             profileSwitchDarkMode.setOnCheckedChangeListener { _, b ->
-                Utils.preferences.edit {
+                preferences.edit {
                     it.putBoolean(Utils.SHARED_DARK_MODE_ON, b)
                 }
                 Utils.switchDarkMode(b)

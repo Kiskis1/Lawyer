@@ -26,6 +26,7 @@ object Utils {
     private const val SHARED_KEY = "userdata"
     const val SHARED_USER_DATA = "user"
     const val SHARED_DARK_MODE_ON = "dark_mode"
+    const val SHARED_AUTH_PROVIDER = "provider"
     const val MIN_PASS_LENGTH = 6
     lateinit var preferences: SharedPreferences
 

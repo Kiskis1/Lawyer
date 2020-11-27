@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
@@ -15,7 +16,9 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLoginBinding
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
+import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.preferences
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.CallbackManager
@@ -26,6 +29,7 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
 private const val RC_SIGN_IN = 1
@@ -44,8 +48,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val user = viewModel.firebaseUser
-        if (user != null) {
+        if (viewModel.firebaseUser != null) {
             view.findNavController()
                 .navigate(R.id.action_loginFragment_to_mainFragment)
         }
@@ -61,28 +64,34 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     viewModel.firebaseAuth.signInWithCredential(credential)
                         .addOnCompleteListener(requireActivity()) { task ->
                             if (task.isSuccessful) {
+                                val user = task.result!!.user!!
                                 if (task.result!!.additionalUserInfo!!.isNewUser) {
                                     viewModel.createNewUser(task)
                                 } else {
                                     viewModel.getUserData(task.result!!.user!!.uid)
                                 }
-
+                                preferences.edit {
+                                    this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
+                                }
                                 activityProgressLayout.visibility = View.GONE
                                 viewModel.setLoggedIn(true)
                                 view.findNavController()
                                     .navigate(R.id.action_loginFragment_to_mainFragment)
                             } else {
                                 binding.loginErrorMessage.text = task.exception?.message
+                                activityProgressLayout.visibility = View.GONE
                             }
                         }
                 }
 
                 override fun onCancel() {
                     Log.e("facebook", "onCancel")
+                    activityProgressLayout.visibility = View.GONE
                 }
 
                 override fun onError(error: FacebookException?) {
                     Toast.makeText(context, error?.message, Toast.LENGTH_SHORT).show()
+                    activityProgressLayout.visibility = View.GONE
                 }
             })
 
@@ -153,13 +162,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             password
         ).addOnCompleteListener(requireActivity()) { task ->
             if (task.isSuccessful) {
-                viewModel.getUserData(task.result!!.user!!.uid)
+                val user = task.result!!.user!!
+                viewModel.getUserData(user.uid)
                 Utils.hideKeyboard(requireContext(), requireView())
+                preferences.edit {
+                    this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
+                }
                 requireView().findNavController()
                     .navigate(R.id.action_loginFragment_to_mainFragment)
             } else {
                 binding.loginErrorMessage.text = task.exception?.message
                 binding.loginButtonLogin.isEnabled = true
+                activityProgressLayout.visibility = View.GONE
             }
         }
     }
@@ -176,10 +190,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 val credential = GoogleAuthProvider.getCredential(result!!.idToken!!, null)
                 viewModel.firebaseAuth.signInWithCredential(credential)
                     .addOnCompleteListener(requireActivity()) { task ->
+                        val user = task.result!!.user!!
                         if (task.result!!.additionalUserInfo!!.isNewUser) {
                             viewModel.createNewUser(task)
                         } else {
-                            viewModel.getUserData(task.result!!.user!!.uid)
+                            viewModel.getUserData(user.uid)
+                        }
+                        preferences.edit {
+                            this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
                         }
 
                         activityProgressLayout.visibility = View.GONE
@@ -193,5 +211,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 binding.loginErrorMessage.text = e.message
             }
         }
+    }
+
+    private fun getProviderIdSet(user: FirebaseUser): MutableSet<String> {
+        val set = mutableSetOf<String>()
+        for (providerData in user.providerData) {
+            set.add(providerData.providerId)
+        }
+        return set
     }
 }
