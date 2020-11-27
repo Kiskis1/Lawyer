@@ -12,8 +12,8 @@ import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.FirebaseRepository
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
-import com.acruxcs.lawyer.utils.Utils.checkFieldsIfEmpty
-import com.acruxcs.lawyer.utils.Utils.no
+import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.yes
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -60,21 +60,21 @@ class QuestionDialog : DialogFragment() {
     private fun isValid(): Boolean {
         var valid = true
         with(binding) {
-            checkFieldsIfEmpty(
+            checkFieldIfEmpty(
                 questionEditDescription, questionLayoutDescription, requireContext()
-            ).no { valid = false }
-            checkFieldsIfEmpty(
+            ).yes { valid = false }
+            checkFieldIfEmpty(
                 questionEditLocationCountry, questionLayoutLocationCountry, requireContext()
-            ).no { valid = false }
-            checkFieldsIfEmpty(
+            ).yes { valid = false }
+            checkFieldIfEmpty(
                 questionEditLocationCity, questionLayoutLocationCity, requireContext()
-            ).no { valid = false }
-            checkFieldsIfEmpty(
+            ).yes { valid = false }
+            checkFieldIfEmpty(
                 questionEditPhone, questionLayoutPhone, requireContext()
-            ).no { valid = false }
-            checkFieldsIfEmpty(
+            ).yes { valid = false }
+            checkFieldIfEmpty(
                 questionEditName, questionLayoutName, requireContext()
-            ).no { valid = false }
+            ).yes { valid = false }
         }
         return valid
     }

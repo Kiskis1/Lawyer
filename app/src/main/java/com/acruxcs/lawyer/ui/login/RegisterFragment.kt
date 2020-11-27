@@ -3,10 +3,12 @@ package com.acruxcs.lawyer.ui.login
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentRegisterBinding
 import com.acruxcs.lawyer.model.User
@@ -14,6 +16,8 @@ import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
+import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -30,8 +34,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private lateinit var user: User
 
-    // private lateinit var progressLayout: FrameLayout
     private val binding by viewBinding(FragmentRegisterBinding::bind)
+
+    private lateinit var activityProgressLayout: FrameLayout
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activityProgressLayout = (activity as MainActivity).binding.progressLayout
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,7 +101,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 }
 
                 Utils.hideKeyboard(requireContext(), requireView())
-                // progressLayout.visibility = View.VISIBLE
+                activityProgressLayout.visibility = View.VISIBLE
                 createAccount(user)
             }
         }
@@ -100,29 +110,21 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private fun isValid(): Boolean {
         var valid = true
         with(binding) {
-            if (email.isEmpty()) {
-                registerLayoutEditEmail.error = getString(R.string.empty_field)
-                registerEditEmail.requestFocus()
-                valid = false
-            }
-            if (password.isEmpty()) {
-                registerLayoutEditPassword.error = getString(R.string.empty_field)
-                registerEditPassword.requestFocus()
-                valid = false
-            }
+            checkFieldIfEmpty(
+                registerEditEmail, registerLayoutEditEmail, requireContext()
+            ).yes { valid = false }
+            checkFieldIfEmpty(
+                registerEditPassword, registerLayoutEditPassword, requireContext()
+            ).yes { valid = false }
+            checkFieldIfEmpty(
+                registerEditFullName, registerLayoutEditFullName, requireContext()
+            ).yes { valid = false }
+            checkFieldIfEmpty(
+                registerEditPhone, registerLayoutEditPhone, requireContext()
+            ).yes { valid = false }
             if (password.length < MIN_PASS_LENGTH) {
                 registerLayoutEditPassword.error = getString(R.string.empty_field)
                 registerEditPassword.requestFocus()
-                valid = false
-            }
-            if (fullname.isEmpty()) {
-                registerLayoutEditFullName.error = getString(R.string.empty_field)
-                registerEditFullName.requestFocus()
-                valid = false
-            }
-            if (phone.isEmpty()) {
-                registerLayoutEditPhone.error = getString(R.string.empty_field)
-                registerEditPhone.requestFocus()
                 valid = false
             }
             if (country.isEmpty()) {
@@ -146,14 +148,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     user.uid = task.result?.user!!.uid
                     viewModel.createNewUser(user)
                     viewModel.setUser(user)
-                    // progressLayout.visibility = View.GONE
+                    activityProgressLayout.visibility = View.GONE
                     requireView().findNavController()
                         .navigate(
                             R.id.action_registerFragment_to_mainFragment
                         )
                 } else {
                     // If sign in fails, display a message to the user.
-                    // progressLayout.visibility = View.GONE
+                    activityProgressLayout.visibility = View.GONE
                     Toast.makeText(
                         requireActivity(), task.exception?.message,
                         Toast.LENGTH_LONG

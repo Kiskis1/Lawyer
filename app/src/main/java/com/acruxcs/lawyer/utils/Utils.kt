@@ -88,19 +88,19 @@ object Utils {
         editor.apply()
     }
 
-    inline fun Boolean.no(block: () -> Unit) = also { if (!it) block() }
+    inline fun Boolean.yes(block: () -> Unit) = also { if (it) block() }
 
-    fun checkFieldsIfEmpty(
+    fun checkFieldIfEmpty(
         edit: TextInputEditText,
         layout: TextInputLayout,
         context: Context
     ): Boolean {
         if (TextUtils.isEmpty(edit.text)) {
-            edit.error = context.resources.getString(R.string.empty_field)
+            layout.error = context.resources.getString(R.string.empty_field)
             edit.requestFocus()
-            return false
+            return true
         } else layout.error = null
-        return true
+        return false
     }
 }
 

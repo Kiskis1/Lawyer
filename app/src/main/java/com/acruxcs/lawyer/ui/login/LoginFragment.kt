@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,6 +15,8 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLoginBinding
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
+import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -31,6 +34,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var callbackManager: CallbackManager
     private val viewModel: MainViewModel by activityViewModels()
     private val binding by viewBinding(FragmentLoginBinding::bind)
+
+    private lateinit var activityProgressLayout: FrameLayout
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        activityProgressLayout = (activity as MainActivity).binding.progressLayout
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,7 +67,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                     viewModel.getUserData(task.result!!.user!!.uid)
                                 }
 
-                                // progressLayout.visibility = View.GONE
+                                activityProgressLayout.visibility = View.GONE
                                 viewModel.setLoggedIn(true)
                                 view.findNavController()
                                     .navigate(R.id.action_loginFragment_to_mainFragment)
@@ -81,7 +91,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             //google sign in
             loginButtonLoginGoogle.setOnClickListener {
                 loginErrorMessage.text = null
-                // progressLayout.visibility = View.VISIBLE
+                activityProgressLayout.visibility = View.VISIBLE
                 val signInIntent = (activity as MainActivity).googleSignInClient.signInIntent
                 startActivityForResult(signInIntent, RC_SIGN_IN)
             }
@@ -95,7 +105,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             //normal login
             loginButtonLogin.setOnClickListener {
-                // progressLayout.visibility = View.VISIBLE
                 Utils.hideKeyboard(requireContext(), requireView())
                 login()
             }
@@ -126,20 +135,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             loginLayoutEditPassword.error = null
             email = loginEditEmail.text.toString().trim()
             password = loginEditPassword.text.toString().trim()
-            if (email.isEmpty()) {
-                loginLayoutEditEmail.error = getString(R.string.empty_field)
-                loginEditEmail.requestFocus()
-                loginButtonLogin.isEnabled = true
-                return
-            }
-            if (password.isEmpty()) {
-                loginLayoutEditPassword.error = getString(R.string.empty_field)
-                loginEditPassword.requestFocus()
-                loginButtonLogin.isEnabled = true
-                return
-            }
+            checkFieldIfEmpty(loginEditEmail, loginLayoutEditEmail, requireContext())
+                .yes {
+                    loginButtonLogin.isEnabled = true
+                    return@login
+                }
+            checkFieldIfEmpty(loginEditPassword, loginLayoutEditPassword, requireContext())
+                .yes {
+                    loginButtonLogin.isEnabled = true
+                    return@login
+                }
         }
 
+        activityProgressLayout.visibility = View.VISIBLE
         viewModel.firebaseAuth.signInWithEmailAndPassword(
             email,
             password
@@ -174,14 +182,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             viewModel.getUserData(task.result!!.user!!.uid)
                         }
 
-                        // progressLayout.visibility = View.GONE
+                        activityProgressLayout.visibility = View.GONE
                         viewModel.setLoggedIn(true)
                         requireView().findNavController()
                             .navigate(R.id.action_loginFragment_to_mainFragment)
 
                     }
             } catch (e: ApiException) {
-                // progressLayout.visibility = View.GONE
+                activityProgressLayout.visibility = View.GONE
                 binding.loginErrorMessage.text = e.message
             }
         }

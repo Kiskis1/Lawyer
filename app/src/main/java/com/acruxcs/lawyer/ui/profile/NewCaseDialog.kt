@@ -13,8 +13,8 @@ import com.acruxcs.lawyer.databinding.DialogNewCaseBinding
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
-import com.acruxcs.lawyer.utils.Utils.checkFieldsIfEmpty
-import com.acruxcs.lawyer.utils.Utils.no
+import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.yes
 import com.google.android.material.datepicker.MaterialDatePicker
 
 class NewCaseDialog(private val fragment: Fragment) : DialogFragment() {
@@ -60,18 +60,18 @@ class NewCaseDialog(private val fragment: Fragment) : DialogFragment() {
     private fun isValid(): Boolean {
         var valid = true
         with(binding) {
-            checkFieldsIfEmpty(caseEditDescription, caseLayoutDescription, requireContext()).no {
+            checkFieldIfEmpty(caseEditDescription, caseLayoutDescription, requireContext()).yes {
                 valid = false
             }
-            checkFieldsIfEmpty(caseEditCourt, caseLayoutCourt, requireContext()).no {
+            checkFieldIfEmpty(caseEditCourt, caseLayoutCourt, requireContext()).yes {
                 valid = false
             }
-            checkFieldsIfEmpty(caseEditArea, caseLayoutArea, requireContext()).no { valid = false }
-            checkFieldsIfEmpty(caseEditType, caseLayoutType, requireContext()).no { valid = false }
-            checkFieldsIfEmpty(caseEditOutcome, caseLayoutOutcome, requireContext()).no {
+            checkFieldIfEmpty(caseEditArea, caseLayoutArea, requireContext()).yes { valid = false }
+            checkFieldIfEmpty(caseEditType, caseLayoutType, requireContext()).yes { valid = false }
+            checkFieldIfEmpty(caseEditOutcome, caseLayoutOutcome, requireContext()).yes {
                 valid = false
             }
-            checkFieldsIfEmpty(caseEditDate, caseLayoutDate, requireContext()).no { valid = false }
+            checkFieldIfEmpty(caseEditDate, caseLayoutDate, requireContext()).yes { valid = false }
         }
         return valid
     }

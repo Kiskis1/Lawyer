@@ -61,8 +61,9 @@ class MainActivity : AppCompatActivity() {
 
         Utils.switchDarkMode(Utils.preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false))
         if (savedInstanceState == null) {
-            binding.bottomMenu.visibility = View.GONE
             getUserData(Firebase.auth.currentUser?.uid)
+        } else {
+            binding.progressLayout.visibility = View.GONE
         }
     }
 
