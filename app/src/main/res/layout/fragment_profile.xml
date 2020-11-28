@@ -105,6 +105,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/profile_layout_country"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -112,22 +113,23 @@
                         android:textColorHint="@color/textColor"
                         app:endIconContentDescription="Send updated info"
                         app:endIconDrawable="@drawable/ic_send_24"
-                        app:endIconMode="custom"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/profile_layout_phone">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
                             android:id="@+id/profile_edit_country"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:hint="@string/profile_update_country"
                             android:imeOptions="actionDone"
-                            android:inputType="text" />
+                            android:inputType="none"
+                            android:singleLine="true" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/profile_layout_city"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -135,17 +137,17 @@
                         android:textColorHint="@color/textColor"
                         app:endIconContentDescription="Send updated info"
                         app:endIconDrawable="@drawable/ic_send_24"
-                        app:endIconMode="custom"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/profile_layout_country">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
                             android:id="@+id/profile_edit_city"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:hint="@string/profile_update_city"
                             android:imeOptions="actionDone"
-                            android:inputType="text" />
+                            android:inputType="none"
+                            android:singleLine="true" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -174,6 +176,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/profile_layout_specialization"
+                        goneUnless="@{role}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -182,7 +185,6 @@
                         app:endIconContentDescription="Send updated info"
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:endIconMode="custom"
-                        app:goneUnless="@{role}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/profile_layout_password">
 
@@ -198,6 +200,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/profile_layout_education"
+                        goneUnless="@{role}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -206,7 +209,6 @@
                         app:endIconContentDescription="Send updated info"
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:endIconMode="custom"
-                        app:goneUnless="@{role}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/profile_layout_specialization">
 
@@ -222,6 +224,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/profile_layout_experience"
+                        goneUnless="@{role}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -230,7 +233,6 @@
                         app:endIconContentDescription="Send updated info"
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:endIconMode="custom"
-                        app:goneUnless="@{role}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/profile_layout_education">
 
@@ -246,6 +248,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/profile_layout_won_cases"
+                        goneUnless="@{role}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -254,7 +257,6 @@
                         app:endIconContentDescription="Send updated info"
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:endIconMode="custom"
-                        app:goneUnless="@{role}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/profile_layout_experience">
 
@@ -291,12 +293,12 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    goneUnless="@{role}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    app:goneUnless="@{role}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_constraint_settings">
@@ -326,6 +328,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/profile_fab_add_case"
+            goneUnless="@{role}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -337,7 +340,6 @@
             android:gravity="bottom|end"
             android:src="@drawable/ic_add_24"
             app:borderWidth="0dp"
-            app:goneUnless="@{role}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

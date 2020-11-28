@@ -85,10 +85,12 @@
     <string name="profile_update_city">Update City</string>
     <string name="profile_update_specialization">Update Specialization</string>
     <string name="profile_update_education">Update Education</string>
-    <string name="profile_update_experience">Update Experience</string>
+    <string name="profile_update_experience">Update Years of Experience</string>
     <string name="profile_update_won_cases">Update Won Cases</string>
     <string name="content_desc_profile_change_profile_picture">Change profile picture</string>
     <string name="content_desc_profile_add_your_case">Add your case</string>
     <string name="content_desc_lawyers_filter_lawyers_by_categories">Filter lawyers by categories</string>
+
+    <string name="invalid_city">Invalid city</string>
 
 </resources>

@@ -8,6 +8,7 @@ import android.net.Uri
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.BindingAdapter
@@ -18,6 +19,7 @@ import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.QuestionDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.reflect.TypeToken
 import java.io.IOException
 
 object Utils {
@@ -29,6 +31,7 @@ object Utils {
     const val SHARED_AUTH_PROVIDER = "provider"
     const val MIN_PASS_LENGTH = 6
     lateinit var preferences: SharedPreferences
+    val countriesMapType by lazy { object : TypeToken<Map<String, List<String>>>() {}.type }
 
     fun init(activity: Activity) {
         preferences = activity.getSharedPreferences(SHARED_KEY, 0)
@@ -103,9 +106,22 @@ object Utils {
         } else layout.error = null
         return false
     }
+
+    fun checkSpinnerIfEmpty(
+        edit: AutoCompleteTextView,
+        layout: TextInputLayout,
+        context: Context
+    ): Boolean {
+        if (TextUtils.isEmpty(edit.editableText)) {
+            layout.error = context.resources.getString(R.string.empty_field)
+            edit.requestFocus()
+            return true
+        } else layout.error = null
+        return false
+    }
 }
 
-@BindingAdapter("app:goneUnless")
+@BindingAdapter("goneUnless")
 fun goneUnless(view: View, role: UserTypes?) {
     view.visibility = if (role == UserTypes.Lawyer) View.VISIBLE else View.GONE
 }

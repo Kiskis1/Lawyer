@@ -17,10 +17,11 @@ import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.checkSpinnerIfEmpty
+import com.acruxcs.lawyer.utils.Utils.countriesMapType
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -38,6 +39,17 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private lateinit var activityProgressLayout: FrameLayout
 
+    private lateinit var selectedCountry: String
+
+    private val jsonString by lazy {
+        Utils.getJsonFromAssets(
+            requireContext(), "countries.min.json"
+        )
+    }
+    private val countryList by lazy {
+        Gson().fromJson<Map<String, List<String>>>(jsonString, countriesMapType).toSortedMap()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityProgressLayout = (activity as MainActivity).binding.progressLayout
@@ -45,10 +57,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val jsonString = Utils.getJsonFromAssets(requireContext(), "countries.min.json")
-        val mapType = object : TypeToken<Map<String, List<String>>>() {}.type
-        val countryList =
-            Gson().fromJson<Map<String, List<String>>>(jsonString, mapType).toSortedMap()
 
         val countryAdapter = ArrayAdapter(
             requireContext(),
@@ -61,8 +69,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
             registerSpinnerCountry.setOnItemClickListener { adapterView, _, i, _ ->
                 registerSpinnerCity.text.clear()
-                val selected = adapterView.getItemAtPosition(i).toString()
-                val cityList = countryList[selected]!!
+                selectedCountry = adapterView.getItemAtPosition(i).toString()
+                val cityList = countryList[selectedCountry]!!
                 val cityAdapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
@@ -123,20 +131,25 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 registerEditPhone, registerLayoutEditPhone, requireContext()
             ).yes { valid = false }
             if (password.length < MIN_PASS_LENGTH) {
-                registerLayoutEditPassword.error = getString(R.string.empty_field)
+                registerLayoutEditPassword.error = getString(R.string.password_not_long_enough)
                 registerEditPassword.requestFocus()
                 valid = false
-            }
-            if (country.isEmpty()) {
-                registerLayoutEditCountry.error = getString(R.string.empty_field)
-                registerSpinnerCountry.requestFocus()
+            } else registerLayoutEditPassword.error = null
+
+            checkSpinnerIfEmpty(
+                registerSpinnerCountry, registerLayoutEditCountry, requireContext()
+            ).yes {
                 valid = false
             }
-            if (city.isEmpty()) {
-                registerLayoutEditCity.error = getString(R.string.empty_field)
+            checkSpinnerIfEmpty(registerSpinnerCity, registerLayoutEditCity, requireContext()).yes {
+                valid = false
+            }
+
+            if (!countryList[selectedCountry]?.contains(city)!!) {
+                registerLayoutEditCity.error = getString(R.string.invalid_city)
                 registerSpinnerCity.requestFocus()
                 valid = false
-            }
+            } else registerLayoutEditCity.error = null
         }
         return valid
     }

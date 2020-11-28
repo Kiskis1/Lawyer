@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.Fragment
@@ -15,7 +16,6 @@ import coil.metadata
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentProfileBinding
-import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.lawyersinfo.LawyersCaseAdapter
 import com.acruxcs.lawyer.ui.main.MainViewModel
@@ -24,21 +24,43 @@ import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.checkSpinnerIfEmpty
+import com.acruxcs.lawyer.utils.Utils.countriesMapType
 import com.acruxcs.lawyer.utils.Utils.edit
 import com.acruxcs.lawyer.utils.Utils.preferences
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewModel: MainViewModel by activityViewModels()
     private val lawyersCasesAdapter = LawyersCaseAdapter()
-    private val list = mutableListOf<Case>()
     private val lawyersViewModel: LawyersViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by viewModels()
+    private val user by lazy { viewModel.user.value!! }
 
     private val binding by viewBinding(FragmentProfileBinding::bind)
+
+    private lateinit var selectedCountry: String
+
+    private val jsonString by lazy {
+        Utils.getJsonFromAssets(
+            requireContext(), "countries.min.json"
+        )
+    }
+
+    private val countryList by lazy {
+        Gson().fromJson<Map<String, List<String>>>(jsonString, countriesMapType).toSortedMap()
+    }
+    private val countryAdapter by lazy {
+        ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            ArrayList(countryList.keys)
+        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,8 +68,34 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         loadProfileImage()
         setupEditTexts()
         setupEndIconListeners()
+
         with(binding) {
-            role = viewModel.user.value!!.role
+            role = user.role
+            profileEditCountry.setAdapter(countryAdapter)
+
+            profileEditCountry.setOnItemClickListener { adapterView, _, i, _ ->
+                selectedCountry = adapterView.getItemAtPosition(i).toString()
+                val cityList = countryList[selectedCountry]!!
+                val cityAdapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    ArrayList(cityList)
+                ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+                profileEditCity.setAdapter(cityAdapter)
+                profileEditCity.isEnabled = true
+                Utils.hideKeyboard(requireContext(), requireView())
+            }
+            if (profileEditCountry.editableText.toString().trim().isNotEmpty()) {
+                val cityList = countryList[profileEditCountry.editableText.toString().trim()]!!
+                val cityAdapter = ArrayAdapter(
+                    requireContext(),
+                    android.R.layout.simple_dropdown_item_1line,
+                    ArrayList(cityList)
+                ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+                profileEditCity.setAdapter(cityAdapter)
+                Utils.hideKeyboard(requireContext(), requireView())
+            } else profileEditCity.isEnabled = false
+
             profileButtonEditPicture.setOnClickListener {
                 selectImage()
             }
@@ -69,34 +117,36 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
 
             profileRecycler.adapter = lawyersCasesAdapter
-            lawyersViewModel.getLawyersCases(viewModel.user.value!!.uid)
+            lawyersViewModel.getLawyersCases(user.uid)
                 .observe(viewLifecycleOwner, {
-                    list.clear()
-                    list.addAll(it)
-                    lawyersCasesAdapter.swapData(list)
+                    lawyersCasesAdapter.swapData(it)
                 })
         }
     }
 
     private fun setupEditTexts() {
         with(binding) {
-            profileEditCountry.setText(viewModel.user.value!!.country)
-            profileEditCity.setText(viewModel.user.value!!.city)
-            profileEditPhone.setText(viewModel.user.value!!.phone)
-            profileEditSpecialization.setText(viewModel.user.value!!.specialization)
-            profileEditEducation.setText(viewModel.user.value!!.education)
-            profileEditExperience.setText(viewModel.user.value!!.experience.toString())
-            profileEditWonCases.setText(viewModel.user.value!!.wonCases.toString())
+            profileEditCountry.setText(user.country)
+            profileEditCity.setText(user.city)
+            profileEditPhone.setText(user.phone)
+            profileEditSpecialization.setText(user.specialization)
+            profileEditEducation.setText(user.education)
+            profileEditExperience.setText(user.experience.toString())
+            profileEditWonCases.setText(user.wonCases.toString())
         }
     }
 
     private fun setupEndIconListeners() {
         with(binding) {
             profileLayoutCountry.setEndIconOnClickListener {
-                updateCountry()
+                if (profileEditCountry.editableText.toString().trim() != user.country)
+                    updateCountry()
+                else handleStatus(Status.NO_CHANGE)
             }
             profileLayoutCity.setEndIconOnClickListener {
-                updateCity()
+                if (profileEditCity.editableText.toString().trim() != user.city)
+                    updateCity()
+                else handleStatus(Status.NO_CHANGE)
             }
             profileLayoutPhone.setEndIconOnClickListener {
                 updatePhone()
@@ -125,10 +175,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun updateWonCases() {
         with(binding) {
+            val wonCases = Integer.parseInt(profileEditWonCases.text.toString().trim())
             checkFieldIfEmpty(profileEditWonCases, profileLayoutWonCases, requireContext()).yes {
                 return@updateWonCases
             }
-            val wonCases = Integer.parseInt(profileEditWonCases.text.toString().trim())
             Utils.hideKeyboard(requireContext(), requireView())
             profileViewModel.updateWonCases(wonCases)
         }
@@ -136,12 +186,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun updateExperience() {
         with(binding) {
+            val experience = Integer.parseInt(profileEditExperience.text.toString().trim())
             checkFieldIfEmpty(
                 profileEditExperience, profileLayoutExperience, requireContext()
             ).yes {
                 return@updateExperience
             }
-            val experience = Integer.parseInt(profileEditExperience.text.toString().trim())
             Utils.hideKeyboard(requireContext(), requireView())
             profileViewModel.updateExperience(experience)
         }
@@ -149,10 +199,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun updateEducation() {
         with(binding) {
+            val education = profileEditEducation.text.toString().trim()
             checkFieldIfEmpty(profileEditEducation, profileLayoutEducation, requireContext()).yes {
                 return@updateEducation
             }
-            val education = profileEditEducation.text.toString().trim()
             Utils.hideKeyboard(requireContext(), requireView())
             profileViewModel.updateEducation(education)
         }
@@ -191,19 +241,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun updateCountry() {
         with(binding) {
-            val country = profileEditCountry.text.toString().trim()
-            checkFieldIfEmpty(profileEditCountry, profileLayoutCountry, requireContext()).yes {
+            val country = profileEditCountry.editableText.toString().trim()
+            checkSpinnerIfEmpty(profileEditCountry, profileLayoutCountry, requireContext()).yes {
                 return@updateCountry
             }
             Utils.hideKeyboard(requireContext(), requireView())
             profileViewModel.updateCountry(country)
+            if (country != user.country)
+                profileEditCity.editableText.clear()
+            profileViewModel.updateCity("")
         }
     }
 
     private fun updateCity() {
         with(binding) {
             val city = profileEditCity.text.toString().trim()
-            checkFieldIfEmpty(profileEditCity, profileLayoutCity, requireContext()).yes {
+            checkSpinnerIfEmpty(profileEditCity, profileLayoutCity, requireContext()).yes {
                 return@updateCity
             }
             Utils.hideKeyboard(requireContext(), requireView())
@@ -224,7 +277,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun loadProfileImage() {
         viewModel.getImageRef(
-            viewModel.user.value!!.uid,
+            user.uid,
             object : MainViewModel.Companion.ImageCallback {
                 override fun onCallback(value: String) {
                     with(binding) {
@@ -285,6 +338,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 loadProfileImage()
                 Snackbar.make(requireView(), "Success", Snackbar.LENGTH_LONG).show()
             }
+            Status.NO_CHANGE -> Toast.makeText(
+                context, "No change", Toast.LENGTH_SHORT
+            ).show()
             else -> Toast.makeText(
                 context,
                 "Something went wrong, please try again!",
