@@ -69,7 +69,7 @@ class LawyersViewModel : ViewModel() {
     fun filter(list: List<User>, filter: MutableList<Predicate<User>>): List<User> {
         if (filter.size == 0) return listOf()
         val composite = filter.stream()
-            .reduce({ _ -> true }) { p1, p2 ->
+            .reduce({ true }) { p1, p2 ->
                 p1.and(p2)
             }
         return list.stream().filter(composite).collect(Collectors.toList())

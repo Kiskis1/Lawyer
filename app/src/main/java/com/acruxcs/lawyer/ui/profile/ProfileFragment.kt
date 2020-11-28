@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -22,8 +23,10 @@ import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
+import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.edit
 import com.acruxcs.lawyer.utils.Utils.preferences
+import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
@@ -37,17 +40,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val binding by viewBinding(FragmentProfileBinding::bind)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         profileViewModel.getStatus().observe(this, { handleStatus(it) })
+        loadProfileImage()
+        setupEditTexts()
+        setupEndIconListeners()
         with(binding) {
-            binding.role = viewModel.user.value!!.role
+            role = viewModel.user.value!!.role
             profileButtonEditPicture.setOnClickListener {
                 selectImage()
             }
@@ -56,9 +56,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             )
                 profileLayoutPassword.visibility = View.GONE
 
-            profileLayoutPassword.setEndIconOnClickListener {
-                updatePassword()
-            }
             profileButtonLogout.setOnClickListener {
                 logout()
             }
@@ -70,8 +67,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
                 Utils.switchDarkMode(b)
             }
-            loadProfileImage()
 
+            profileRecycler.adapter = lawyersCasesAdapter
+            lawyersViewModel.getLawyersCases(viewModel.user.value!!.uid)
+                .observe(viewLifecycleOwner, {
+                    list.clear()
+                    list.addAll(it)
+                    lawyersCasesAdapter.swapData(list)
+                })
+        }
+    }
+
+    private fun setupEditTexts() {
+        with(binding) {
             profileEditCountry.setText(viewModel.user.value!!.country)
             profileEditCity.setText(viewModel.user.value!!.city)
             profileEditPhone.setText(viewModel.user.value!!.phone)
@@ -79,7 +87,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             profileEditEducation.setText(viewModel.user.value!!.education)
             profileEditExperience.setText(viewModel.user.value!!.experience.toString())
             profileEditWonCases.setText(viewModel.user.value!!.wonCases.toString())
+        }
+    }
 
+    private fun setupEndIconListeners() {
+        with(binding) {
             profileLayoutCountry.setEndIconOnClickListener {
                 updateCountry()
             }
@@ -88,6 +100,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
             profileLayoutPhone.setEndIconOnClickListener {
                 updatePhone()
+            }
+            profileLayoutPassword.setEndIconOnClickListener {
+                updatePassword()
             }
             //lawyers profile views
             profileLayoutSpecialization.setEndIconOnClickListener {
@@ -105,68 +120,55 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             profileFabAddCase.setOnClickListener {
                 NewCaseDialog(this@ProfileFragment).show(parentFragmentManager, "new_case")
             }
-            profileRecycler.adapter = lawyersCasesAdapter
-            lawyersViewModel.getLawyersCases(viewModel.user.value!!.uid)
-                .observe(viewLifecycleOwner, {
-                    list.clear()
-                    list.addAll(it)
-                    lawyersCasesAdapter.swapData(list)
-                })
         }
     }
 
     private fun updateWonCases() {
         with(binding) {
-            if (profileEditWonCases.text.toString().isEmpty()) {
-                profileLayoutWonCases.error = getString(R.string.empty_field)
-                profileEditWonCases.requestFocus()
-                return
+            checkFieldIfEmpty(profileEditWonCases, profileLayoutWonCases, requireContext()).yes {
+                return@updateWonCases
             }
+            val wonCases = Integer.parseInt(profileEditWonCases.text.toString().trim())
+            Utils.hideKeyboard(requireContext(), requireView())
+            profileViewModel.updateWonCases(wonCases)
         }
-        val wonCases = Integer.parseInt(binding.profileEditWonCases.text.toString().trim())
-        Utils.hideKeyboard(requireContext(), requireView())
-        profileViewModel.updateWonCases(wonCases)
     }
 
     private fun updateExperience() {
         with(binding) {
-            if (profileEditExperience.text.toString().isEmpty()) {
-                profileLayoutExperience.error = getString(R.string.empty_field)
-                profileEditExperience.requestFocus()
-                return
+            checkFieldIfEmpty(
+                profileEditExperience, profileLayoutExperience, requireContext()
+            ).yes {
+                return@updateExperience
             }
+            val experience = Integer.parseInt(profileEditExperience.text.toString().trim())
+            Utils.hideKeyboard(requireContext(), requireView())
+            profileViewModel.updateExperience(experience)
         }
-        val experience = Integer.parseInt(binding.profileEditExperience.text.toString().trim())
-        Utils.hideKeyboard(requireContext(), requireView())
-        profileViewModel.updateExperience(experience)
     }
 
     private fun updateEducation() {
-        val education: String
         with(binding) {
-            education = profileEditEducation.text.toString().trim()
-            if (education.isEmpty()) {
-                profileLayoutEducation.error = getString(R.string.empty_field)
-                profileEditEducation.requestFocus()
-                return
+            checkFieldIfEmpty(profileEditEducation, profileLayoutEducation, requireContext()).yes {
+                return@updateEducation
             }
+            val education = profileEditEducation.text.toString().trim()
+            Utils.hideKeyboard(requireContext(), requireView())
+            profileViewModel.updateEducation(education)
         }
-        Utils.hideKeyboard(requireContext(), requireView())
-        profileViewModel.updateEducation(education)
     }
 
     private fun updateSpec() {
-        val specialization: String
         with(binding) {
-            specialization = profileEditSpecialization.text.toString().trim()
-            if (specialization.isEmpty()) {
-                profileLayoutSpecialization.error = getString(R.string.empty_field)
-                profileEditSpecialization.requestFocus()
-                return
+            checkFieldIfEmpty(
+                profileEditSpecialization, profileLayoutSpecialization, requireContext()
+            ).yes {
+                return@updateSpec
             }
+            val specialization = profileEditSpecialization.text.toString().trim()
+            Utils.hideKeyboard(requireContext(), requireView())
+            profileViewModel.updateSpecialization(specialization)
         }
-        Utils.hideKeyboard(requireContext(), requireView())
-        profileViewModel.updateSpecialization(specialization)
     }
 
     private fun updatePassword() {
@@ -188,45 +190,36 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun updateCountry() {
-        val country: String
         with(binding) {
-            country = profileEditCountry.text.toString().trim()
-            if (country.isEmpty()) {
-                profileLayoutCountry.error = getString(R.string.empty_field)
-                profileEditCountry.requestFocus()
-                return
+            val country = profileEditCountry.text.toString().trim()
+            checkFieldIfEmpty(profileEditCountry, profileLayoutCountry, requireContext()).yes {
+                return@updateCountry
             }
+            Utils.hideKeyboard(requireContext(), requireView())
+            profileViewModel.updateCountry(country)
         }
-        Utils.hideKeyboard(requireContext(), requireView())
-        profileViewModel.updateCountry(country)
     }
 
     private fun updateCity() {
-        val city: String
         with(binding) {
-            city = profileEditCity.text.toString().trim()
-            if (city.isEmpty()) {
-                profileLayoutCity.error = getString(R.string.empty_field)
-                profileEditCity.requestFocus()
-                return
+            val city = profileEditCity.text.toString().trim()
+            checkFieldIfEmpty(profileEditCity, profileLayoutCity, requireContext()).yes {
+                return@updateCity
             }
+            Utils.hideKeyboard(requireContext(), requireView())
+            profileViewModel.updateCity(city)
         }
-        Utils.hideKeyboard(requireContext(), requireView())
-        profileViewModel.updateCity(city)
     }
 
     private fun updatePhone() {
-        val phone: String
         with(binding) {
-            phone = profileEditPhone.text.toString().trim()
-            if (phone.isEmpty()) {
-                profileLayoutPhone.error = getString(R.string.empty_field)
-                profileEditPhone.requestFocus()
-                return
+            val phone: String = profileEditPhone.text.toString().trim()
+            checkFieldIfEmpty(profileEditPhone, profileLayoutPhone, requireContext()).yes {
+                return@updatePhone
             }
+            Utils.hideKeyboard(requireContext(), requireView())
+            profileViewModel.updatePhone(phone)
         }
-        Utils.hideKeyboard(requireContext(), requireView())
-        profileViewModel.updatePhone(phone)
     }
 
     private fun loadProfileImage() {
@@ -253,34 +246,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         requireActivity().finish()
     }
 
+    private val selectImageForResult =
+        registerForActivityResult(StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val intent = it.data
+                if (intent != null) {
+                    binding.profileImagePicture.invalidate()
+                    uploadImage(intent.data!!)
+                }
+            }
+        }
+
     private fun selectImage() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(
-            Intent.createChooser(
-                intent,
-                "Select Image from here..."
-            ),
-            PICK_IMAGE_REQUEST
-        )
-    }
-
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        super.onActivityResult(
-            requestCode,
-            resultCode,
-            data
-        )
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-            val filePath = data.data!!
-            binding.profileImagePicture.invalidate()
-            uploadImage(filePath)
-        }
+        selectImageForResult.launch(Intent.createChooser(intent, "Select Image from here..."))
     }
 
     private fun uploadImage(filePath: Uri) {
@@ -292,15 +273,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             Status.SUCCESS ->
                 Snackbar.make(requireView(), "Success", Snackbar.LENGTH_LONG).show()
             Status.ERROR -> Toast.makeText(
-                context,
-                "Something went wrong, please try again!",
-                Toast.LENGTH_SHORT
+                context, "Something went wrong, please try again!", Toast.LENGTH_SHORT
             ).show()
             Status.REAUTHENTICATE -> {
                 Toast.makeText(
-                    context,
-                    "Please re-login",
-                    Toast.LENGTH_SHORT
+                    context, "Please re-login", Toast.LENGTH_SHORT
                 ).show()
                 logout()
             }
@@ -314,9 +291,5 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 Toast.LENGTH_SHORT
             ).show()
         }
-    }
-
-    companion object {
-        private const val PICK_IMAGE_REQUEST = 22
     }
 }

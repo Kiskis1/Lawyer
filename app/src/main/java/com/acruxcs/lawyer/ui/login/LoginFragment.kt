@@ -1,5 +1,6 @@
 package com.acruxcs.lawyer.ui.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -32,8 +34,6 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
-private const val RC_SIGN_IN = 1
-
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var callbackManager: CallbackManager
     private val viewModel: MainViewModel by activityViewModels()
@@ -58,55 +58,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         //facebook login
         callbackManager = CallbackManager.Factory.create()
         LoginManager.getInstance()
-            .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult) {
-                    val credential = FacebookAuthProvider.getCredential(result.accessToken.token)
-                    viewModel.firebaseAuth.signInWithCredential(credential)
-                        .addOnCompleteListener(requireActivity()) { task ->
-                            if (task.isSuccessful) {
-                                val user = task.result!!.user!!
-                                if (task.result!!.additionalUserInfo!!.isNewUser) {
-                                    viewModel.createNewUser(task)
-                                } else {
-                                    viewModel.getUserData(user.uid)
-                                }
-                                preferences.edit {
-                                    this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
-                                }
-                                activityProgressLayout.visibility = View.GONE
-                                viewModel.setLoggedIn(true)
-                                view.findNavController()
-                                    .navigate(R.id.action_loginFragment_to_mainFragment)
-                            } else {
-                                binding.loginErrorMessage.text = task.exception?.message
-                                activityProgressLayout.visibility = View.GONE
-                            }
-                        }
-                }
+            .registerCallback(callbackManager, facebookCallBack)
 
-                override fun onCancel() {
-                    Log.e("facebook", "onCancel")
-                    activityProgressLayout.visibility = View.GONE
-                }
-
-                override fun onError(error: FacebookException?) {
-                    Toast.makeText(context, error?.message, Toast.LENGTH_SHORT).show()
-                    activityProgressLayout.visibility = View.GONE
-                }
-            })
-
-        //todo: remove deprecated code
         with(binding) {
             //google sign in
             loginButtonLoginGoogle.setOnClickListener {
                 loginErrorMessage.text = null
                 activityProgressLayout.visibility = View.VISIBLE
                 val signInIntent = (activity as MainActivity).googleSignInClient.signInIntent
-                startActivityForResult(signInIntent, RC_SIGN_IN)
+                googleLoginForResult.launch(signInIntent)
             }
 
             //facebook sign in
             loginButtonFacebook.setOnClickListener {
+                activityProgressLayout.visibility = View.VISIBLE
                 loginErrorMessage.text = null
                 LoginManager.getInstance()
                     .logInWithReadPermissions(this@LoginFragment, listOf("email", "public_profile"))
@@ -178,18 +143,44 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        callbackManager.onActivityResult(requestCode, resultCode, data)
+    private val googleLoginForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                try {
+                    val result = account.getResult(ApiException::class.java)
+                    val credential = GoogleAuthProvider.getCredential(result!!.idToken!!, null)
+                    viewModel.firebaseAuth.signInWithCredential(credential)
+                        .addOnCompleteListener(requireActivity()) { task ->
+                            val user = task.result!!.user!!
+                            if (task.result!!.additionalUserInfo!!.isNewUser) {
+                                viewModel.createNewUser(task)
+                            } else {
+                                viewModel.getUserData(user.uid)
+                            }
+                            preferences.edit {
+                                this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
+                            }
 
-        //google sign in
-        if (requestCode == RC_SIGN_IN) {
-            val account = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val result = account.getResult(ApiException::class.java)
-                val credential = GoogleAuthProvider.getCredential(result!!.idToken!!, null)
-                viewModel.firebaseAuth.signInWithCredential(credential)
-                    .addOnCompleteListener(requireActivity()) { task ->
+                            activityProgressLayout.visibility = View.GONE
+                            viewModel.setLoggedIn(true)
+                            requireView().findNavController()
+                                .navigate(R.id.action_loginFragment_to_mainFragment)
+
+                        }
+                } catch (e: ApiException) {
+                    activityProgressLayout.visibility = View.GONE
+                    binding.loginErrorMessage.text = e.message
+                }
+            }
+        }
+
+    private val facebookCallBack = object : FacebookCallback<LoginResult> {
+        override fun onSuccess(result: LoginResult) {
+            val credential = FacebookAuthProvider.getCredential(result.accessToken.token)
+            viewModel.firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
                         val user = task.result!!.user!!
                         if (task.result!!.additionalUserInfo!!.isNewUser) {
                             viewModel.createNewUser(task)
@@ -199,18 +190,30 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         preferences.edit {
                             this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
                         }
-
                         activityProgressLayout.visibility = View.GONE
                         viewModel.setLoggedIn(true)
                         requireView().findNavController()
                             .navigate(R.id.action_loginFragment_to_mainFragment)
-
+                    } else {
+                        binding.loginErrorMessage.text = task.exception?.message
+                        activityProgressLayout.visibility = View.GONE
                     }
-            } catch (e: ApiException) {
-                activityProgressLayout.visibility = View.GONE
-                binding.loginErrorMessage.text = e.message
-            }
+                }
         }
+
+        override fun onCancel() {
+            Log.e("facebook", "onCancel")
+            activityProgressLayout.visibility = View.GONE
+        }
+
+        override fun onError(error: FacebookException?) {
+            Toast.makeText(context, error?.message, Toast.LENGTH_SHORT).show()
+            activityProgressLayout.visibility = View.GONE
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun getProviderIdSet(user: FirebaseUser): MutableSet<String> {
