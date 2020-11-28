@@ -74,9 +74,9 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
             viewModel.getImageRef(lawyer.uid, object : MainViewModel.Companion.ImageCallback {
                 override fun onCallback(value: String) {
                     lawyersinfoImageProfile.load(value) {
-                        crossfade(true)
                         error(R.drawable.ic_person_24)
-                        placeholderMemoryCacheKey(lawyersinfoImageProfile.metadata?.memoryCacheKey)
+                        if (lawyersinfoImageProfile.metadata != null)
+                            placeholderMemoryCacheKey(lawyersinfoImageProfile.metadata!!.memoryCacheKey)
                     }
                 }
             })

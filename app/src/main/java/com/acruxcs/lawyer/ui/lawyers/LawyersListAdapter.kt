@@ -69,6 +69,7 @@ class LawyersListAdapter(
                     )
                 lawyersTextWonCases.text =
                     resources.getString(R.string.lawyer_number_of_won_cases, item.wonCases)
+                lawyersTextCountry.text = resources.getString(R.string.lawyer_country, item.country)
                 lawyersTextCity.text = resources.getString(R.string.lawyer_city, item.city)
                 lawyersButtonCall.setOnClickListener {
                     Utils.showCallDialog(itemView.context, item)
@@ -76,9 +77,9 @@ class LawyersListAdapter(
                 viewModel.getImageRef(item.uid, object : MainViewModel.Companion.ImageCallback {
                     override fun onCallback(value: String) {
                         lawyersImageProfile.load(value) {
-                            crossfade(true)
                             error(R.drawable.ic_person_24)
-                            placeholderMemoryCacheKey(lawyersImageProfile.metadata?.memoryCacheKey)
+                            if (lawyersImageProfile.metadata != null)
+                                placeholderMemoryCacheKey(lawyersImageProfile.metadata!!.memoryCacheKey)
                         }
                     }
                 })

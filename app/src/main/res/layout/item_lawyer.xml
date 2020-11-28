@@ -18,20 +18,21 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/lawyers_image_profile"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
+                android:layout_marginTop="8dp"
                 android:contentDescription="@string/lawyer_desc_picture_of_lawyer"
                 app:srcCompat="@drawable/ic_person_24" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
                 android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:orientation="vertical">
+                android:paddingEnd="4dp">
 
                 <TextView
                     android:id="@+id/lawyers_text_name"
@@ -64,6 +65,12 @@
                     android:textColor="@color/textColor" />
 
                 <TextView
+                    android:id="@+id/lawyers_text_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/textColor" />
+
+                <TextView
                     android:id="@+id/lawyers_text_city"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,14 +93,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="@string/call" />
+                android:text="@string/call"
+                app:icon="@drawable/ic_call_24" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/lawyers_button_question"
                 style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lawyer_ask_a_question" />
+                android:text="@string/lawyer_ask_a_question"
+                app:icon="@drawable/ic_question_24" />
         </LinearLayout>
 
     </LinearLayout>

@@ -36,6 +36,7 @@
     <string name="lawyer_specialization">Specialization: %s</string>
     <string name="lawyer_education">Education: %s</string>
     <string name="lawyer_number_of_won_cases">Number of won cases: %d</string>
+    <string name="lawyer_country">Country: %s</string>
     <string name="lawyer_city">City: %s</string>
     <plurals name="lawyer_experience">
         <item quantity="one">Experience: %d year</item>

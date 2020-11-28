@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         // setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        supportActionBar?.hide()
         Utils.init(this)
 
         navHostFragment =

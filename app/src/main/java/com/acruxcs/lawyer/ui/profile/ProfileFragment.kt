@@ -237,9 +237,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_lawyer) {
                 override fun onCallback(value: String) {
                     with(binding) {
                         profileImagePicture.load(value) {
-                            crossfade(true)
                             error(R.drawable.ic_person_24)
-                            placeholderMemoryCacheKey(profileImagePicture.metadata?.memoryCacheKey)
+                            if (profileImagePicture.metadata != null)
+                                placeholderMemoryCacheKey(profileImagePicture.metadata!!.memoryCacheKey)
                         }
                     }
                 }
@@ -307,6 +307,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_lawyer) {
             }
             Status.PICTURE_CHANGE_SUCCESS -> {
                 loadProfileImage()
+                Snackbar.make(requireView(), "Success", Snackbar.LENGTH_LONG).show()
             }
             else -> Toast.makeText(
                 context,
