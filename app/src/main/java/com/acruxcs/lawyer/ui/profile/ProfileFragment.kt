@@ -9,7 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import coil.request.CachePolicy
+import coil.load
+import coil.metadata
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentProfileLawyerBinding
@@ -26,8 +27,6 @@ import com.acruxcs.lawyer.utils.Utils.preferences
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.storage.StorageReference
-import io.github.rosariopfernandes.firecoil.load
 
 class ProfileFragment : Fragment(R.layout.fragment_profile_lawyer) {
     private val viewModel: MainViewModel by activityViewModels()
@@ -235,10 +234,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_lawyer) {
         viewModel.getImageRef(
             viewModel.user.value!!.uid,
             object : MainViewModel.Companion.ImageCallback {
-                override fun onCallback(value: StorageReference) {
+                override fun onCallback(value: String) {
                     with(binding) {
                         profileImagePicture.load(value) {
-                            memoryCachePolicy(CachePolicy.DISABLED)
+                            crossfade(true)
+                            error(R.drawable.ic_person_24)
+                            placeholderMemoryCacheKey(profileImagePicture.metadata?.memoryCacheKey)
                         }
                     }
                 }

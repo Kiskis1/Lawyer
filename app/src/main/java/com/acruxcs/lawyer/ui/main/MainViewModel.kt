@@ -15,7 +15,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 
 class MainViewModel : ViewModel() {
@@ -79,9 +78,9 @@ class MainViewModel : ViewModel() {
     fun getImageRef(uid: String, ic: ImageCallback) {
         val reference = repository.getImageRef(uid)
         reference.downloadUrl.addOnSuccessListener {
-            ic.onCallback(reference)
+            ic.onCallback(it.toString())
         }.addOnFailureListener {
-            ic.onCallback(repository.getDefaultImageRef())
+            ic.onCallback(repository.getDefaultImageUrl())
         }
     }
 
@@ -130,7 +129,7 @@ class MainViewModel : ViewModel() {
 
     companion object {
         interface ImageCallback {
-            fun onCallback(value: StorageReference)
+            fun onCallback(value: String)
         }
     }
 }

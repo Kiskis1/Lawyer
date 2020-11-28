@@ -57,9 +57,9 @@ class LawyersViewModel : ViewModel() {
     fun getImageRef(uid: String, ic: MainViewModel.Companion.ImageCallback) {
         val reference = repository.getImageRef(uid)
         reference.downloadUrl.addOnSuccessListener {
-            ic.onCallback(reference)
+            ic.onCallback(it.toString())
         }.addOnFailureListener {
-            ic.onCallback(repository.getDefaultImageRef())
+            ic.onCallback(repository.getDefaultImageUrl())
         }
     }
 

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import coil.load
+import coil.metadata
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLawyersInfoBinding
 import com.acruxcs.lawyer.model.Case
@@ -13,8 +15,6 @@ import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 import com.crazylegend.viewbinding.viewBinding
-import com.google.firebase.storage.StorageReference
-import io.github.rosariopfernandes.firecoil.load
 
 class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     private lateinit var lawyer: User
@@ -72,10 +72,11 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
             lawyersinfoTextWonCases.text =
                 resources.getString(R.string.lawyer_number_of_won_cases, lawyer.wonCases)
             viewModel.getImageRef(lawyer.uid, object : MainViewModel.Companion.ImageCallback {
-                override fun onCallback(value: StorageReference) {
+                override fun onCallback(value: String) {
                     lawyersinfoImageProfile.load(value) {
                         crossfade(true)
                         error(R.drawable.ic_person_24)
+                        placeholderMemoryCacheKey(lawyersinfoImageProfile.metadata?.memoryCacheKey)
                     }
                 }
             })

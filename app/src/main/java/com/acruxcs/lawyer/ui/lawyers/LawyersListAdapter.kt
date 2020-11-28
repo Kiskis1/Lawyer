@@ -10,13 +10,13 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.metadata
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemLawyerBinding
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
-import com.google.firebase.storage.StorageReference
-import io.github.rosariopfernandes.firecoil.load
 
 class LawyersListAdapter(
     private val manager: FragmentManager,
@@ -74,10 +74,11 @@ class LawyersListAdapter(
                     Utils.showCallDialog(itemView.context, item)
                 }
                 viewModel.getImageRef(item.uid, object : MainViewModel.Companion.ImageCallback {
-                    override fun onCallback(value: StorageReference) {
+                    override fun onCallback(value: String) {
                         lawyersImageProfile.load(value) {
                             crossfade(true)
                             error(R.drawable.ic_person_24)
+                            placeholderMemoryCacheKey(lawyersImageProfile.metadata?.memoryCacheKey)
                         }
                     }
                 })

@@ -12,6 +12,8 @@ import com.google.firebase.storage.ktx.storage
 object FirebaseRepository {
     private val db = Firebase.database.reference
     private val storage = Firebase.storage.reference.child("images")
+    private const val defaultPicture =
+        "https://firebasestorage.googleapis.com/v0/b/lawyer-fc8a1.appspot.com/o/images%2Fdefault.png?alt=media&token=de3a9f9e-333c-414e-8c59-74fdc51db56f"
 
     fun writeNewUser(user: User) = db.child("users").child(user.uid).setValue(user)
 
@@ -32,7 +34,7 @@ object FirebaseRepository {
 
     fun getImageRef(uid: String) = storage.child(uid)
 
-    fun getDefaultImageRef() = storage.child("default.png")
+    fun getDefaultImageUrl() = defaultPicture
 
     fun updateCountry(country: String, uid: String) =
         db.child("users").child(uid).child("country").setValue(country)
