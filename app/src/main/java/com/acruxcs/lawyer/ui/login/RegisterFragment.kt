@@ -18,10 +18,9 @@ import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.checkSpinnerIfEmpty
-import com.acruxcs.lawyer.utils.Utils.countriesMapType
+import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
-import com.google.gson.Gson
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -41,15 +40,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private lateinit var selectedCountry: String
 
-    private val jsonString by lazy {
-        Utils.getJsonFromAssets(
-            requireContext(), "countries.min.json"
-        )
-    }
-    private val countryList by lazy {
-        Gson().fromJson<Map<String, List<String>>>(jsonString, countriesMapType).toSortedMap()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityProgressLayout = (activity as MainActivity).binding.progressLayout
@@ -58,25 +48,29 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val countryAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            ArrayList(countryList.keys)
-        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
 
         with(binding) {
-            registerSpinnerCountry.setAdapter(countryAdapter)
+            ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.Countries,
+                android.R.layout.simple_dropdown_item_1line
+            ).also {
+                it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                registerSpinnerCountry.setAdapter(it)
+            }
 
             registerSpinnerCountry.setOnItemClickListener { adapterView, _, i, _ ->
                 registerSpinnerCity.text.clear()
                 selectedCountry = adapterView.getItemAtPosition(i).toString()
-                val cityList = countryList[selectedCountry]!!
-                val cityAdapter = ArrayAdapter(
+                ArrayAdapter.createFromResource(
                     requireContext(),
-                    android.R.layout.simple_dropdown_item_1line,
-                    ArrayList(cityList)
-                ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
-                registerSpinnerCity.setAdapter(cityAdapter)
+                    getCitiesByCountry(selectedCountry),
+                    android.R.layout.simple_dropdown_item_1line
+                ).also {
+                    it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    registerSpinnerCity.setAdapter(it)
+                }
+
                 Utils.hideKeyboard(requireContext(), requireView())
             }
 
@@ -145,7 +139,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 valid = false
             }
 
-            if (!countryList[selectedCountry]?.contains(city)!!) {
+            if (resources.getStringArray(getCitiesByCountry(selectedCountry)).contains(city)) {
                 registerLayoutEditCity.error = getString(R.string.invalid_city)
                 registerSpinnerCity.requestFocus()
                 valid = false
@@ -177,5 +171,3 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
     }
 }
-
-//TODO when selecting country remove edit ability, return when choosing again

@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.DialogFilterBinding
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
+import com.acruxcs.lawyer.utils.Utils.yes
 import com.google.android.gms.common.util.ArrayUtils
 import java.util.function.Predicate
 
@@ -20,13 +22,63 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
 
     private lateinit var binding: DialogFilterBinding
 
+    private val countryAdapter by lazy {
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.Countries,
+            android.R.layout.simple_dropdown_item_1line
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+    }
+    private val allCities by lazy {
+        val array = mutableListOf<String>()
+        for (country in resources.getStringArray(R.array.Countries)) {
+            array.addAll(resources.getStringArray(getCitiesByCountry(country)))
+        }
+        array
+    }
+    private val cityAdapter by lazy {
+        ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            allCities
+        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+    }
+
+    private val experienceAdapter by lazy {
+        ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            ArrayUtils.toWrapperArray(resources.getIntArray(R.array.Experience))
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+    }
+    private val specializationAdapter by lazy {
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.Specializations,
+            android.R.layout.simple_dropdown_item_1line
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+    }
+    private val countryPredicate by lazy {
+        Predicate<User> { l: User ->
+            l.country == binding.filterSpinnerCountry.editableText.toString().trim()
+        }
+    }
+
     private val cityPredicate by lazy {
-        Predicate<User> { l: User -> l.city == binding.filterEditCity.text.toString() }
+        Predicate<User> { l: User ->
+            l.city == binding.filterSpinnerCity.editableText.toString().trim()
+        }
     }
 
     private val specPredicate by lazy {
         Predicate<User> { l: User ->
-            l.specialization == binding.filterSpinnerSpecialization.editableText.toString()
+            l.specialization == binding.filterSpinnerSpecialization.editableText.toString().trim()
         }
     }
 
@@ -43,37 +95,24 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
             val builder = AlertDialog.Builder(activity)
             with(binding) {
 
-                ArrayAdapter.createFromResource(
-                    requireContext(),
-                    R.array.Specializations,
-                    android.R.layout.simple_dropdown_item_1line
-                ).also { adapter ->
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    filterSpinnerSpecialization.setAdapter(adapter)
-                }
+                filterSpinnerCountry.setAdapter(countryAdapter)
+                filterSpinnerCity.setAdapter(cityAdapter)
 
-                val experience =
-                    ArrayUtils.toWrapperArray(resources.getIntArray(R.array.Experience))
-                val experienceAdapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_item, experience
-                )
-                experienceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                filterSpinnerSpecialization.setAdapter(specializationAdapter)
                 filterSpinnerExperience.setAdapter(experienceAdapter)
 
                 builder.setView(binding.root)
                     .setPositiveButton(
                         R.string.filter
                     ) { dialog, _ ->
-                        if (filterEditCity.text.toString().isNotEmpty()) {
-                            allPredicates.add(cityPredicate)
-                        }
-                        if (filterSpinnerSpecialization.editableText.toString().isNotEmpty()) {
-                            allPredicates.add(specPredicate)
-                        }
-                        if (filterSpinnerExperience.editableText.toString().isNotEmpty()) {
-                            allPredicates.add(expPredicate)
-                        }
+                        filterSpinnerCountry.text.toString().isNotEmpty()
+                            .yes { allPredicates.add(countryPredicate) }
+                        filterSpinnerCity.text.toString().isNotEmpty()
+                            .yes { allPredicates.add(cityPredicate) }
+                        filterSpinnerSpecialization.editableText.toString().isNotEmpty()
+                            .yes { allPredicates.add(specPredicate) }
+                        filterSpinnerExperience.editableText.toString().isNotEmpty()
+                            .yes { allPredicates.add(expPredicate) }
                         listener.onFilterButtonClick(allPredicates)
                         dialog.cancel()
                     }

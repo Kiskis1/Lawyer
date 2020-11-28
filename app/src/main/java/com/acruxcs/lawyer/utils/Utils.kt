@@ -19,8 +19,6 @@ import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.QuestionDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.gson.reflect.TypeToken
-import java.io.IOException
 
 object Utils {
 
@@ -31,7 +29,6 @@ object Utils {
     const val SHARED_AUTH_PROVIDER = "provider"
     const val MIN_PASS_LENGTH = 6
     lateinit var preferences: SharedPreferences
-    val countriesMapType by lazy { object : TypeToken<Map<String, List<String>>>() {}.type }
 
     fun init(activity: Activity) {
         preferences = activity.getSharedPreferences(SHARED_KEY, 0)
@@ -55,20 +52,13 @@ object Utils {
         QuestionDialog.newInstance(item).show(manager, "Question")
     }
 
-    fun getJsonFromAssets(context: Context, fileName: String): String {
-        val jsonString: String
-        jsonString = try {
-            val stream = context.assets.open(fileName)
-            val size = stream.available()
-            val buffer = ByteArray(size)
-            stream.read(buffer)
-            stream.close()
-            String(buffer, charset("UTF-8"))
-        } catch (e: IOException) {
-            e.printStackTrace()
-            return ""
+    fun getCitiesByCountry(country: String): Int {
+        return when (country) {
+            "Lithuania" -> R.array.Lithuania
+            "United States" -> R.array.United_States
+            "United Kingdom" -> R.array.United_Kingdom
+            else -> 0
         }
-        return jsonString
     }
 
     fun hideKeyboard(context: Context, view: View) {

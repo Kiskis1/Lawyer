@@ -25,14 +25,13 @@ import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.checkSpinnerIfEmpty
-import com.acruxcs.lawyer.utils.Utils.countriesMapType
 import com.acruxcs.lawyer.utils.Utils.edit
+import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
 import com.acruxcs.lawyer.utils.Utils.preferences
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewModel: MainViewModel by activityViewModels()
@@ -45,21 +44,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var selectedCountry: String
 
-    private val jsonString by lazy {
-        Utils.getJsonFromAssets(
-            requireContext(), "countries.min.json"
-        )
+    private val countryAdapter by lazy {
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.Countries,
+            android.R.layout.simple_dropdown_item_1line
+        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
     }
 
-    private val countryList by lazy {
-        Gson().fromJson<Map<String, List<String>>>(jsonString, countriesMapType).toSortedMap()
-    }
-    private val countryAdapter by lazy {
-        ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            ArrayList(countryList.keys)
-        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+    private fun getCityAdapter(country: String) = ArrayAdapter.createFromResource(
+        requireContext(),
+        getCitiesByCountry(country),
+        android.R.layout.simple_dropdown_item_1line
+    ).also {
+        it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,26 +73,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
             profileEditCountry.setOnItemClickListener { adapterView, _, i, _ ->
                 selectedCountry = adapterView.getItemAtPosition(i).toString()
-                val cityList = countryList[selectedCountry]!!
-                val cityAdapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_dropdown_item_1line,
-                    ArrayList(cityList)
-                ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
-                profileEditCity.setAdapter(cityAdapter)
+                profileEditCity.setAdapter(getCityAdapter(selectedCountry))
                 profileEditCity.isEnabled = true
                 Utils.hideKeyboard(requireContext(), requireView())
             }
-            if (profileEditCountry.editableText.toString().trim().isNotEmpty()) {
-                val cityList = countryList[profileEditCountry.editableText.toString().trim()]!!
-                val cityAdapter = ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_dropdown_item_1line,
-                    ArrayList(cityList)
-                ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
-                profileEditCity.setAdapter(cityAdapter)
-                Utils.hideKeyboard(requireContext(), requireView())
-            } else profileEditCity.isEnabled = false
+
+            if (user.country == "")
+                profileEditCity.isEnabled = false
+            else profileEditCity.setAdapter(getCityAdapter(user.country))
 
             profileButtonEditPicture.setOnClickListener {
                 selectImage()
@@ -139,14 +125,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun setupEndIconListeners() {
         with(binding) {
             profileLayoutCountry.setEndIconOnClickListener {
-                if (profileEditCountry.editableText.toString().trim() != user.country)
-                    updateCountry()
-                else handleStatus(Status.NO_CHANGE)
+                updateCountry()
             }
             profileLayoutCity.setEndIconOnClickListener {
-                if (profileEditCity.editableText.toString().trim() != user.city)
-                    updateCity()
-                else handleStatus(Status.NO_CHANGE)
+                updateCity()
             }
             profileLayoutPhone.setEndIconOnClickListener {
                 updatePhone()
@@ -247,9 +229,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
             Utils.hideKeyboard(requireContext(), requireView())
             profileViewModel.updateCountry(country)
-            if (country != user.country)
+
+            if (!resources.getStringArray(getCitiesByCountry(country))
+                    .contains(profileEditCity.editableText.toString().trim())
+            ) {
+                profileViewModel.updateCity("")
                 profileEditCity.editableText.clear()
-            profileViewModel.updateCity("")
+            }
         }
     }
 
@@ -324,7 +310,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun handleStatus(status: Status?) {
         when (status) {
             Status.SUCCESS ->
-                Snackbar.make(requireView(), "Success", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), "Success", Snackbar.LENGTH_SHORT).show()
             Status.ERROR -> Toast.makeText(
                 context, "Something went wrong, please try again!", Toast.LENGTH_SHORT
             ).show()
@@ -336,7 +322,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
             Status.PICTURE_CHANGE_SUCCESS -> {
                 loadProfileImage()
-                Snackbar.make(requireView(), "Success", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), "Success", Snackbar.LENGTH_SHORT).show()
             }
             Status.NO_CHANGE -> Toast.makeText(
                 context, "No change", Toast.LENGTH_SHORT

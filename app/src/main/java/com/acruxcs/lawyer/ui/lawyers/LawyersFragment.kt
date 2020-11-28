@@ -2,10 +2,8 @@ package com.acruxcs.lawyer.ui.lawyers
 
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLawyersBinding
 import com.acruxcs.lawyer.model.User
@@ -20,14 +18,6 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers),
 
     private val binding by viewBinding(FragmentLawyersBinding::bind)
 
-    private lateinit var activityProgressLayout: FrameLayout
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        activityProgressLayout = (activity as MainActivity).binding.progressLayout
-        activityProgressLayout.visibility = View.VISIBLE
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,7 +30,6 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers),
                 list.clear()
                 list.addAll(it)
                 lawyersAdapter.swapData(list)
-                activityProgressLayout.visibility = View.GONE
             })
 
             lawyersFab.setOnClickListener {
