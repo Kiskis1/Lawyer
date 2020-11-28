@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.acruxcs.lawyer.databinding.DialogQuestionBinding
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
-import com.acruxcs.lawyer.repository.FirebaseRepository
+import com.acruxcs.lawyer.repository.QuestionsRepository
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
@@ -18,7 +18,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class QuestionDialog : DialogFragment() {
-    private val repository = FirebaseRepository
+    private val repository = QuestionsRepository
 
     private var question = Question()
     private lateinit var lawyer: User

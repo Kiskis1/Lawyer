@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.acruxcs.lawyer.databinding.ActivityMainBinding
 import com.acruxcs.lawyer.model.User
-import com.acruxcs.lawyer.repository.FirebaseRepository
+import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.edit
 import com.crazylegend.viewbinding.viewBinding
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        FirebaseRepository.getUser(userId)
+        UsersRepository.getUser(userId)
             ?.addValueEventListener(userListener)
     }
 

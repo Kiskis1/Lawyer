@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.User
-import com.acruxcs.lawyer.repository.FirebaseRepository
+import com.acruxcs.lawyer.repository.CasesRepository
+import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -14,7 +15,8 @@ import java.util.function.Predicate
 import java.util.stream.Collectors
 
 class LawyersViewModel : ViewModel() {
-    private val repository = FirebaseRepository
+    private val usersRepository = UsersRepository
+    private val casesRepository = CasesRepository
     private val lawyers = MutableLiveData<List<User>>()
     private val cases = MutableLiveData<List<Case>>()
 
@@ -32,7 +34,7 @@ class LawyersViewModel : ViewModel() {
                 println(error.message)
             }
         }
-        repository.getLawyers().addValueEventListener(listener)
+        usersRepository.getLawyers().addValueEventListener(listener)
         return lawyers
     }
 
@@ -50,16 +52,16 @@ class LawyersViewModel : ViewModel() {
                 println(error.message)
             }
         }
-        repository.getLawyersCases(uid).addValueEventListener(listener)
+        casesRepository.getLawyersCases(uid).addValueEventListener(listener)
         return cases
     }
 
     fun getImageRef(uid: String, ic: MainViewModel.Companion.ImageCallback) {
-        val reference = repository.getImageRef(uid)
+        val reference = usersRepository.getImageRef(uid)
         reference.downloadUrl.addOnSuccessListener {
             ic.onCallback(it.toString())
         }.addOnFailureListener {
-            ic.onCallback(repository.getDefaultImageUrl())
+            ic.onCallback(usersRepository.defaultPicture)
         }
     }
 

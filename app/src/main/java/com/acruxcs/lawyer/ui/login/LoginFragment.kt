@@ -68,7 +68,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                                 if (task.result!!.additionalUserInfo!!.isNewUser) {
                                     viewModel.createNewUser(task)
                                 } else {
-                                    viewModel.getUserData(task.result!!.user!!.uid)
+                                    viewModel.getUserData(user.uid)
                                 }
                                 preferences.edit {
                                     this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))

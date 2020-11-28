@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
-import com.acruxcs.lawyer.repository.FirebaseRepository
+import com.acruxcs.lawyer.repository.CasesRepository
+import com.acruxcs.lawyer.repository.QuestionsRepository
+import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.edit
 import com.google.android.gms.tasks.Task
@@ -18,7 +20,9 @@ import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 
 class MainViewModel : ViewModel() {
-    private val repository = FirebaseRepository
+    private val usersRepository = UsersRepository
+    private val casesRepository = CasesRepository
+    private val questionsRepository = QuestionsRepository
     val firebaseAuth = Firebase.auth
     val firebaseUser = Firebase.auth.currentUser
     var user = MutableLiveData<User>()
@@ -47,7 +51,7 @@ class MainViewModel : ViewModel() {
                 uid = profile.uid
             )
             user.value = newUser
-            repository.writeNewUser(newUser)
+            usersRepository.writeNewUser(newUser)
         }
     }
 
@@ -66,27 +70,27 @@ class MainViewModel : ViewModel() {
             }
         }
 
-        FirebaseRepository.getUser(userId)
+        usersRepository.getUser(userId)
             ?.addValueEventListener(userListener)
     }
 
     fun createNewUser(newUser: User) {
         user.value = newUser
-        repository.writeNewUser(newUser)
+        usersRepository.writeNewUser(newUser)
     }
 
     fun getImageRef(uid: String, ic: ImageCallback) {
-        val reference = repository.getImageRef(uid)
+        val reference = usersRepository.getImageRef(uid)
         reference.downloadUrl.addOnSuccessListener {
             ic.onCallback(it.toString())
         }.addOnFailureListener {
-            ic.onCallback(repository.getDefaultImageUrl())
+            ic.onCallback(usersRepository.defaultPicture)
         }
     }
 
     fun postCase(case: Case) {
         case.user = firebaseUser!!.uid
-        repository.postCase(case)
+        casesRepository.postCase(case)
     }
 
     //advokatui uzduoti klaus
@@ -104,7 +108,7 @@ class MainViewModel : ViewModel() {
                 println(error.message)
             }
         }
-        repository.getAskedQuestions(email).addValueEventListener(listener)
+        questionsRepository.getAskedQuestions(email).addValueEventListener(listener)
         return askedQuestions
     }
 
@@ -123,7 +127,7 @@ class MainViewModel : ViewModel() {
                 println(error.message)
             }
         }
-        repository.getSentQuestions(email).addValueEventListener(listener)
+        questionsRepository.getSentQuestions(email).addValueEventListener(listener)
         return sentQuestions
     }
 

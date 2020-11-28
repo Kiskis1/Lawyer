@@ -2,7 +2,7 @@ package com.acruxcs.lawyer.ui.profile
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.acruxcs.lawyer.repository.FirebaseRepository
+import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.utils.SingleLiveEvent
 import com.acruxcs.lawyer.utils.Status
 import com.google.firebase.FirebaseNetworkException
@@ -11,7 +11,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class ProfileViewModel : ViewModel() {
-    private val repository = FirebaseRepository
+    private val repository = UsersRepository
     private val firebaseUser = Firebase.auth.currentUser
 
     private val status = SingleLiveEvent<Status>()
