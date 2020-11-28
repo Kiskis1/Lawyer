@@ -13,7 +13,7 @@ import coil.load
 import coil.metadata
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
-import com.acruxcs.lawyer.databinding.FragmentProfileLawyerBinding
+import com.acruxcs.lawyer.databinding.FragmentProfileBinding
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.lawyersinfo.LawyersCaseAdapter
@@ -28,14 +28,14 @@ import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
 
-class ProfileFragment : Fragment(R.layout.fragment_profile_lawyer) {
+class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewModel: MainViewModel by activityViewModels()
     private val lawyersCasesAdapter = LawyersCaseAdapter()
     private val list = mutableListOf<Case>()
     private val lawyersViewModel: LawyersViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by viewModels()
 
-    private val binding by viewBinding(FragmentProfileLawyerBinding::bind)
+    private val binding by viewBinding(FragmentProfileBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +53,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile_lawyer) {
             }
             if (!preferences.getStringSet(SHARED_AUTH_PROVIDER, setOf<String>())
                     ?.contains("password")!!
-            ) {
+            )
                 profileLayoutPassword.visibility = View.GONE
-            }
 
             profileLayoutPassword.setEndIconOnClickListener {
                 updatePassword()
