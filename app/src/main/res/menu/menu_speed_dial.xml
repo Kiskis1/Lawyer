@@ -3,9 +3,9 @@
     <item
         android:id="@+id/fab_call_lawyer"
         android:icon="@drawable/ic_call_24"
-        android:title="@string/call" />
+        android:title="@string/action_call" />
     <item
         android:id="@+id/fab_message_lawyer"
         android:icon="@drawable/ic_question_24"
-        android:title="@string/message" />
+        android:title="@string/action_message" />
 </menu>

@@ -38,11 +38,11 @@ object Utils {
         val dialog = AlertDialog.Builder(context)
         dialog.setMessage(R.string.call_dialog_message)
         dialog.setTitle(R.string.call_dialog_title)
-        dialog.setPositiveButton(R.string.call) { _, _ ->
+        dialog.setPositiveButton(R.string.action_call) { _, _ ->
             val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", item.phone, null))
             context.startActivity(intent)
         }
-        dialog.setNegativeButton(R.string.cancel) { d, _ ->
+        dialog.setNegativeButton(R.string.action_cancel) { d, _ ->
             d.cancel()
         }
         dialog.create().show()
@@ -90,8 +90,7 @@ object Utils {
         context: Context
     ): Boolean {
         if (TextUtils.isEmpty(edit.text)) {
-            layout.error = context.resources.getString(R.string.empty_field)
-            edit.requestFocus()
+            layout.error = context.resources.getString(R.string.error_empty_field)
             return true
         } else layout.error = null
         return false
@@ -103,7 +102,7 @@ object Utils {
         context: Context
     ): Boolean {
         if (TextUtils.isEmpty(edit.editableText)) {
-            layout.error = context.resources.getString(R.string.empty_field)
+            layout.error = context.resources.getString(R.string.error_empty_field)
             edit.requestFocus()
             return true
         } else layout.error = null

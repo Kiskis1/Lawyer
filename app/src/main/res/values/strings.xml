@@ -3,63 +3,55 @@
     <string name="facebook_app_id">641877796515383</string>
     <string name="fb_login_protocol_scheme">fb641877796515383</string>
 
-    <string name="title_login">Login</string>
-    <string name="login_password_hint">Password</string>
-    <string name="login_email_hint">Email</string>
+    <string name="login_title">Login</string>
+
     <string name="login_option">OR CONNECT WITH</string>
     <string name="login_no_account">Don\'t have an account?</string>
     <string name="login_register_now">Register now</string>
-    <string name="login_error">Something went wrong. Try again.</string>
 
     <string name="register_title">Register</string>
-    <string name="register_email_hint">Email</string>
-    <string name="register_password_hint">Password</string>
-    <string name="register_country_hint">Country</string>
     <string name="register_as_lawyer">Register as lawyer:</string>
-    <string name="register_hint_full_name">Full name</string>
-    <string name="register_hint_phone">Phone</string>
+
+    <string name="hint_password">Password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_country">Country</string>
+    <string name="hint_full_name">Full name</string>
+    <string name="hint_phone">Phone</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_city">City</string>
+    <string name="hint_specialization">Specialization</string>
+    <string name="hint_experience">Experience</string>
+    <string name="hint_new_password">New Password</string>
+    <string name="hint_date">Date</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_lawyers">Lawyers</string>
 
-    <string name="question_hint_description">Description</string>
-    <string name="question_hint_country">Country</string>
-    <string name="question_hint_phone">Phone</string>
-    <string name="question_hint_name">Name</string>
-    <string name="question_send">Send</string>
-
     <string name="call_dialog_title">Call a lawyer</string>
     <string name="call_dialog_message">Are you sure you want to call this lawyer?</string>
 
-    <string name="lawyer_name">Name: %s</string>
-    <string name="lawyer_specialization">Specialization: %s</string>
-    <string name="lawyer_education">Education: %s</string>
-    <string name="lawyer_number_of_won_cases">Number of won cases: %d</string>
-    <string name="lawyer_country">Country: %s</string>
-    <string name="lawyer_city">City: %s</string>
-    <plurals name="lawyer_experience">
+    <string name="item_lawyer_name">Name: %s</string>
+    <string name="item_lawyer_specialization">Specialization: %s</string>
+    <string name="item_lawyer_education">Education: %s</string>
+    <string name="item_lawyer_number_of_won_cases">Number of won cases: %d</string>
+    <string name="item_lawyer_country">Country: %s</string>
+    <string name="item_lawyer_city">City: %s</string>
+    <plurals name="item_lawyer_experience">
         <item quantity="one">Experience: %d year</item>
         <item quantity="other">Experience: %d years</item>
     </plurals>
+    <string name="lawyersinfo_notable_cases">Notable cases:</string>
 
-    <string name="lawyer_desc_picture_of_lawyer">Picture of lawyer</string>
-    <string name="lawyer_ask_a_question">Ask A Question</string>
 
-    <string name="message">Message</string>
-    <string name="filter">Filter</string>
-    <string name="call">Call</string>
-    <string name="cancel">Cancel</string>
-    <string name="empty_field">Field can\'t be empty</string>
-    <string name="city">City</string>
-    <string name="specialization">Specialization</string>
-    <string name="experience">Experience</string>
-
-    <string name="profile_new_password">New Password</string>
-    <string name="password_not_long_enough">Password must be longer than 6 symbols</string>
-    <string name="logout">Logout</string>
-    <string name="switch_dark_mode">Switch Dark Mode</string>
-    <string name="add">Add</string>
+    <string name="action_ask_a_question">Ask A Question</string>
+    <string name="action_message">Message</string>
+    <string name="action_filter">Filter</string>
+    <string name="action_call">Call</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_send">Send</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_add">Add</string>
 
     <string name="case_short_description">Short description</string>
     <string name="case_hint_court">Court</string>
@@ -67,19 +59,24 @@
     <string name="case_hint_type">Type</string>
     <string name="case_hint_outcome">Outcome</string>
 
-
     <string name="item_case_short_description">Short description: %s</string>
     <string name="item_case_court">Court: %s</string>
     <string name="item_case_type">Type: %s</string>
     <string name="item_case_area">Area: %s</string>
     <string name="item_case_outcome">Outcome: %s</string>
     <string name="item_case_date">Date: %s</string>
-    <string name="case_hint_date">Date</string>
-    <string name="profile_your_cases">Your cases:</string>
-    <string name="lawyersinfo_notable_cases">Notable cases:</string>
+
+    <string name="item_question_description">Description: %s</string>
+    <string name="item_question_country">Country: %s</string>
+    <string name="item_question_city">City: %s</string>
+    <string name="item_question_phone">Phone: %s</string>
+    <string name="item_question_full_name">Full name: %s</string>
+
 
     <string name="main_text_user_info">Welcome: %s!</string>
 
+    <string name="profile_your_cases">Your cases:</string>
+    <string name="profile_switch_dark_mode">Switch Dark Mode</string>
     <string name="profile_update_phone_number">Update Phone Number</string>
     <string name="profile_update_country">Update Country</string>
     <string name="profile_update_city">Update City</string>
@@ -87,10 +84,14 @@
     <string name="profile_update_education">Update Education</string>
     <string name="profile_update_experience">Update Years of Experience</string>
     <string name="profile_update_won_cases">Update Won Cases</string>
+
+    <string name="content_desc_picture_of_lawyer">Picture of lawyer</string>
     <string name="content_desc_profile_change_profile_picture">Change profile picture</string>
     <string name="content_desc_profile_add_your_case">Add your case</string>
     <string name="content_desc_lawyers_filter_lawyers_by_categories">Filter lawyers by categories</string>
 
-    <string name="invalid_city">Invalid city</string>
+    <string name="error_invalid_city">Invalid city</string>
+    <string name="error_empty_field">Field can\'t be empty</string>
+    <string name="error_password_not_long_enough">Password must be longer than 6 symbols</string>
 
 </resources>

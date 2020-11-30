@@ -23,7 +23,7 @@
                 android:layout_width="128dp"
                 android:layout_height="128dp"
                 android:layout_marginTop="8dp"
-                android:contentDescription="@string/lawyer_desc_picture_of_lawyer"
+                android:contentDescription="@string/content_desc_picture_of_lawyer"
                 app:srcCompat="@drawable/ic_person_24" />
 
             <LinearLayout
@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="@string/call"
+                android:text="@string/action_call"
                 app:icon="@drawable/ic_call_24" />
 
             <com.google.android.material.button.MaterialButton
@@ -101,7 +101,7 @@
                 style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lawyer_ask_a_question"
+                android:text="@string/action_ask_a_question"
                 app:icon="@drawable/ic_question_24" />
         </LinearLayout>
 

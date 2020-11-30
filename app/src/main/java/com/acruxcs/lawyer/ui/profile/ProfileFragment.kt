@@ -35,7 +35,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val viewModel: MainViewModel by activityViewModels()
-    private val lawyersCasesAdapter = LawyersCaseAdapter()
+    private val lawyersCasesAdapter by lazy { LawyersCaseAdapter() }
     private val lawyersViewModel: LawyersViewModel by viewModels()
     private val profileViewModel: ProfileViewModel by viewModels()
     private val user by lazy { viewModel.user.value!! }
@@ -208,11 +208,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         with(binding) {
             password = profileEditPassword.text.toString().trim()
             if (password.isEmpty()) {
-                profileLayoutPassword.error = getString(R.string.empty_field)
+                profileLayoutPassword.error = getString(R.string.error_empty_field)
                 profileEditPassword.requestFocus()
                 return
             } else if (password.length < MIN_PASS_LENGTH) {
-                profileLayoutPassword.error = getString(R.string.password_not_long_enough)
+                profileLayoutPassword.error = getString(R.string.error_password_not_long_enough)
                 profileEditPassword.requestFocus()
                 return
             }

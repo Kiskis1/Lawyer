@@ -16,7 +16,7 @@ import com.google.gson.Gson
 class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedListener {
     private val viewModel: MainViewModel by activityViewModels()
 
-    private lateinit var questionAdapter: QuestionListAdapter
+    private val questionAdapter by lazy { QuestionListAdapter() }
 
     private val binding by viewBinding(FragmentMainBinding::bind)
     private lateinit var activityProgressLayout: FrameLayout
@@ -30,7 +30,6 @@ class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        questionAdapter = QuestionListAdapter()
         with(binding) {
             activityProgressLayout.visibility = View.VISIBLE
             mainAskedQuestionsRecycler.adapter = questionAdapter

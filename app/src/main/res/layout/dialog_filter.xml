@@ -24,7 +24,7 @@
             android:id="@+id/filter_spinner_country"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/question_hint_country"
+            android:hint="@string/hint_country"
             android:imeOptions="actionDone"
             android:inputType="none"
             android:singleLine="true" />
@@ -46,7 +46,7 @@
             android:id="@+id/filter_spinner_city"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/city"
+            android:hint="@string/hint_city"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:singleLine="true" />
@@ -69,7 +69,7 @@
             android:id="@+id/filter_spinner_specialization"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/specialization"
+            android:hint="@string/hint_specialization"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +89,7 @@
             android:id="@+id/filter_spinner_experience"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/experience"
+            android:hint="@string/hint_experience"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 

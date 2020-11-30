@@ -13,15 +13,13 @@ import java.util.function.Predicate
 class LawyersFragment : Fragment(R.layout.fragment_lawyers),
     FilterDialog.OnFilterButtonClickListener {
     private val viewModel: LawyersViewModel by viewModels()
-    private lateinit var lawyersAdapter: LawyersListAdapter
+    private val lawyersAdapter by lazy { LawyersListAdapter(parentFragmentManager, viewModel) }
     private val list = mutableListOf<User>()
 
     private val binding by viewBinding(FragmentLawyersBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        lawyersAdapter = LawyersListAdapter(parentFragmentManager, viewModel)
 
         with(binding) {
             lawyersRecycler.adapter = lawyersAdapter

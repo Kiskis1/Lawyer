@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemQuestionBinding
 import com.acruxcs.lawyer.model.Question
 
@@ -39,12 +40,14 @@ class QuestionListAdapter :
 
         fun bind(item: Question) = with(itemView) {
             with(ItemQuestionBinding.bind(itemView)) {
-                mainAskedDescription.text = item.description
-                mainAskedCountry.text = item.country
-                mainAskedCity.text = item.city
-                mainAskedPhone.text = item.phone
-                mainAskedFullname.text = item.fullname
-                mainAskedSender.text = item.sender
+                mainAskedDescription.text =
+                    resources.getString(R.string.item_question_description, item.description)
+                mainAskedCountry.text =
+                    resources.getString(R.string.item_question_country, item.country)
+                mainAskedCity.text = resources.getString(R.string.item_question_city, item.city)
+                mainAskedPhone.text = resources.getString(R.string.item_question_phone, item.phone)
+                mainAskedFullname.text =
+                    resources.getString(R.string.item_question_full_name, item.fullname)
             }
         }
     }

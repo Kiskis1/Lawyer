@@ -103,7 +103,7 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
 
                 builder.setView(binding.root)
                     .setPositiveButton(
-                        R.string.filter
+                        R.string.action_filter
                     ) { dialog, _ ->
                         filterSpinnerCountry.text.toString().isNotEmpty()
                             .yes { allPredicates.add(countryPredicate) }
@@ -117,7 +117,7 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
                         dialog.cancel()
                     }
                     .setNegativeButton(
-                        R.string.cancel
+                        R.string.action_cancel
                     ) { dialog, _ ->
                         dialog.cancel()
                     }

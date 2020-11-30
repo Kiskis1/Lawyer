@@ -56,21 +56,22 @@ class LawyersListAdapter(
 
         fun bind(item: User) = with(itemView) {
             with(ItemLawyerBinding.bind(itemView)) {
-                lawyersTextName.text = resources.getString(R.string.lawyer_name, item.fullname)
+                lawyersTextName.text = resources.getString(R.string.item_lawyer_name, item.fullname)
                 lawyersTextEducation.text =
-                    resources.getString(R.string.lawyer_education, item.education)
+                    resources.getString(R.string.item_lawyer_education, item.education)
                 lawyersTextSpecialization.text =
-                    resources.getString(R.string.lawyer_specialization, item.specialization)
+                    resources.getString(R.string.item_lawyer_specialization, item.specialization)
                 lawyersTextExperience.text =
                     resources.getQuantityString(
-                        R.plurals.lawyer_experience,
+                        R.plurals.item_lawyer_experience,
                         item.experience,
                         item.experience
                     )
                 lawyersTextWonCases.text =
-                    resources.getString(R.string.lawyer_number_of_won_cases, item.wonCases)
-                lawyersTextCountry.text = resources.getString(R.string.lawyer_country, item.country)
-                lawyersTextCity.text = resources.getString(R.string.lawyer_city, item.city)
+                    resources.getString(R.string.item_lawyer_number_of_won_cases, item.wonCases)
+                lawyersTextCountry.text =
+                    resources.getString(R.string.item_lawyer_country, item.country)
+                lawyersTextCity.text = resources.getString(R.string.item_lawyer_city, item.city)
                 lawyersButtonCall.setOnClickListener {
                     Utils.showCallDialog(itemView.context, item)
                 }

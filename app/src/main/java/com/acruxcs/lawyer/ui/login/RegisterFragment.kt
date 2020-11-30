@@ -125,7 +125,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 registerEditPhone, registerLayoutEditPhone, requireContext()
             ).yes { valid = false }
             if (password.length < MIN_PASS_LENGTH) {
-                registerLayoutEditPassword.error = getString(R.string.password_not_long_enough)
+                registerLayoutEditPassword.error =
+                    getString(R.string.error_password_not_long_enough)
                 registerEditPassword.requestFocus()
                 valid = false
             } else registerLayoutEditPassword.error = null
@@ -140,7 +141,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             }
 
             if (resources.getStringArray(getCitiesByCountry(selectedCountry)).contains(city)) {
-                registerLayoutEditCity.error = getString(R.string.invalid_city)
+                registerLayoutEditCity.error = getString(R.string.error_invalid_city)
                 registerSpinnerCity.requestFocus()
                 valid = false
             } else registerLayoutEditCity.error = null

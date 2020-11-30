@@ -18,7 +18,7 @@ import com.crazylegend.viewbinding.viewBinding
 
 class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     private lateinit var lawyer: User
-    private lateinit var lawyersCasesAdapter: LawyersCaseAdapter
+    private val lawyersCasesAdapter by lazy { LawyersCaseAdapter() }
     private val list = mutableListOf<Case>()
     private val viewModel: LawyersViewModel by viewModels()
     private val binding by viewBinding(FragmentLawyersInfoBinding::bind)
@@ -33,7 +33,6 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-
             lawyersinfoSpeeddial.inflate(R.menu.menu_speed_dial)
             lawyersinfoSpeeddial.setOnActionSelectedListener { item ->
                 when (item.id) {
@@ -49,7 +48,6 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                 false
             }
 
-            lawyersCasesAdapter = LawyersCaseAdapter()
             lawyersinfoRecycler.adapter = lawyersCasesAdapter
             viewModel.getLawyersCases(lawyer.uid).observe(viewLifecycleOwner, {
                 list.clear()
@@ -57,20 +55,21 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                 lawyersCasesAdapter.swapData(list)
             })
 
-            lawyersinfoTextName.text = resources.getString(R.string.lawyer_name, lawyer.fullname)
+            lawyersinfoTextName.text =
+                resources.getString(R.string.item_lawyer_name, lawyer.fullname)
             lawyersinfoTextEducation.text =
-                resources.getString(R.string.lawyer_education, lawyer.education)
+                resources.getString(R.string.item_lawyer_education, lawyer.education)
             lawyersinfoTextSpecialization.text =
-                resources.getString(R.string.lawyer_specialization, lawyer.specialization)
-            lawyersinfoTextCity.text = resources.getString(R.string.lawyer_city, lawyer.city)
+                resources.getString(R.string.item_lawyer_specialization, lawyer.specialization)
+            lawyersinfoTextCity.text = resources.getString(R.string.item_lawyer_city, lawyer.city)
             lawyersinfoTextExperience.text =
                 resources.getQuantityString(
-                    R.plurals.lawyer_experience,
+                    R.plurals.item_lawyer_experience,
                     lawyer.experience,
                     lawyer.experience
                 )
             lawyersinfoTextWonCases.text =
-                resources.getString(R.string.lawyer_number_of_won_cases, lawyer.wonCases)
+                resources.getString(R.string.item_lawyer_number_of_won_cases, lawyer.wonCases)
             viewModel.getImageRef(lawyer.uid, object : MainViewModel.Companion.ImageCallback {
                 override fun onCallback(value: String) {
                     lawyersinfoImageProfile.load(value) {
