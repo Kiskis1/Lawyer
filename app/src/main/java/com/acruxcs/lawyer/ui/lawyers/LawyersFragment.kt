@@ -22,12 +22,16 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers),
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
+            progressBar.progressLayout.visibility = View.VISIBLE
+            lawyersRecycler.visibility = View.INVISIBLE
             lawyersRecycler.adapter = lawyersAdapter
 
             viewModel.getLawyers().observe(viewLifecycleOwner, {
                 list.clear()
                 list.addAll(it)
                 lawyersAdapter.swapData(list)
+                progressBar.progressLayout.visibility = View.GONE
+                lawyersRecycler.visibility = View.VISIBLE
             })
 
             lawyersFab.setOnClickListener {

@@ -18,7 +18,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activityProgressLayout = (activity as MainActivity).binding.progressLayout
+        activityProgressLayout = (activity as MainActivity).binding.progressBar.progressLayout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

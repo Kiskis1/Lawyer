@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             getUserData(Firebase.auth.currentUser?.uid)
         } else {
-            binding.progressLayout.visibility = View.GONE
+            binding.progressBar.progressLayout.visibility = View.GONE
         }
     }
 
