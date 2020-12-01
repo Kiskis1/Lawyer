@@ -15,7 +15,7 @@ import coil.metadata
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemLawyerBinding
 import com.acruxcs.lawyer.model.User
-import com.acruxcs.lawyer.ui.main.MainViewModel
+import com.acruxcs.lawyer.ui.profile.ProfileViewModel
 import com.acruxcs.lawyer.utils.Utils
 
 class LawyersListAdapter(
@@ -75,7 +75,7 @@ class LawyersListAdapter(
                 lawyersButtonCall.setOnClickListener {
                     Utils.showCallDialog(itemView.context, item)
                 }
-                viewModel.getImageRef(item.uid, object : MainViewModel.Companion.ImageCallback {
+                viewModel.getImageRef(item.uid, object : ProfileViewModel.Companion.ImageCallback {
                     override fun onCallback(value: String) {
                         lawyersImageProfile.load(value) {
                             error(R.drawable.ic_person_24)

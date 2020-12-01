@@ -2,6 +2,8 @@ package com.acruxcs.lawyer.ui.profile
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import com.acruxcs.lawyer.model.Case
+import com.acruxcs.lawyer.repository.CasesRepository
 import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.utils.SingleLiveEvent
 import com.acruxcs.lawyer.utils.Status
@@ -11,7 +13,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class ProfileViewModel : ViewModel() {
-    private val repository = UsersRepository
+    private val usersRepository = UsersRepository
+    private val casesRepository = CasesRepository
     private val firebaseUser = Firebase.auth.currentUser
 
     private val status = SingleLiveEvent<Status>()
@@ -21,7 +24,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun updateCountry(country: String) {
-        repository.updateCountry(country, firebaseUser!!.uid).addOnSuccessListener {
+        usersRepository.updateCountry(country, firebaseUser!!.uid).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
@@ -29,7 +32,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun updateCity(city: String) {
-        repository.updateCity(city, firebaseUser!!.uid).addOnSuccessListener {
+        usersRepository.updateCity(city, firebaseUser!!.uid).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
@@ -37,7 +40,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun updatePhone(phone: String) {
-        repository.updatePhone(phone, firebaseUser!!.uid).addOnSuccessListener {
+        usersRepository.updatePhone(phone, firebaseUser!!.uid).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
@@ -59,7 +62,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun uploadImage(uri: Uri) {
-        repository.uploadImage(uri, firebaseUser!!.uid).addOnSuccessListener {
+        usersRepository.uploadImage(uri, firebaseUser!!.uid).addOnSuccessListener {
             status.value = Status.PICTURE_CHANGE_SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
@@ -67,7 +70,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun updateWonCases(wonCases: Int) {
-        repository.updateWonCases(wonCases, firebaseUser!!.uid).addOnSuccessListener {
+        usersRepository.updateWonCases(wonCases, firebaseUser!!.uid).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
@@ -75,7 +78,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun updateExperience(experience: Int) {
-        repository.updateExperience(experience, firebaseUser!!.uid).addOnSuccessListener {
+        usersRepository.updateExperience(experience, firebaseUser!!.uid).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
@@ -83,7 +86,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun updateEducation(education: String) {
-        repository.updateEducation(education, firebaseUser!!.uid).addOnSuccessListener {
+        usersRepository.updateEducation(education, firebaseUser!!.uid).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
@@ -91,10 +94,31 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun updateSpecialization(specialization: String) {
-        repository.updateSpecialization(specialization, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.SUCCESS
+        usersRepository.updateSpecialization(specialization, firebaseUser!!.uid)
+            .addOnSuccessListener {
+                status.value = Status.SUCCESS
+            }.addOnFailureListener {
+                status.value = Status.ERROR
+            }
+    }
+
+    fun postCase(case: Case) {
+        case.user = firebaseUser!!.uid
+        casesRepository.postCase(case)
+    }
+
+    fun getImageRef(uid: String, ic: ImageCallback) {
+        val reference = usersRepository.getImageRef(uid)
+        reference.downloadUrl.addOnSuccessListener {
+            ic.onCallback(it.toString())
         }.addOnFailureListener {
-            status.value = Status.ERROR
+            ic.onCallback(usersRepository.defaultPicture)
+        }
+    }
+
+    companion object {
+        interface ImageCallback {
+            fun onCallback(value: String)
         }
     }
 }

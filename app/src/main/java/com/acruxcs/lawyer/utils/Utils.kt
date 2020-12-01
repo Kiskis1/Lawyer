@@ -13,6 +13,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
@@ -107,6 +110,15 @@ object Utils {
             return true
         } else layout.error = null
         return false
+    }
+
+    fun <T> LiveData<T>.observeOnce(owner: LifecycleOwner, observer: (T) -> Unit) {
+        observe(owner, object : Observer<T> {
+            override fun onChanged(value: T) {
+                removeObserver(this)
+                observer(value)
+            }
+        })
     }
 }
 

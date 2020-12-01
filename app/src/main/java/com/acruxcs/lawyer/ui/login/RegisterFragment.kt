@@ -6,14 +6,14 @@ import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.acruxcs.lawyer.MainActivity
+import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentRegisterBinding
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
-import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
@@ -24,7 +24,7 @@ import com.crazylegend.viewbinding.viewBinding
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: LoginViewModel by viewModels()
     private lateinit var email: String
     private lateinit var password: String
     private lateinit var fullname: String
@@ -155,7 +155,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 if (task.isSuccessful) {
                     user.uid = task.result?.user!!.uid
                     viewModel.createNewUser(user)
-                    viewModel.setUser(user)
+                    MainApplication.user.postValue(user)
+                    MainApplication.loggedIn.postValue(true)
                     activityProgressLayout.visibility = View.GONE
                     requireView().findNavController()
                         .navigate(

@@ -8,18 +8,16 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.acruxcs.lawyer.databinding.DialogNewCaseBinding
 import com.acruxcs.lawyer.model.Case
-import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.google.android.material.datepicker.MaterialDatePicker
 
-class NewCaseDialog(private val fragment: Fragment) : DialogFragment() {
+class NewCaseDialog(private val fragment: Fragment, private val viewModel: ProfileViewModel) :
+    DialogFragment() {
     private val case = Case()
-    private val viewModel: MainViewModel by activityViewModels()
     private val picker = MaterialDatePicker.Builder.datePicker().build()
     private lateinit var binding: DialogNewCaseBinding
 

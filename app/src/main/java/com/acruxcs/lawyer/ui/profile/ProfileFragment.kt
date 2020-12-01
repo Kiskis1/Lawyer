@@ -9,16 +9,16 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import coil.load
 import coil.metadata
 import com.acruxcs.lawyer.MainActivity
+import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentProfileBinding
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.lawyersinfo.LawyersCaseAdapter
-import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
@@ -32,13 +32,13 @@ import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-    private val viewModel: MainViewModel by activityViewModels()
     private val lawyersCasesAdapter by lazy { LawyersCaseAdapter() }
     private val lawyersViewModel: LawyersViewModel by viewModels()
-    private val profileViewModel: ProfileViewModel by viewModels()
-    private val user by lazy { viewModel.user.value!! }
+    private val viewModel: ProfileViewModel by viewModels()
 
     private val binding by viewBinding(FragmentProfileBinding::bind)
 
@@ -62,13 +62,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        profileViewModel.getStatus().observe(this, { handleStatus(it) })
+        viewModel.getStatus().observe(this, { handleStatus(it) })
         loadProfileImage()
         setupEditTexts()
         setupEndIconListeners()
 
         with(binding) {
-            role = user.role
+            role = MainApplication.user.value!!.role
             profileEditCountry.setAdapter(countryAdapter)
 
             profileEditCountry.setOnItemClickListener { adapterView, _, i, _ ->
@@ -78,9 +78,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 Utils.hideKeyboard(requireContext(), requireView())
             }
 
-            if (user.country == "")
+            if (MainApplication.user.value!!.country == "")
                 profileEditCity.isEnabled = false
-            else profileEditCity.setAdapter(getCityAdapter(user.country))
+            else profileEditCity.setAdapter(getCityAdapter(MainApplication.user.value!!.country))
 
             profileButtonEditPicture.setOnClickListener {
                 selectImage()
@@ -103,7 +103,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
 
             profileRecycler.adapter = lawyersCasesAdapter
-            lawyersViewModel.getLawyersCases(user.uid)
+            lawyersViewModel.getLawyersCases(MainApplication.user.value!!.uid)
                 .observe(viewLifecycleOwner, {
                     lawyersCasesAdapter.swapData(it)
                 })
@@ -112,13 +112,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun setupEditTexts() {
         with(binding) {
-            profileEditCountry.setText(user.country)
-            profileEditCity.setText(user.city)
-            profileEditPhone.setText(user.phone)
-            profileEditSpecialization.setText(user.specialization)
-            profileEditEducation.setText(user.education)
-            profileEditExperience.setText(user.experience.toString())
-            profileEditWonCases.setText(user.wonCases.toString())
+            profileEditCountry.setText(MainApplication.user.value!!.country)
+            profileEditCity.setText(MainApplication.user.value!!.city)
+            profileEditPhone.setText(MainApplication.user.value!!.phone)
+            profileEditSpecialization.setText(MainApplication.user.value!!.specialization)
+            profileEditEducation.setText(MainApplication.user.value!!.education)
+            profileEditExperience.setText(MainApplication.user.value!!.experience.toString())
+            profileEditWonCases.setText(MainApplication.user.value!!.wonCases.toString())
         }
     }
 
@@ -150,7 +150,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 updateWonCases()
             }
             profileFabAddCase.setOnClickListener {
-                NewCaseDialog(this@ProfileFragment).show(parentFragmentManager, "new_case")
+                NewCaseDialog(this@ProfileFragment, viewModel).show(
+                    parentFragmentManager,
+                    "new_case"
+                )
             }
         }
     }
@@ -162,7 +165,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 return@updateWonCases
             }
             Utils.hideKeyboard(requireContext(), requireView())
-            profileViewModel.updateWonCases(wonCases)
+            viewModel.updateWonCases(wonCases)
         }
     }
 
@@ -175,7 +178,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 return@updateExperience
             }
             Utils.hideKeyboard(requireContext(), requireView())
-            profileViewModel.updateExperience(experience)
+            viewModel.updateExperience(experience)
         }
     }
 
@@ -186,7 +189,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 return@updateEducation
             }
             Utils.hideKeyboard(requireContext(), requireView())
-            profileViewModel.updateEducation(education)
+            viewModel.updateEducation(education)
         }
     }
 
@@ -199,7 +202,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
             val specialization = profileEditSpecialization.text.toString().trim()
             Utils.hideKeyboard(requireContext(), requireView())
-            profileViewModel.updateSpecialization(specialization)
+            viewModel.updateSpecialization(specialization)
         }
     }
 
@@ -217,7 +220,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 return
             }
         }
-        profileViewModel.updatePassword(password)
+        viewModel.updatePassword(password)
         Utils.hideKeyboard(requireContext(), requireView())
     }
 
@@ -228,12 +231,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 return@updateCountry
             }
             Utils.hideKeyboard(requireContext(), requireView())
-            profileViewModel.updateCountry(country)
+            viewModel.updateCountry(country)
 
             if (!resources.getStringArray(getCitiesByCountry(country))
                     .contains(profileEditCity.editableText.toString().trim())
             ) {
-                profileViewModel.updateCity("")
+                viewModel.updateCity("")
                 profileEditCity.editableText.clear()
             }
         }
@@ -246,7 +249,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 return@updateCity
             }
             Utils.hideKeyboard(requireContext(), requireView())
-            profileViewModel.updateCity(city)
+            viewModel.updateCity(city)
         }
     }
 
@@ -257,14 +260,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 return@updatePhone
             }
             Utils.hideKeyboard(requireContext(), requireView())
-            profileViewModel.updatePhone(phone)
+            viewModel.updatePhone(phone)
         }
     }
 
     private fun loadProfileImage() {
         viewModel.getImageRef(
-            user.uid,
-            object : MainViewModel.Companion.ImageCallback {
+            MainApplication.user.value!!.uid,
+            object : ProfileViewModel.Companion.ImageCallback {
                 override fun onCallback(value: String) {
                     with(binding) {
                         profileImagePicture.load(value) {
@@ -278,11 +281,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun logout() {
-        // requireView().findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
-        viewModel.firebaseAuth.signOut()
+        requireView().findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+        Firebase.auth.signOut()
         LoginManager.getInstance()?.logOut()
         (activity as MainActivity).googleSignInClient.signOut()
-        requireActivity().finish()
     }
 
     private val selectImageForResult =
@@ -304,7 +306,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun uploadImage(filePath: Uri) {
-        profileViewModel.uploadImage(filePath)
+        viewModel.uploadImage(filePath)
     }
 
     private fun handleStatus(status: Status?) {

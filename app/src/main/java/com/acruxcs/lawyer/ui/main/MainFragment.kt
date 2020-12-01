@@ -4,51 +4,39 @@ import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.acruxcs.lawyer.MainActivity
+import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentMainBinding
-import com.acruxcs.lawyer.model.User
-import com.acruxcs.lawyer.utils.Utils
+import com.acruxcs.lawyer.utils.Utils.observeOnce
 import com.crazylegend.viewbinding.viewBinding
-import com.google.gson.Gson
+import com.google.android.material.tabs.TabLayoutMediator
 
-class MainFragment : Fragment(R.layout.fragment_main), MainActivity.DataLoadedListener {
-    private val viewModel: MainViewModel by activityViewModels()
-
-    private val questionAdapter by lazy { QuestionListAdapter() }
-
+class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding by viewBinding(FragmentMainBinding::bind)
     private lateinit var activityProgressLayout: FrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as MainActivity?)?.setActivityListener(this@MainFragment)
         activityProgressLayout = (activity as MainActivity).binding.progressLayout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewPager.adapter = MainCollectionAdapter(this)
 
-        with(binding) {
-            activityProgressLayout.visibility = View.VISIBLE
-            mainAskedQuestionsRecycler.adapter = questionAdapter
-            viewModel.user.observe(viewLifecycleOwner, { user ->
-                textMainFragment.text = resources.getString(R.string.main_text_user_info, user.role)
-                viewModel.getAskedQuestions(user.email)
-                    .observe(viewLifecycleOwner, {
-                        questionAdapter.swapData(it)
-                        activityProgressLayout.visibility = View.GONE
-                    })
-            })
-        }
-    }
+        activityProgressLayout.visibility = View.VISIBLE
 
-    override fun dataLoaded() {
-        // viewModel.firebaseAuth.signOut()
-        val userJson = Utils.preferences.getString(Utils.SHARED_USER_DATA, null)
-        val user = Gson().fromJson(userJson, User::class.java)
-        viewModel.setUser(user)
-        viewModel.loggedIn.value = true
+        MainApplication.user.observeOnce(viewLifecycleOwner, {
+            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                tab.text = when (position) {
+                    0 -> resources.getString(R.string.title_asked_questions)
+                    1 -> resources.getString(R.string.title_reservations)
+                    else -> ""
+                }
+            }.attach()
+            activityProgressLayout.visibility = View.GONE
+
+        })
     }
 }

@@ -11,12 +11,12 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.acruxcs.lawyer.MainActivity
+import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLoginBinding
-import com.acruxcs.lawyer.ui.main.MainViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
@@ -36,7 +36,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var callbackManager: CallbackManager
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: LoginViewModel by viewModels()
     private val binding by viewBinding(FragmentLoginBinding::bind)
 
     private lateinit var activityProgressLayout: FrameLayout
@@ -48,11 +48,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (viewModel.firebaseUser != null) {
-            view.findNavController()
-                .navigate(R.id.action_loginFragment_to_mainFragment)
-        }
-
         binding.loginButtonLogin.isEnabled = true
 
         //facebook login
@@ -163,7 +158,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             }
 
                             activityProgressLayout.visibility = View.GONE
-                            viewModel.setLoggedIn(true)
+                            MainApplication.loggedIn.postValue(true)
                             requireView().findNavController()
                                 .navigate(R.id.action_loginFragment_to_mainFragment)
 
@@ -191,7 +186,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
                         }
                         activityProgressLayout.visibility = View.GONE
-                        viewModel.setLoggedIn(true)
+                        MainApplication.loggedIn.postValue(true)
                         requireView().findNavController()
                             .navigate(R.id.action_loginFragment_to_mainFragment)
                     } else {

@@ -25,7 +25,6 @@ import com.google.gson.Gson
 class MainActivity : AppCompatActivity() {
 
     lateinit var googleSignInClient: GoogleSignInClient
-    private var dataLoadedListener: DataLoadedListener? = null
 
     private val _binding by viewBinding(ActivityMainBinding::inflate)
 
@@ -51,6 +50,11 @@ class MainActivity : AppCompatActivity() {
 
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        if (Firebase.auth.currentUser != null) {
+            navHostFragment.navController
+                .navigate(R.id.mainFragment)
+        }
+
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.loginFragment || destination.id == R.id.registerFragment) {
                 binding.bottomMenu.visibility = View.GONE
@@ -85,7 +89,8 @@ class MainActivity : AppCompatActivity() {
                 val temp = snapshot.getValue(User::class.java)
                 Utils.preferences
                     .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp)) }
-                dataLoadedListener?.dataLoaded()
+                MainApplication.user.postValue(temp)
+                MainApplication.loggedIn.postValue(true)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -95,13 +100,5 @@ class MainActivity : AppCompatActivity() {
 
         UsersRepository.getUser(userId)
             ?.addValueEventListener(userListener)
-    }
-
-    interface DataLoadedListener {
-        fun dataLoaded()
-    }
-
-    fun setActivityListener(listener: DataLoadedListener?) {
-        this.dataLoadedListener = listener
     }
 }

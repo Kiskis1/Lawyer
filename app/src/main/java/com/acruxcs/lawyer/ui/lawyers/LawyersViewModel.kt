@@ -7,7 +7,7 @@ import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.CasesRepository
 import com.acruxcs.lawyer.repository.UsersRepository
-import com.acruxcs.lawyer.ui.main.MainViewModel
+import com.acruxcs.lawyer.ui.profile.ProfileViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -56,7 +56,7 @@ class LawyersViewModel : ViewModel() {
         return cases
     }
 
-    fun getImageRef(uid: String, ic: MainViewModel.Companion.ImageCallback) {
+    fun getImageRef(uid: String, ic: ProfileViewModel.Companion.ImageCallback) {
         val reference = usersRepository.getImageRef(uid)
         reference.downloadUrl.addOnSuccessListener {
             ic.onCallback(it.toString())

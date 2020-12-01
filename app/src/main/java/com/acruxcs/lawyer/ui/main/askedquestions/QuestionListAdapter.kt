@@ -1,4 +1,4 @@
-package com.acruxcs.lawyer.ui.main
+package com.acruxcs.lawyer.ui.main.askedquestions
 
 import android.view.LayoutInflater
 import android.view.View

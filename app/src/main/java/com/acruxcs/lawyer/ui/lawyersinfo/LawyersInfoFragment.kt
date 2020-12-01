@@ -11,7 +11,7 @@ import com.acruxcs.lawyer.databinding.FragmentLawyersInfoBinding
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
-import com.acruxcs.lawyer.ui.main.MainViewModel
+import com.acruxcs.lawyer.ui.profile.ProfileViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 import com.crazylegend.viewbinding.viewBinding
@@ -70,7 +70,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                 )
             lawyersinfoTextWonCases.text =
                 resources.getString(R.string.item_lawyer_number_of_won_cases, lawyer.wonCases)
-            viewModel.getImageRef(lawyer.uid, object : MainViewModel.Companion.ImageCallback {
+            viewModel.getImageRef(lawyer.uid, object : ProfileViewModel.Companion.ImageCallback {
                 override fun onCallback(value: String) {
                     lawyersinfoImageProfile.load(value) {
                         error(R.drawable.ic_person_24)
