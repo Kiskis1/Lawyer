@@ -8,6 +8,5 @@ class MainApplication : Application() {
 
     companion object {
         val user = MutableLiveData<User>()
-        val loggedIn = MutableLiveData<Boolean>().also { it.value = false }
     }
 }

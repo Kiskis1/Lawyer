@@ -23,6 +23,7 @@ import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
+import com.acruxcs.lawyer.utils.Utils.SHARED_LOGGED_IN
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.checkSpinnerIfEmpty
 import com.acruxcs.lawyer.utils.Utils.edit
@@ -281,6 +282,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun logout() {
+        preferences.edit {
+            it.putBoolean(SHARED_LOGGED_IN, false)
+        }
         requireView().findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         Firebase.auth.signOut()
         LoginManager.getInstance()?.logOut()

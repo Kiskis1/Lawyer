@@ -43,8 +43,10 @@ class LoginViewModel : ViewModel() {
                 val temp = snapshot.getValue(User::class.java)
                 MainApplication.user.postValue(temp)
                 Utils.preferences
-                    .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp)) }
-                MainApplication.loggedIn.postValue(true)
+                    .edit {
+                        it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp))
+                        it.putBoolean(Utils.SHARED_LOGGED_IN, true)
+                    }
             }
 
             override fun onCancelled(error: DatabaseError) {

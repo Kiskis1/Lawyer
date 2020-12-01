@@ -45,6 +45,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                         lawyersinfoSpeeddial.close()
                     }
                 }
+                lawyersinfoSpeeddial.close()
                 false
             }
 

@@ -14,11 +14,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.acruxcs.lawyer.MainActivity
-import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLoginBinding
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
+import com.acruxcs.lawyer.utils.Utils.SHARED_LOGGED_IN
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.preferences
 import com.acruxcs.lawyer.utils.Utils.yes
@@ -127,6 +127,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 Utils.hideKeyboard(requireContext(), requireView())
                 preferences.edit {
                     this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
+                    this.putBoolean(SHARED_LOGGED_IN, true)
                 }
                 requireView().findNavController()
                     .navigate(R.id.action_loginFragment_to_mainFragment)
@@ -155,10 +156,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             }
                             preferences.edit {
                                 this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
+                                this.putBoolean(SHARED_LOGGED_IN, true)
                             }
 
                             activityProgressLayout.visibility = View.GONE
-                            MainApplication.loggedIn.postValue(true)
                             requireView().findNavController()
                                 .navigate(R.id.action_loginFragment_to_mainFragment)
 
@@ -186,7 +187,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
                         }
                         activityProgressLayout.visibility = View.GONE
-                        MainApplication.loggedIn.postValue(true)
+                        preferences.edit {
+                            this.putBoolean(SHARED_LOGGED_IN, true)
+                        }
                         requireView().findNavController()
                             .navigate(R.id.action_loginFragment_to_mainFragment)
                     } else {

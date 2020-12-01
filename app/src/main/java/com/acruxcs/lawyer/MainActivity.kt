@@ -10,7 +10,9 @@ import com.acruxcs.lawyer.databinding.ActivityMainBinding
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.utils.Utils
+import com.acruxcs.lawyer.utils.Utils.SHARED_LOGGED_IN
 import com.acruxcs.lawyer.utils.Utils.edit
+import com.acruxcs.lawyer.utils.Utils.preferences
 import com.crazylegend.viewbinding.viewBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -50,10 +52,6 @@ class MainActivity : AppCompatActivity() {
 
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        if (Firebase.auth.currentUser != null) {
-            navHostFragment.navController
-                .navigate(R.id.mainFragment)
-        }
 
         navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.loginFragment || destination.id == R.id.registerFragment) {
@@ -64,7 +62,11 @@ class MainActivity : AppCompatActivity() {
         }
         binding.bottomMenu.setupWithNavController(navHostFragment.navController)
 
-        Utils.switchDarkMode(Utils.preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false))
+        if (preferences.getBoolean(SHARED_LOGGED_IN, false) && savedInstanceState == null) {
+            navHostFragment.navController
+                .navigate(R.id.mainFragment)
+        }
+        Utils.switchDarkMode(preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false))
         if (savedInstanceState == null) {
             getUserData(Firebase.auth.currentUser?.uid)
         } else {
@@ -87,10 +89,12 @@ class MainActivity : AppCompatActivity() {
         val userListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val temp = snapshot.getValue(User::class.java)
-                Utils.preferences
-                    .edit { it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp)) }
+                preferences
+                    .edit {
+                        it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp))
+                        it.putBoolean(SHARED_LOGGED_IN, true)
+                    }
                 MainApplication.user.postValue(temp)
-                MainApplication.loggedIn.postValue(true)
             }
 
             override fun onCancelled(error: DatabaseError) {

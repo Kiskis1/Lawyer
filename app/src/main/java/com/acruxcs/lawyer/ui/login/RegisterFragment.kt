@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -156,7 +157,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     user.uid = task.result?.user!!.uid
                     viewModel.createNewUser(user)
                     MainApplication.user.postValue(user)
-                    MainApplication.loggedIn.postValue(true)
+                    Utils.preferences.edit {
+                        this.putBoolean(Utils.SHARED_LOGGED_IN, true)
+                    }
                     activityProgressLayout.visibility = View.GONE
                     requireView().findNavController()
                         .navigate(
