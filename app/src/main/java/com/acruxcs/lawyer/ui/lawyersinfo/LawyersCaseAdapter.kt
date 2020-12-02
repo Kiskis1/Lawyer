@@ -41,17 +41,17 @@ class LawyersCaseAdapter :
 
         fun bind(item: Case) = with(itemView) {
             with(ItemCaseBinding.bind(itemView)) {
-                itemCaseTextArea.text = resources.getString(R.string.item_case_area, item.area)
-                itemCaseTextCourt.text = resources.getString(R.string.item_case_court, item.court)
-                itemCaseTextDate.text = resources.getString(
+                textArea.text = resources.getString(R.string.item_case_area, item.area)
+                textCourt.text = resources.getString(R.string.item_case_court, item.court)
+                textDate.text = resources.getString(
                     R.string.item_case_date,
                     DateFormat.getDateInstance().format(item.date)
                 )
-                itemCaseTextDesc.text =
+                textDesc.text =
                     resources.getString(R.string.item_case_short_description, item.shortDesc)
-                itemCaseTextOutcome.text =
+                textOutcome.text =
                     resources.getString(R.string.item_case_outcome, item.outcome)
-                itemCaseTextType.text = resources.getString(R.string.item_case_type, item.type)
+                textType.text = resources.getString(R.string.item_case_type, item.type)
             }
         }
     }

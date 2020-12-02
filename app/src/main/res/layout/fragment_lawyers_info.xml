@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/lawyersinfo_image_profile"
+            android:id="@+id/image_profile"
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:contentDescription="@string/content_desc_picture_of_lawyer"
@@ -31,37 +31,37 @@
             android:paddingEnd="4dp">
 
             <TextView
-                android:id="@+id/lawyersinfo_text_name"
+                android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor" />
 
             <TextView
-                android:id="@+id/lawyersinfo_text_city"
+                android:id="@+id/text_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor" />
 
             <TextView
-                android:id="@+id/lawyersinfo_text_education"
+                android:id="@+id/text_education"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor" />
 
             <TextView
-                android:id="@+id/lawyersinfo_text_won_cases"
+                android:id="@+id/text_won_cases"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor" />
 
             <TextView
-                android:id="@+id/lawyersinfo_text_specialization"
+                android:id="@+id/text_specialization"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor" />
 
             <TextView
-                android:id="@+id/lawyersinfo_text_experience"
+                android:id="@+id/text_experience"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textColor" />
@@ -70,7 +70,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/lawyersinfo_text_cases"
+        android:id="@+id/text_cases"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -80,7 +80,7 @@
         app:layout_constraintTop_toBottomOf="@id/linearLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lawyersinfo_recycler"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -89,7 +89,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lawyersinfo_text_cases" />
+        app:layout_constraintTop_toBottomOf="@+id/text_cases" />
 
     <com.leinardi.android.speeddial.SpeedDialOverlayLayout
         android:id="@+id/speeddial_overlay"
@@ -98,7 +98,7 @@
         android:background="#80000000" />
 
     <com.leinardi.android.speeddial.SpeedDialView
-        android:id="@+id/lawyersinfo_speeddial"
+        android:id="@+id/speeddial"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom|end"

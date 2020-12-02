@@ -26,14 +26,14 @@
                 tools:context=".ui.profile.ProfileFragment">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/profile_constraint_picture"
+                    android:id="@+id/constraint_picture"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <View
-                        android:id="@+id/profile_picture_background"
+                        android:id="@+id/picture_background"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_alignParentStart="true"
@@ -43,7 +43,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <RelativeLayout
-                        android:id="@+id/profile_picture"
+                        android:id="@+id/layout_picture"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginTop="25dp"
@@ -51,17 +51,17 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/profile_image_picture"
+                            android:id="@+id/image_picture"
                             android:layout_width="150dp"
                             android:layout_height="150dp"
                             android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true" />
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/profile_button_edit_picture"
+                            android:id="@+id/button_edit_picture"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignEnd="@+id/profile_image_picture"
+                            android:layout_alignEnd="@+id/image_picture"
                             android:layout_alignParentBottom="true"
                             android:contentDescription="@string/content_desc_profile_change_profile_picture"
                             android:src="@drawable/ic_edit_24"
@@ -71,7 +71,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/profile_constraint_settings"
+                    android:id="@+id/constraint_settings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -79,10 +79,10 @@
                     android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/profile_constraint_picture">
+                    app:layout_constraintTop_toBottomOf="@id/constraint_picture">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/profile_layout_phone"
+                        android:id="@+id/layout_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/textColor"
@@ -94,7 +94,7 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/profile_edit_phone"
+                            android:id="@+id/edit_phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/profile_update_phone_number"
@@ -104,7 +104,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/profile_layout_country"
+                        android:id="@+id/layout_country"
                         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -114,10 +114,10 @@
                         app:endIconContentDescription="Send updated info"
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_layout_phone">
+                        app:layout_constraintTop_toBottomOf="@id/layout_phone">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/profile_edit_country"
+                            android:id="@+id/edit_country"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:hint="@string/profile_update_country"
@@ -128,7 +128,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/profile_layout_city"
+                        android:id="@+id/layout_city"
                         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -138,10 +138,10 @@
                         app:endIconContentDescription="Send updated info"
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_layout_country">
+                        app:layout_constraintTop_toBottomOf="@id/layout_country">
 
                         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                            android:id="@+id/profile_edit_city"
+                            android:id="@+id/edit_city"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:hint="@string/profile_update_city"
@@ -152,7 +152,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/profile_layout_password"
+                        android:id="@+id/layout_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
@@ -162,10 +162,10 @@
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:endIconMode="custom"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_layout_city">
+                        app:layout_constraintTop_toBottomOf="@id/layout_city">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/profile_edit_password"
+                            android:id="@+id/edit_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_new_password"
@@ -175,7 +175,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/profile_layout_specialization"
+                        android:id="@+id/layout_specialization"
                         goneUnless="@{role}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -186,10 +186,10 @@
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:endIconMode="custom"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_layout_password">
+                        app:layout_constraintTop_toBottomOf="@id/layout_password">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/profile_edit_specialization"
+                            android:id="@+id/edit_specialization"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/profile_update_specialization"
@@ -199,7 +199,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/profile_layout_education"
+                        android:id="@+id/layout_education"
                         goneUnless="@{role}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -210,10 +210,10 @@
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:endIconMode="custom"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_layout_specialization">
+                        app:layout_constraintTop_toBottomOf="@id/layout_specialization">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/profile_edit_education"
+                            android:id="@+id/edit_education"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/profile_update_education"
@@ -223,7 +223,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/profile_layout_experience"
+                        android:id="@+id/layout_experience"
                         goneUnless="@{role}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -234,10 +234,10 @@
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:endIconMode="custom"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_layout_education">
+                        app:layout_constraintTop_toBottomOf="@id/layout_education">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/profile_edit_experience"
+                            android:id="@+id/edit_experience"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/profile_update_experience"
@@ -247,7 +247,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/profile_layout_won_cases"
+                        android:id="@+id/layout_won_cases"
                         goneUnless="@{role}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -258,10 +258,10 @@
                         app:endIconDrawable="@drawable/ic_send_24"
                         app:endIconMode="custom"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_layout_experience">
+                        app:layout_constraintTop_toBottomOf="@id/layout_experience">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/profile_edit_won_cases"
+                            android:id="@+id/edit_won_cases"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/profile_update_won_cases"
@@ -271,7 +271,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
-                        android:id="@+id/profile_switch_dark_mode"
+                        android:id="@+id/switch_dark_mode"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_marginTop="8dp"
@@ -279,16 +279,16 @@
                         android:text="@string/profile_switch_dark_mode"
                         android:textColor="@color/textColor"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_layout_won_cases" />
+                        app:layout_constraintTop_toBottomOf="@id/layout_won_cases" />
 
                     <Button
-                        android:id="@+id/profile_button_logout"
+                        android:id="@+id/button_logout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/action_logout"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_switch_dark_mode" />
+                        app:layout_constraintTop_toBottomOf="@id/switch_dark_mode" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -301,10 +301,10 @@
                     android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/profile_constraint_settings">
+                    app:layout_constraintTop_toBottomOf="@id/constraint_settings">
 
                     <TextView
-                        android:id="@+id/profile_text_cases"
+                        android:id="@+id/text_cases"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/profile_your_cases"
@@ -312,13 +312,13 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/profile_recycler"
+                        android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_text_cases" />
+                        app:layout_constraintTop_toBottomOf="@id/text_cases" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -327,7 +327,7 @@
         </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/profile_fab_add_case"
+            android:id="@+id/fab_add_case"
             goneUnless="@{role}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

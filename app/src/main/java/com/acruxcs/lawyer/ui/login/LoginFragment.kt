@@ -48,7 +48,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.loginButtonLogin.isEnabled = true
+        binding.buttonLogin.isEnabled = true
 
         //facebook login
         callbackManager = CallbackManager.Factory.create()
@@ -57,23 +57,23 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         with(binding) {
             //google sign in
-            loginButtonLoginGoogle.setOnClickListener {
-                loginErrorMessage.text = null
+            buttonLoginGoogle.setOnClickListener {
+                errorMessage.text = null
                 activityProgressLayout.visibility = View.VISIBLE
                 val signInIntent = (activity as MainActivity).googleSignInClient.signInIntent
                 googleLoginForResult.launch(signInIntent)
             }
 
             //facebook sign in
-            loginButtonFacebook.setOnClickListener {
+            buttonLoginFacebook.setOnClickListener {
                 activityProgressLayout.visibility = View.VISIBLE
-                loginErrorMessage.text = null
+                errorMessage.text = null
                 LoginManager.getInstance()
                     .logInWithReadPermissions(this@LoginFragment, listOf("email", "public_profile"))
             }
 
             //normal login
-            loginButtonLogin.setOnClickListener {
+            buttonLogin.setOnClickListener {
                 Utils.hideKeyboard(requireContext(), requireView())
                 login()
             }
@@ -82,7 +82,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 view.findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
             }
 
-            loginEditPassword.setOnEditorActionListener { _, i, _ ->
+            editPassword.setOnEditorActionListener { _, i, _ ->
                 return@setOnEditorActionListener when (i) {
                     EditorInfo.IME_ACTION_DONE -> {
                         login()
@@ -98,20 +98,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         lateinit var email: String
         lateinit var password: String
         with(binding) {
-            loginButtonLogin.isEnabled = false
-            loginErrorMessage.text = null
-            loginLayoutEditEmail.error = null
-            loginLayoutEditPassword.error = null
-            email = loginEditEmail.text.toString().trim()
-            password = loginEditPassword.text.toString().trim()
-            checkFieldIfEmpty(loginEditEmail, loginLayoutEditEmail, requireContext())
+            buttonLogin.isEnabled = false
+            errorMessage.text = null
+            layoutEmail.error = null
+            layoutPassword.error = null
+            email = editEmail.text.toString().trim()
+            password = editPassword.text.toString().trim()
+            checkFieldIfEmpty(editEmail, layoutEmail, requireContext())
                 .yes {
-                    loginButtonLogin.isEnabled = true
+                    buttonLogin.isEnabled = true
                     return@login
                 }
-            checkFieldIfEmpty(loginEditPassword, loginLayoutEditPassword, requireContext())
+            checkFieldIfEmpty(editPassword, layoutPassword, requireContext())
                 .yes {
-                    loginButtonLogin.isEnabled = true
+                    buttonLogin.isEnabled = true
                     return@login
                 }
         }
@@ -132,8 +132,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 requireView().findNavController()
                     .navigate(R.id.action_loginFragment_to_mainFragment)
             } else {
-                binding.loginErrorMessage.text = task.exception?.message
-                binding.loginButtonLogin.isEnabled = true
+                binding.errorMessage.text = task.exception?.message
+                binding.buttonLogin.isEnabled = true
                 activityProgressLayout.visibility = View.GONE
             }
         }
@@ -166,7 +166,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         }
                 } catch (e: ApiException) {
                     activityProgressLayout.visibility = View.GONE
-                    binding.loginErrorMessage.text = e.message
+                    binding.errorMessage.text = e.message
                 }
             }
         }
@@ -193,7 +193,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         requireView().findNavController()
                             .navigate(R.id.action_loginFragment_to_mainFragment)
                     } else {
-                        binding.loginErrorMessage.text = task.exception?.message
+                        binding.errorMessage.text = task.exception?.message
                         activityProgressLayout.visibility = View.GONE
                     }
                 }

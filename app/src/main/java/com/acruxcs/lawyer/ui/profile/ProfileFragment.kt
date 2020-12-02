@@ -70,40 +70,40 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         with(binding) {
             role = MainApplication.user.value!!.role
-            profileEditCountry.setAdapter(countryAdapter)
+            editCountry.setAdapter(countryAdapter)
 
-            profileEditCountry.setOnItemClickListener { adapterView, _, i, _ ->
+            editCountry.setOnItemClickListener { adapterView, _, i, _ ->
                 selectedCountry = adapterView.getItemAtPosition(i).toString()
-                profileEditCity.setAdapter(getCityAdapter(selectedCountry))
-                profileEditCity.isEnabled = true
+                editCity.setAdapter(getCityAdapter(selectedCountry))
+                editCity.isEnabled = true
                 Utils.hideKeyboard(requireContext(), requireView())
             }
 
             if (MainApplication.user.value!!.country == "")
-                profileEditCity.isEnabled = false
-            else profileEditCity.setAdapter(getCityAdapter(MainApplication.user.value!!.country))
+                editCity.isEnabled = false
+            else editCity.setAdapter(getCityAdapter(MainApplication.user.value!!.country))
 
-            profileButtonEditPicture.setOnClickListener {
+            buttonEditPicture.setOnClickListener {
                 selectImage()
             }
             if (!preferences.getStringSet(SHARED_AUTH_PROVIDER, setOf<String>())
                     ?.contains("password")!!
             )
-                profileLayoutPassword.visibility = View.GONE
+                layoutPassword.visibility = View.GONE
 
-            profileButtonLogout.setOnClickListener {
+            buttonLogout.setOnClickListener {
                 logout()
             }
-            profileSwitchDarkMode.isChecked =
+            switchDarkMode.isChecked =
                 preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false)
-            profileSwitchDarkMode.setOnCheckedChangeListener { _, b ->
+            switchDarkMode.setOnCheckedChangeListener { _, b ->
                 preferences.edit {
                     it.putBoolean(Utils.SHARED_DARK_MODE_ON, b)
                 }
                 Utils.switchDarkMode(b)
             }
 
-            profileRecycler.adapter = lawyersCasesAdapter
+            recyclerView.adapter = lawyersCasesAdapter
             lawyersViewModel.getLawyersCases(MainApplication.user.value!!.uid)
                 .observe(viewLifecycleOwner, {
                     lawyersCasesAdapter.swapData(it)
@@ -113,44 +113,44 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun setupEditTexts() {
         with(binding) {
-            profileEditCountry.setText(MainApplication.user.value!!.country)
-            profileEditCity.setText(MainApplication.user.value!!.city)
-            profileEditPhone.setText(MainApplication.user.value!!.phone)
-            profileEditSpecialization.setText(MainApplication.user.value!!.specialization)
-            profileEditEducation.setText(MainApplication.user.value!!.education)
-            profileEditExperience.setText(MainApplication.user.value!!.experience.toString())
-            profileEditWonCases.setText(MainApplication.user.value!!.wonCases.toString())
+            editCountry.setText(MainApplication.user.value!!.country)
+            editCity.setText(MainApplication.user.value!!.city)
+            editPhone.setText(MainApplication.user.value!!.phone)
+            editSpecialization.setText(MainApplication.user.value!!.specialization)
+            editEducation.setText(MainApplication.user.value!!.education)
+            editExperience.setText(MainApplication.user.value!!.experience.toString())
+            editWonCases.setText(MainApplication.user.value!!.wonCases.toString())
         }
     }
 
     private fun setupEndIconListeners() {
         with(binding) {
-            profileLayoutCountry.setEndIconOnClickListener {
+            layoutCountry.setEndIconOnClickListener {
                 updateCountry()
             }
-            profileLayoutCity.setEndIconOnClickListener {
+            layoutCity.setEndIconOnClickListener {
                 updateCity()
             }
-            profileLayoutPhone.setEndIconOnClickListener {
+            layoutPhone.setEndIconOnClickListener {
                 updatePhone()
             }
-            profileLayoutPassword.setEndIconOnClickListener {
+            layoutPassword.setEndIconOnClickListener {
                 updatePassword()
             }
             //lawyers profile views
-            profileLayoutSpecialization.setEndIconOnClickListener {
+            layoutSpecialization.setEndIconOnClickListener {
                 updateSpec()
             }
-            profileLayoutEducation.setEndIconOnClickListener {
+            layoutEducation.setEndIconOnClickListener {
                 updateEducation()
             }
-            profileLayoutExperience.setEndIconOnClickListener {
+            layoutExperience.setEndIconOnClickListener {
                 updateExperience()
             }
-            profileLayoutWonCases.setEndIconOnClickListener {
+            layoutWonCases.setEndIconOnClickListener {
                 updateWonCases()
             }
-            profileFabAddCase.setOnClickListener {
+            fabAddCase.setOnClickListener {
                 NewCaseDialog(this@ProfileFragment, viewModel).show(
                     parentFragmentManager,
                     "new_case"
@@ -161,8 +161,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun updateWonCases() {
         with(binding) {
-            val wonCases = Integer.parseInt(profileEditWonCases.text.toString().trim())
-            checkFieldIfEmpty(profileEditWonCases, profileLayoutWonCases, requireContext()).yes {
+            val wonCases = Integer.parseInt(editWonCases.text.toString().trim())
+            checkFieldIfEmpty(editWonCases, layoutWonCases, requireContext()).yes {
                 return@updateWonCases
             }
             Utils.hideKeyboard(requireContext(), requireView())
@@ -172,9 +172,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun updateExperience() {
         with(binding) {
-            val experience = Integer.parseInt(profileEditExperience.text.toString().trim())
+            val experience = Integer.parseInt(editExperience.text.toString().trim())
             checkFieldIfEmpty(
-                profileEditExperience, profileLayoutExperience, requireContext()
+                editExperience, layoutExperience, requireContext()
             ).yes {
                 return@updateExperience
             }
@@ -185,8 +185,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun updateEducation() {
         with(binding) {
-            val education = profileEditEducation.text.toString().trim()
-            checkFieldIfEmpty(profileEditEducation, profileLayoutEducation, requireContext()).yes {
+            val education = editEducation.text.toString().trim()
+            checkFieldIfEmpty(editEducation, layoutEducation, requireContext()).yes {
                 return@updateEducation
             }
             Utils.hideKeyboard(requireContext(), requireView())
@@ -197,11 +197,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun updateSpec() {
         with(binding) {
             checkFieldIfEmpty(
-                profileEditSpecialization, profileLayoutSpecialization, requireContext()
+                editSpecialization, layoutSpecialization, requireContext()
             ).yes {
                 return@updateSpec
             }
-            val specialization = profileEditSpecialization.text.toString().trim()
+            val specialization = editSpecialization.text.toString().trim()
             Utils.hideKeyboard(requireContext(), requireView())
             viewModel.updateSpecialization(specialization)
         }
@@ -210,14 +210,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun updatePassword() {
         val password: String
         with(binding) {
-            password = profileEditPassword.text.toString().trim()
+            password = editPassword.text.toString().trim()
             if (password.isEmpty()) {
-                profileLayoutPassword.error = getString(R.string.error_empty_field)
-                profileEditPassword.requestFocus()
+                layoutPassword.error = getString(R.string.error_empty_field)
+                editPassword.requestFocus()
                 return
             } else if (password.length < MIN_PASS_LENGTH) {
-                profileLayoutPassword.error = getString(R.string.error_password_not_long_enough)
-                profileEditPassword.requestFocus()
+                layoutPassword.error = getString(R.string.error_password_not_long_enough)
+                editPassword.requestFocus()
                 return
             }
         }
@@ -227,26 +227,26 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun updateCountry() {
         with(binding) {
-            val country = profileEditCountry.editableText.toString().trim()
-            checkSpinnerIfEmpty(profileEditCountry, profileLayoutCountry, requireContext()).yes {
+            val country = editCountry.editableText.toString().trim()
+            checkSpinnerIfEmpty(editCountry, layoutCountry, requireContext()).yes {
                 return@updateCountry
             }
             Utils.hideKeyboard(requireContext(), requireView())
             viewModel.updateCountry(country)
 
             if (!resources.getStringArray(getCitiesByCountry(country))
-                    .contains(profileEditCity.editableText.toString().trim())
+                    .contains(editCity.editableText.toString().trim())
             ) {
                 viewModel.updateCity("")
-                profileEditCity.editableText.clear()
+                editCity.editableText.clear()
             }
         }
     }
 
     private fun updateCity() {
         with(binding) {
-            val city = profileEditCity.text.toString().trim()
-            checkSpinnerIfEmpty(profileEditCity, profileLayoutCity, requireContext()).yes {
+            val city = editCity.text.toString().trim()
+            checkSpinnerIfEmpty(editCity, layoutCity, requireContext()).yes {
                 return@updateCity
             }
             Utils.hideKeyboard(requireContext(), requireView())
@@ -256,8 +256,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun updatePhone() {
         with(binding) {
-            val phone: String = profileEditPhone.text.toString().trim()
-            checkFieldIfEmpty(profileEditPhone, profileLayoutPhone, requireContext()).yes {
+            val phone: String = editPhone.text.toString().trim()
+            checkFieldIfEmpty(editPhone, layoutPhone, requireContext()).yes {
                 return@updatePhone
             }
             Utils.hideKeyboard(requireContext(), requireView())
@@ -271,10 +271,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             object : ProfileViewModel.Companion.ImageCallback {
                 override fun onCallback(value: String) {
                     with(binding) {
-                        profileImagePicture.load(value) {
+                        imagePicture.load(value) {
                             error(R.drawable.ic_person_24)
-                            if (profileImagePicture.metadata != null)
-                                placeholderMemoryCacheKey(profileImagePicture.metadata!!.memoryCacheKey)
+                            if (imagePicture.metadata != null)
+                                placeholderMemoryCacheKey(imagePicture.metadata!!.memoryCacheKey)
                         }
                     }
                 }
@@ -296,7 +296,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             if (it.resultCode == RESULT_OK) {
                 val intent = it.data
                 if (intent != null) {
-                    binding.profileImagePicture.invalidate()
+                    binding.imagePicture.invalidate()
                     uploadImage(intent.data!!)
                 }
             }

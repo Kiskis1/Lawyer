@@ -11,7 +11,7 @@
         tools:context=".ui.login.RegisterFragment">
 
         <TextView
-            android:id="@+id/register_text_register"
+            android:id="@+id/text_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/register_layout_edit_email"
+            android:id="@+id/layout_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
@@ -35,10 +35,10 @@
             app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/register_text_register">
+            app:layout_constraintTop_toBottomOf="@id/text_register">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_edit_email"
+                android:id="@+id/edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
@@ -51,7 +51,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/register_layout_edit_password"
+            android:id="@+id/layout_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
@@ -60,10 +60,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/register_layout_edit_email">
+            app:layout_constraintTop_toBottomOf="@id/layout_email">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_edit_password"
+                android:id="@+id/edit_password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
@@ -78,17 +78,17 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/register_layout_edit_full_name"
+            android:id="@+id/layout_full_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
             android:textColorHint="@color/textColor"
             app:errorEnabled="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/register_layout_edit_password">
+            app:layout_constraintTop_toBottomOf="@id/layout_password">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_edit_full_name"
+                android:id="@+id/edit_full_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -103,17 +103,17 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/register_layout_edit_phone"
+            android:id="@+id/layout_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
             android:textColorHint="@color/textColor"
             app:errorEnabled="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/register_layout_edit_full_name">
+            app:layout_constraintTop_toBottomOf="@id/layout_full_name">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_edit_phone"
+                android:id="@+id/edit_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -128,7 +128,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/register_layout_edit_country"
+            android:id="@+id/layout_country"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -136,10 +136,10 @@
             android:textColorHint="@color/textColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/register_layout_edit_phone">
+            app:layout_constraintTop_toBottomOf="@id/layout_phone">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/register_spinner_country"
+                android:id="@+id/spinner_country"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
@@ -154,7 +154,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/register_layout_edit_city"
+            android:id="@+id/layout_city"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,10 +162,10 @@
             android:textColorHint="@color/textColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/register_layout_edit_country">
+            app:layout_constraintTop_toBottomOf="@id/layout_country">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/register_spinner_city"
+                android:id="@+id/spinner_city"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
@@ -182,7 +182,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/register_checkbox_lawyer"
+            android:id="@+id/checkbox_lawyer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -190,10 +190,10 @@
             android:layoutDirection="rtl"
             android:text="@string/register_as_lawyer"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/register_layout_edit_city" />
+            app:layout_constraintTop_toBottomOf="@id/layout_city" />
 
         <Button
-            android:id="@+id/register_button_register"
+            android:id="@+id/button_register"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_centerInParent="true"
@@ -209,7 +209,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/register_checkbox_lawyer" />
+            app:layout_constraintTop_toBottomOf="@id/checkbox_lawyer" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

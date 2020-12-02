@@ -23,11 +23,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewPager.adapter = MainCollectionAdapter(this)
-
         activityProgressLayout.visibility = View.VISIBLE
 
         MainApplication.user.observeOnce(viewLifecycleOwner, {
+            binding.viewPager.adapter = MainCollectionAdapter(this)
             TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
                 tab.text = when (position) {
                     0 -> resources.getString(R.string.title_asked_questions)

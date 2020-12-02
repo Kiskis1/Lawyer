@@ -56,35 +56,35 @@ class LawyersListAdapter(
 
         fun bind(item: User) = with(itemView) {
             with(ItemLawyerBinding.bind(itemView)) {
-                lawyersTextName.text = resources.getString(R.string.item_lawyer_name, item.fullname)
-                lawyersTextEducation.text =
+                textName.text = resources.getString(R.string.item_lawyer_name, item.fullname)
+                textEducation.text =
                     resources.getString(R.string.item_lawyer_education, item.education)
-                lawyersTextSpecialization.text =
+                textSpecialization.text =
                     resources.getString(R.string.item_lawyer_specialization, item.specialization)
-                lawyersTextExperience.text =
+                textExperience.text =
                     resources.getQuantityString(
                         R.plurals.item_lawyer_experience,
                         item.experience,
                         item.experience
                     )
-                lawyersTextWonCases.text =
+                textWonCases.text =
                     resources.getString(R.string.item_lawyer_number_of_won_cases, item.wonCases)
-                lawyersTextCountry.text =
+                textCountry.text =
                     resources.getString(R.string.item_lawyer_country, item.country)
-                lawyersTextCity.text = resources.getString(R.string.item_lawyer_city, item.city)
-                lawyersButtonCall.setOnClickListener {
+                textCity.text = resources.getString(R.string.item_lawyer_city, item.city)
+                buttonCall.setOnClickListener {
                     Utils.showCallDialog(itemView.context, item)
                 }
                 viewModel.getImageRef(item.uid, object : ProfileViewModel.Companion.ImageCallback {
                     override fun onCallback(value: String) {
-                        lawyersImageProfile.load(value) {
+                        imageProfile.load(value) {
                             error(R.drawable.ic_person_24)
-                            if (lawyersImageProfile.metadata != null)
-                                placeholderMemoryCacheKey(lawyersImageProfile.metadata!!.memoryCacheKey)
+                            if (imageProfile.metadata != null)
+                                placeholderMemoryCacheKey(imageProfile.metadata!!.memoryCacheKey)
                         }
                     }
                 })
-                lawyersButtonQuestion.setOnClickListener {
+                buttonQuestion.setOnClickListener {
                     Utils.showQuestionDialog(manager, item)
                 }
             }

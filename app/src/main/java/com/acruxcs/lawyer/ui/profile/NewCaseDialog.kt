@@ -27,25 +27,25 @@ class NewCaseDialog(private val fragment: Fragment, private val viewModel: Profi
             val builder = AlertDialog.Builder(activity)
 
             with(binding) {
-                caseEditDate.inputType = InputType.TYPE_NULL
-                caseButtonAdd.setOnClickListener {
+                editDate.inputType = InputType.TYPE_NULL
+                buttonAdd.setOnClickListener {
                     if (isValid()) {
-                        case.shortDesc = caseEditDescription.text.toString().trim()
-                        case.court = caseEditCourt.text.toString().trim()
-                        case.area = caseEditArea.text.toString().trim()
-                        case.type = caseEditType.text.toString().trim()
-                        case.outcome = caseEditOutcome.text.toString().trim()
+                        case.shortDesc = editDescription.text.toString().trim()
+                        case.court = editCourt.text.toString().trim()
+                        case.area = editArea.text.toString().trim()
+                        case.type = editType.text.toString().trim()
+                        case.outcome = editOutcome.text.toString().trim()
                         viewModel.postCase(case)
                         Utils.hideKeyboard(requireContext(), binding.root)
                         Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                         dismiss()
                     }
                 }
-                caseEditDate.setOnClickListener {
+                editDate.setOnClickListener {
                     picker.show(fragment.parentFragmentManager, "date_picker")
                     picker.addOnPositiveButtonClickListener {
                         case.date = it
-                        caseEditDate.setText(picker.headerText)
+                        editDate.setText(picker.headerText)
                     }
                 }
             }
@@ -58,18 +58,18 @@ class NewCaseDialog(private val fragment: Fragment, private val viewModel: Profi
     private fun isValid(): Boolean {
         var valid = true
         with(binding) {
-            checkFieldIfEmpty(caseEditDescription, caseLayoutDescription, requireContext()).yes {
+            checkFieldIfEmpty(editDescription, layoutDescription, requireContext()).yes {
                 valid = false
             }
-            checkFieldIfEmpty(caseEditCourt, caseLayoutCourt, requireContext()).yes {
+            checkFieldIfEmpty(editCourt, layoutCourt, requireContext()).yes {
                 valid = false
             }
-            checkFieldIfEmpty(caseEditArea, caseLayoutArea, requireContext()).yes { valid = false }
-            checkFieldIfEmpty(caseEditType, caseLayoutType, requireContext()).yes { valid = false }
-            checkFieldIfEmpty(caseEditOutcome, caseLayoutOutcome, requireContext()).yes {
+            checkFieldIfEmpty(editArea, layoutArea, requireContext()).yes { valid = false }
+            checkFieldIfEmpty(editType, layoutType, requireContext()).yes { valid = false }
+            checkFieldIfEmpty(editOutcome, layoutOutcome, requireContext()).yes {
                 valid = false
             }
-            checkFieldIfEmpty(caseEditDate, caseLayoutDate, requireContext()).yes { valid = false }
+            checkFieldIfEmpty(editDate, layoutDate, requireContext()).yes { valid = false }
         }
         return valid
     }

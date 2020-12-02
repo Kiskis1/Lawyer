@@ -7,7 +7,7 @@
     tools:context=".ui.login.LoginFragment">
 
     <TextView
-        android:id="@+id/login_text_login"
+        android:id="@+id/text_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_layout_edit_email"
+        android:id="@+id/layout_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/textColor"
@@ -31,10 +31,10 @@
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_text_login">
+        app:layout_constraintTop_toBottomOf="@id/text_login">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/login_edit_email"
+            android:id="@+id/edit_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -47,7 +47,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_layout_edit_password"
+        android:id="@+id/layout_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/textColor"
@@ -55,10 +55,10 @@
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_layout_edit_email">
+        app:layout_constraintTop_toBottomOf="@id/layout_email">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/login_edit_password"
+            android:id="@+id/edit_password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="32dp"
@@ -71,7 +71,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/login_error_message"
+        android:id="@+id/error_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -81,12 +81,12 @@
         android:textColor="#B00020"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/login_button_login"
+        app:layout_constraintBottom_toTopOf="@+id/button_login"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_layout_edit_password" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_password" />
 
     <Button
-        android:id="@+id/login_button_login"
+        android:id="@+id/button_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerInParent="true"
@@ -98,13 +98,13 @@
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/login_text_no_account"
+        app:layout_constraintBottom_toTopOf="@+id/text_no_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_layout_edit_password" />
+        app:layout_constraintTop_toBottomOf="@id/layout_password" />
 
     <TextView
-        android:id="@+id/login_text_no_account"
+        android:id="@+id/text_no_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -114,7 +114,7 @@
         android:textColor="@color/textColor"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_button_login" />
+        app:layout_constraintTop_toBottomOf="@id/button_login" />
 
     <TextView
         android:id="@+id/text_register_now"
@@ -131,11 +131,11 @@
         android:textColorLink="@color/colorPrimary"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/login_text_no_account"
-        app:layout_constraintTop_toBottomOf="@+id/login_button_login" />
+        app:layout_constraintStart_toEndOf="@+id/text_no_account"
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
 
     <TextView
-        android:id="@+id/login_text_login_option"
+        android:id="@+id/text_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -147,31 +147,31 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_text_no_account" />
+        app:layout_constraintTop_toBottomOf="@id/text_no_account" />
 
     <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button_facebook"
+        android:id="@+id/button_login_facebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/login_button_login_google"
+        app:layout_constraintEnd_toStartOf="@+id/button_login_google"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_text_login_option"
+        app:layout_constraintTop_toBottomOf="@id/text_option"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/login_button_login_google"
+        android:id="@+id/button_login_google"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="28dp"
         app:buttonSize="icon_only"
-        app:layout_constraintBottom_toBottomOf="@+id/login_button_facebook"
+        app:layout_constraintBottom_toBottomOf="@+id/button_login_facebook"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/login_button_facebook"
-        app:layout_constraintTop_toTopOf="@+id/login_button_facebook" />
+        app:layout_constraintStart_toEndOf="@+id/button_login_facebook"
+        app:layout_constraintTop_toTopOf="@+id/button_login_facebook" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

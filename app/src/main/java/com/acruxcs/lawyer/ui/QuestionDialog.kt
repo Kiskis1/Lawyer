@@ -37,13 +37,13 @@ class QuestionDialog : DialogFragment() {
             val builder = AlertDialog.Builder(it)
             builder.setView(binding.root)
             with(binding) {
-                questionButtonSend.setOnClickListener {
+                buttonSend.setOnClickListener {
                     if (isValid()) {
-                        question.description = questionEditDescription.text.toString().trim()
-                        question.country = questionEditLocationCountry.text.toString().trim()
-                        question.city = questionEditLocationCity.text.toString().trim()
-                        question.phone = questionEditPhone.text.toString().trim()
-                        question.fullname = questionEditName.text.toString().trim()
+                        question.description = editDescription.text.toString().trim()
+                        question.country = editLocationCountry.text.toString().trim()
+                        question.city = editLocationCity.text.toString().trim()
+                        question.phone = editPhone.text.toString().trim()
+                        question.fullname = editName.text.toString().trim()
                         question.destinationEmail = lawyer.email
                         question.sender = Firebase.auth.currentUser!!.email.toString()
                         repository.postQuestion(question)
@@ -61,19 +61,19 @@ class QuestionDialog : DialogFragment() {
         var valid = true
         with(binding) {
             checkFieldIfEmpty(
-                questionEditDescription, questionLayoutDescription, requireContext()
+                editDescription, layoutDescription, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
-                questionEditLocationCountry, questionLayoutLocationCountry, requireContext()
+                editLocationCountry, layoutLocationCountry, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
-                questionEditLocationCity, questionLayoutLocationCity, requireContext()
+                editLocationCity, layoutLocationCity, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
-                questionEditPhone, questionLayoutPhone, requireContext()
+                editPhone, layoutPhone, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
-                questionEditName, questionLayoutName, requireContext()
+                editName, layoutName, requireContext()
             ).yes { valid = false }
         }
         return valid

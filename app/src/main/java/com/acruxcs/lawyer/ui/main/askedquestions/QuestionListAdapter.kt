@@ -40,13 +40,13 @@ class QuestionListAdapter :
 
         fun bind(item: Question) = with(itemView) {
             with(ItemQuestionBinding.bind(itemView)) {
-                mainAskedDescription.text =
+                textDescription.text =
                     resources.getString(R.string.item_question_description, item.description)
-                mainAskedCountry.text =
+                textCountry.text =
                     resources.getString(R.string.item_question_country, item.country)
-                mainAskedCity.text = resources.getString(R.string.item_question_city, item.city)
-                mainAskedPhone.text = resources.getString(R.string.item_question_phone, item.phone)
-                mainAskedFullname.text =
+                textCity.text = resources.getString(R.string.item_question_city, item.city)
+                textPhone.text = resources.getString(R.string.item_question_phone, item.phone)
+                textFullname.text =
                     resources.getString(R.string.item_question_full_name, item.fullname)
             }
         }

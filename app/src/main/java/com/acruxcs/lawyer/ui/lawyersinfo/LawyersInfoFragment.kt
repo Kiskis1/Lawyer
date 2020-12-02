@@ -33,50 +33,50 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            lawyersinfoSpeeddial.inflate(R.menu.menu_speed_dial)
-            lawyersinfoSpeeddial.setOnActionSelectedListener { item ->
+            speeddial.inflate(R.menu.menu_speed_dial)
+            speeddial.setOnActionSelectedListener { item ->
                 when (item.id) {
                     R.id.fab_call_lawyer -> {
                         Utils.showCallDialog(requireContext(), lawyer)
-                        lawyersinfoSpeeddial.close()
+                        speeddial.close()
                     }
                     R.id.fab_message_lawyer -> {
                         Utils.showQuestionDialog(parentFragmentManager, lawyer)
-                        lawyersinfoSpeeddial.close()
+                        speeddial.close()
                     }
                 }
-                lawyersinfoSpeeddial.close()
+                speeddial.close()
                 false
             }
 
-            lawyersinfoRecycler.adapter = lawyersCasesAdapter
+            recyclerView.adapter = lawyersCasesAdapter
             viewModel.getLawyersCases(lawyer.uid).observe(viewLifecycleOwner, {
                 list.clear()
                 list.addAll(it)
                 lawyersCasesAdapter.swapData(list)
             })
 
-            lawyersinfoTextName.text =
+            textName.text =
                 resources.getString(R.string.item_lawyer_name, lawyer.fullname)
-            lawyersinfoTextEducation.text =
+            textEducation.text =
                 resources.getString(R.string.item_lawyer_education, lawyer.education)
-            lawyersinfoTextSpecialization.text =
+            textSpecialization.text =
                 resources.getString(R.string.item_lawyer_specialization, lawyer.specialization)
-            lawyersinfoTextCity.text = resources.getString(R.string.item_lawyer_city, lawyer.city)
-            lawyersinfoTextExperience.text =
+            textCity.text = resources.getString(R.string.item_lawyer_city, lawyer.city)
+            textExperience.text =
                 resources.getQuantityString(
                     R.plurals.item_lawyer_experience,
                     lawyer.experience,
                     lawyer.experience
                 )
-            lawyersinfoTextWonCases.text =
+            textWonCases.text =
                 resources.getString(R.string.item_lawyer_number_of_won_cases, lawyer.wonCases)
             viewModel.getImageRef(lawyer.uid, object : ProfileViewModel.Companion.ImageCallback {
                 override fun onCallback(value: String) {
-                    lawyersinfoImageProfile.load(value) {
+                    imageProfile.load(value) {
                         error(R.drawable.ic_person_24)
-                        if (lawyersinfoImageProfile.metadata != null)
-                            placeholderMemoryCacheKey(lawyersinfoImageProfile.metadata!!.memoryCacheKey)
+                        if (imageProfile.metadata != null)
+                            placeholderMemoryCacheKey(imageProfile.metadata!!.memoryCacheKey)
                     }
                 }
             })

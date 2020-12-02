@@ -57,11 +57,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 android.R.layout.simple_dropdown_item_1line
             ).also {
                 it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                registerSpinnerCountry.setAdapter(it)
+                spinnerCountry.setAdapter(it)
             }
 
-            registerSpinnerCountry.setOnItemClickListener { adapterView, _, i, _ ->
-                registerSpinnerCity.text.clear()
+            spinnerCountry.setOnItemClickListener { adapterView, _, i, _ ->
+                spinnerCity.text.clear()
                 selectedCountry = adapterView.getItemAtPosition(i).toString()
                 ArrayAdapter.createFromResource(
                     requireContext(),
@@ -69,17 +69,17 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     android.R.layout.simple_dropdown_item_1line
                 ).also {
                     it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    registerSpinnerCity.setAdapter(it)
+                    spinnerCity.setAdapter(it)
                 }
 
                 Utils.hideKeyboard(requireContext(), requireView())
             }
 
-            registerSpinnerCity.setOnItemClickListener { _, _, _, _ ->
+            spinnerCity.setOnItemClickListener { _, _, _, _ ->
                 Utils.hideKeyboard(requireContext(), requireView())
             }
 
-            registerButtonRegister.setOnClickListener {
+            buttonRegister.setOnClickListener {
                 register()
             }
         }
@@ -87,17 +87,17 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private fun register() {
         with(binding) {
-            email = registerEditEmail.text.toString().trim()
-            password = registerEditPassword.text.toString().trim()
-            fullname = registerEditFullName.text.toString().trim()
-            phone = registerEditPhone.text.toString().trim()
-            country = registerSpinnerCountry.editableText.toString()
-            city = registerSpinnerCity.editableText.toString()
+            email = editEmail.text.toString().trim()
+            password = editPassword.text.toString().trim()
+            fullname = editFullName.text.toString().trim()
+            phone = editPhone.text.toString().trim()
+            country = spinnerCountry.editableText.toString()
+            city = spinnerCity.editableText.toString()
             if (isValid()) {
                 user = User(
                     email, fullname, country, city, phone
                 )
-                if (!registerCheckboxLawyer.isChecked) {
+                if (!checkboxLawyer.isChecked) {
                     user.role = UserTypes.User
                 } else {
                     user.role = UserTypes.Lawyer
@@ -114,38 +114,38 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         var valid = true
         with(binding) {
             checkFieldIfEmpty(
-                registerEditEmail, registerLayoutEditEmail, requireContext()
+                editEmail, layoutEmail, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
-                registerEditPassword, registerLayoutEditPassword, requireContext()
+                editPassword, layoutPassword, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
-                registerEditFullName, registerLayoutEditFullName, requireContext()
+                editFullName, layoutFullName, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
-                registerEditPhone, registerLayoutEditPhone, requireContext()
+                editPhone, layoutPhone, requireContext()
             ).yes { valid = false }
             if (password.length < MIN_PASS_LENGTH) {
-                registerLayoutEditPassword.error =
+                layoutPassword.error =
                     getString(R.string.error_password_not_long_enough)
-                registerEditPassword.requestFocus()
+                editPassword.requestFocus()
                 valid = false
-            } else registerLayoutEditPassword.error = null
+            } else layoutPassword.error = null
 
             checkSpinnerIfEmpty(
-                registerSpinnerCountry, registerLayoutEditCountry, requireContext()
+                spinnerCountry, layoutCountry, requireContext()
             ).yes {
                 valid = false
             }
-            checkSpinnerIfEmpty(registerSpinnerCity, registerLayoutEditCity, requireContext()).yes {
+            checkSpinnerIfEmpty(spinnerCity, layoutCity, requireContext()).yes {
                 valid = false
             }
 
             if (resources.getStringArray(getCitiesByCountry(selectedCountry)).contains(city)) {
-                registerLayoutEditCity.error = getString(R.string.error_invalid_city)
-                registerSpinnerCity.requestFocus()
+                layoutCity.error = getString(R.string.error_invalid_city)
+                spinnerCity.requestFocus()
                 valid = false
-            } else registerLayoutEditCity.error = null
+            } else layoutCity.error = null
         }
         return valid
     }
