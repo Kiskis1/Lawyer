@@ -56,7 +56,7 @@ class QuestionListAdapter :
         override fun areItemsTheSame(
             oldItem: Question,
             newItem: Question
-        ) = oldItem.description == newItem.description
+        ) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
             oldItem: Question,

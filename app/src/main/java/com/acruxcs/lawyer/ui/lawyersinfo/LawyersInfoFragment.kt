@@ -20,7 +20,7 @@ import com.crazylegend.viewbinding.viewBinding
 
 class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     private lateinit var lawyer: User
-    private val lawyersCasesAdapter by lazy { LawyersCaseAdapter() }
+    private val lawyersCasesAdapter by lazy { LawyersCaseAdapter(this, null) }
     private val list = mutableListOf<Case>()
     private val viewModel: LawyersViewModel by viewModels()
     private val binding by viewBinding(FragmentLawyersInfoBinding::bind)

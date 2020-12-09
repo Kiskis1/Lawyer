@@ -2,7 +2,6 @@ package com.acruxcs.lawyer.ui.profile
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -38,9 +37,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-    private val lawyersCasesAdapter by lazy { LawyersCaseAdapter() }
     private val lawyersViewModel: LawyersViewModel by viewModels()
     private val viewModel: ProfileViewModel by viewModels()
+    private val lawyersCasesAdapter by lazy { LawyersCaseAdapter(this, viewModel) }
 
     private val binding by viewBinding(FragmentProfileBinding::bind)
 
@@ -302,7 +301,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 val intent = it.data
                 if (intent != null) {
                     binding.imagePicture.invalidate()
-                    uploadImage(intent.data!!)
+                    viewModel.uploadImage(intent.data!!)
                 }
             }
         }
@@ -314,30 +313,35 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         selectImageForResult.launch(Intent.createChooser(intent, "Select Image from here..."))
     }
 
-    private fun uploadImage(filePath: Uri) {
-        viewModel.uploadImage(filePath)
-    }
-
     private fun handleStatus(status: Status?) {
         when (status) {
             Status.SUCCESS ->
                 Snackbar.make(requireView(), "Success", Snackbar.LENGTH_SHORT).show()
+
+            Status.UPDATE_SUCCESS -> {
+                Snackbar.make(requireView(), "Success", Snackbar.LENGTH_SHORT).show()
+                lawyersCasesAdapter.notifyDataSetChanged()
+            }
             Status.ERROR -> Toast.makeText(
                 context, "Something went wrong, please try again!", Toast.LENGTH_SHORT
             ).show()
+
             Status.REAUTHENTICATE -> {
                 Toast.makeText(
                     context, "Please re-login", Toast.LENGTH_SHORT
                 ).show()
                 logout()
             }
+
             Status.PICTURE_CHANGE_SUCCESS -> {
                 loadProfileImage()
                 Snackbar.make(requireView(), "Success", Snackbar.LENGTH_SHORT).show()
             }
+
             Status.NO_CHANGE -> Toast.makeText(
                 context, "No change", Toast.LENGTH_SHORT
             ).show()
+
             else -> Toast.makeText(
                 context,
                 "Something went wrong, please try again!",

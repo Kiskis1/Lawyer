@@ -6,6 +6,18 @@
     android:layout_margin="8dp"
     app:strokeColor="@drawable/stroke_color">
 
+    <TextView
+        android:id="@+id/menu_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:paddingEnd="8dp"
+        android:text="&#8942;"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:visibility="invisible" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

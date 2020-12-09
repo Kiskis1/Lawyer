@@ -103,8 +103,20 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun postCase(case: Case) {
-        case.user = firebaseUser!!.uid
-        casesRepository.postCase(case)
+        if (case.user == "") case.user = firebaseUser!!.uid
+        casesRepository.postCase(case).addOnSuccessListener {
+            status.value = Status.UPDATE_SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
+    }
+
+    fun deleteCase(id: String) {
+        casesRepository.deleteCase(id).addOnSuccessListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
     }
 
     fun getImageRef(uid: String, ic: ImageCallback) {
