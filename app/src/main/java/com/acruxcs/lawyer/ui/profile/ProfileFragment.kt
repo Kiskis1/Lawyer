@@ -17,17 +17,18 @@ import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentProfileBinding
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_AUTH_PROVIDER
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_DARK_MODE_ON
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
+import com.acruxcs.lawyer.repository.SharedPrefRepository.edit
+import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.lawyersinfo.LawyersCaseAdapter
 import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
-import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
-import com.acruxcs.lawyer.utils.Utils.SHARED_LOGGED_IN
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
-import com.acruxcs.lawyer.utils.Utils.edit
 import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
-import com.acruxcs.lawyer.utils.Utils.preferences
 import com.acruxcs.lawyer.utils.Utils.toggleVisibility
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
@@ -95,10 +96,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 logout()
             }
             switchDarkMode.isChecked =
-                preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false)
+                preferences.getBoolean(SHARED_DARK_MODE_ON, false)
             switchDarkMode.setOnCheckedChangeListener { _, b ->
                 preferences.edit {
-                    it.putBoolean(Utils.SHARED_DARK_MODE_ON, b)
+                    it.putBoolean(SHARED_DARK_MODE_ON, b)
                 }
                 Utils.switchDarkMode(b)
             }

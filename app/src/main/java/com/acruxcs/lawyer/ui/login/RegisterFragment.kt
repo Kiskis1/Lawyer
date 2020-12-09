@@ -17,6 +17,8 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentRegisterBinding
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
+import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
@@ -178,8 +180,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     user.uid = task.result?.user!!.uid
                     viewModel.createNewUser(user)
                     MainApplication.user.postValue(user)
-                    Utils.preferences.edit {
-                        this.putBoolean(Utils.SHARED_LOGGED_IN, true)
+                    preferences.edit {
+                        this.putBoolean(SHARED_LOGGED_IN, true)
                     }
                     activityProgressLayout.visibility = View.GONE
                     requireView().findNavController()

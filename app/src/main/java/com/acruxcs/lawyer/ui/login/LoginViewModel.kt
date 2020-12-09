@@ -3,9 +3,11 @@ package com.acruxcs.lawyer.ui.login
 import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_USER_DATA
+import com.acruxcs.lawyer.repository.SharedPrefRepository.edit
+import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
 import com.acruxcs.lawyer.repository.UsersRepository
-import com.acruxcs.lawyer.utils.Utils
-import com.acruxcs.lawyer.utils.Utils.edit
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.ktx.auth
@@ -42,10 +44,10 @@ class LoginViewModel : ViewModel() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val temp = snapshot.getValue(User::class.java)
                 MainApplication.user.postValue(temp)
-                Utils.preferences
+                preferences
                     .edit {
-                        it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp))
-                        it.putBoolean(Utils.SHARED_LOGGED_IN, true)
+                        it.putString(SHARED_USER_DATA, Gson().toJson(temp))
+                        it.putBoolean(SHARED_LOGGED_IN, true)
                     }
             }
 

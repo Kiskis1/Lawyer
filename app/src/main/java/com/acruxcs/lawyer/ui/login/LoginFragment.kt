@@ -16,11 +16,11 @@ import androidx.navigation.findNavController
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLoginBinding
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_AUTH_PROVIDER
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
+import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
 import com.acruxcs.lawyer.utils.Utils
-import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
-import com.acruxcs.lawyer.utils.Utils.SHARED_LOGGED_IN
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
-import com.acruxcs.lawyer.utils.Utils.preferences
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.CallbackManager

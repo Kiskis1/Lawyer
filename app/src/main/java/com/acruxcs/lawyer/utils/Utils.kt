@@ -3,7 +3,6 @@ package com.acruxcs.lawyer.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.text.TextUtils
 import android.view.View
@@ -25,17 +24,7 @@ import com.google.android.material.textfield.TextInputLayout
 object Utils {
 
     const val ARG_LAWYER = "lawyer"
-    private const val SHARED_KEY = "userdata"
-    const val SHARED_USER_DATA = "user"
-    const val SHARED_DARK_MODE_ON = "dark_mode"
-    const val SHARED_AUTH_PROVIDER = "provider"
-    const val SHARED_LOGGED_IN = "loggedin"
     const val MIN_PASS_LENGTH = 6
-    lateinit var preferences: SharedPreferences
-
-    fun init(activity: Activity) {
-        preferences = activity.getSharedPreferences(SHARED_KEY, 0)
-    }
 
     fun showCallDialog(context: Context, item: User) {
         val dialog = AlertDialog.Builder(context)
@@ -74,15 +63,6 @@ object Utils {
         if (on)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-    }
-
-    inline fun SharedPreferences.edit(
-        operation:
-            (SharedPreferences.Editor) -> Unit
-    ) {
-        val editor = edit()
-        operation(editor)
-        editor.apply()
     }
 
     inline fun Boolean.yes(block: () -> Unit) = also { if (it) block() }

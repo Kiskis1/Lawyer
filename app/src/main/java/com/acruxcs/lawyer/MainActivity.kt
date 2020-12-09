@@ -8,11 +8,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.acruxcs.lawyer.databinding.ActivityMainBinding
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.repository.SharedPrefRepository
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_DARK_MODE_ON
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
+import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_USER_DATA
+import com.acruxcs.lawyer.repository.SharedPrefRepository.edit
+import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
 import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.utils.Utils
-import com.acruxcs.lawyer.utils.Utils.SHARED_LOGGED_IN
-import com.acruxcs.lawyer.utils.Utils.edit
-import com.acruxcs.lawyer.utils.Utils.preferences
 import com.crazylegend.viewbinding.viewBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -48,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         supportActionBar?.hide()
-        Utils.init(this)
+        SharedPrefRepository.invoke(this)
 
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -66,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             navHostFragment.navController
                 .navigate(R.id.mainFragment)
         }
-        Utils.switchDarkMode(preferences.getBoolean(Utils.SHARED_DARK_MODE_ON, false))
+        Utils.switchDarkMode(preferences.getBoolean(SHARED_DARK_MODE_ON, false))
         if (savedInstanceState == null) {
             getUserData(Firebase.auth.currentUser?.uid)
         } else {
@@ -90,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                 val temp = snapshot.getValue(User::class.java)
                 preferences
                     .edit {
-                        it.putString(Utils.SHARED_USER_DATA, Gson().toJson(temp))
+                        it.putString(SHARED_USER_DATA, Gson().toJson(temp))
                         it.putBoolean(SHARED_LOGGED_IN, true)
                     }
                 MainApplication.user.postValue(temp)
