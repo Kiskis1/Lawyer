@@ -2,6 +2,7 @@ package com.acruxcs.lawyer.ui.lawyersinfo
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil.load
@@ -14,6 +15,7 @@ import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.profile.ProfileViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
+import com.acruxcs.lawyer.utils.Utils.toggleVisibility
 import com.crazylegend.viewbinding.viewBinding
 
 class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
@@ -51,9 +53,14 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
 
             recyclerView.adapter = lawyersCasesAdapter
             viewModel.getLawyersCases(lawyer.uid).observe(viewLifecycleOwner, {
-                list.clear()
-                list.addAll(it)
-                lawyersCasesAdapter.swapData(list)
+                if (it.isNotEmpty()) {
+                    if (textEmptyCases.isVisible) textEmptyCases.toggleVisibility()
+                    list.clear()
+                    list.addAll(it)
+                    lawyersCasesAdapter.swapData(list)
+                } else
+                    textEmptyCases.toggleVisibility()
+
             })
 
             textName.text =

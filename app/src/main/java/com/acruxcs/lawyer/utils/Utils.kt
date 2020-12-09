@@ -8,7 +8,7 @@ import android.net.Uri
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.BindingAdapter
@@ -20,7 +20,6 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.QuestionDialog
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 object Utils {
@@ -89,19 +88,7 @@ object Utils {
     inline fun Boolean.yes(block: () -> Unit) = also { if (it) block() }
 
     fun checkFieldIfEmpty(
-        edit: TextInputEditText,
-        layout: TextInputLayout,
-        context: Context
-    ): Boolean {
-        if (TextUtils.isEmpty(edit.text)) {
-            layout.error = context.resources.getString(R.string.error_empty_field)
-            return true
-        } else layout.error = null
-        return false
-    }
-
-    fun checkSpinnerIfEmpty(
-        edit: AutoCompleteTextView,
+        edit: EditText,
         layout: TextInputLayout,
         context: Context
     ): Boolean {
@@ -120,6 +107,14 @@ object Utils {
                 observer(value)
             }
         })
+    }
+
+    fun View.toggleVisibility() {
+        visibility = if (visibility == View.VISIBLE) {
+            View.INVISIBLE
+        } else {
+            View.VISIBLE
+        }
     }
 }
 

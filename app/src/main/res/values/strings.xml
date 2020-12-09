@@ -72,7 +72,6 @@
     <string name="item_question_phone">Phone: %s</string>
     <string name="item_question_full_name">Full name: %s</string>
 
-
     <string name="main_text_user_info">Welcome: %s!</string>
 
     <string name="profile_your_cases">Your cases:</string>
@@ -98,5 +97,9 @@
     <string name="title_asked_questions">Asked Questions</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile_empty_cases">You don\'t have any cases. Try adding some.</string>
+    <string name="lawyersinfo_empty_cases">Lawyer doesn\'t have any cases added.</string>
+    <string name="error_invalid_name">Full name is not valid.</string>
+    <string name="error_invalid_email">Email is not valid</string>
 
 </resources>

@@ -1,6 +1,8 @@
 package com.acruxcs.lawyer.ui.login
 
 import android.os.Bundle
+import android.text.TextUtils
+import android.util.Patterns
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.FrameLayout
@@ -18,10 +20,10 @@ import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
-import com.acruxcs.lawyer.utils.Utils.checkSpinnerIfEmpty
 import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
+import java.util.regex.Pattern
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -32,14 +34,16 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private lateinit var country: String
     private lateinit var city: String
     private lateinit var phone: String
-
     private lateinit var user: User
 
     private val binding by viewBinding(FragmentRegisterBinding::bind)
 
     private lateinit var activityProgressLayout: FrameLayout
 
-    private lateinit var selectedCountry: String
+    private var selectedCountry = ""
+
+    private val regex = "^([\\w]{3,})+\\s+([\\w\\s]{3,})+$"
+    private val pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,12 +120,27 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             checkFieldIfEmpty(
                 editEmail, layoutEmail, requireContext()
             ).yes { valid = false }
+            if (!TextUtils.isEmpty(editEmail.text!!.trim()) &&
+                !Patterns.EMAIL_ADDRESS.matcher(editEmail.text!!.trim()).matches()
+            ) {
+                layoutEmail.error = getString(R.string.error_invalid_email)
+                editEmail.requestFocus()
+                valid = false
+            } else layoutEmail.error = null
             checkFieldIfEmpty(
                 editPassword, layoutPassword, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
                 editFullName, layoutFullName, requireContext()
             ).yes { valid = false }
+            if (!TextUtils.isEmpty(editFullName.text!!.trim()) &&
+                !pattern.matcher(editFullName.text!!.trim()).matches()
+            ) {
+                layoutFullName.error =
+                    getString(R.string.error_invalid_name)
+                editFullName.requestFocus()
+                valid = false
+            } else layoutFullName.error = null
             checkFieldIfEmpty(
                 editPhone, layoutPhone, requireContext()
             ).yes { valid = false }
@@ -132,16 +151,18 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 valid = false
             } else layoutPassword.error = null
 
-            checkSpinnerIfEmpty(
+            checkFieldIfEmpty(
                 spinnerCountry, layoutCountry, requireContext()
             ).yes {
                 valid = false
             }
-            checkSpinnerIfEmpty(spinnerCity, layoutCity, requireContext()).yes {
+            checkFieldIfEmpty(spinnerCity, layoutCity, requireContext()).yes {
                 valid = false
             }
 
-            if (resources.getStringArray(getCitiesByCountry(selectedCountry)).contains(city)) {
+            if (selectedCountry.isNotEmpty() &&
+                !resources.getStringArray(getCitiesByCountry(selectedCountry)).contains(city)
+            ) {
                 layoutCity.error = getString(R.string.error_invalid_city)
                 spinnerCity.requestFocus()
                 valid = false

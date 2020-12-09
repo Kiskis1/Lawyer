@@ -42,7 +42,8 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers),
     }
 
     override fun onFilterButtonClick(filter: MutableList<Predicate<User>>) {
-        lawyersAdapter.swapData(viewModel.filter(list, filter))
+        if (filter.isNotEmpty())
+            lawyersAdapter.swapData(viewModel.filter(list, filter))
     }
 }
 

@@ -85,7 +85,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUserData(userId: String?) {
-        // binding.bottomMenu.visibility = View.GONE
         val userListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val temp = snapshot.getValue(User::class.java)

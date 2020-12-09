@@ -79,6 +79,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout" />
 
+    <TextView
+        android:id="@+id/text_empty_cases"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="5dp"
+        android:text="@string/lawyersinfo_empty_cases"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_cases" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -102,12 +115,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom|end"
-        app:sdOverlayLayout="@id/speeddial_overlay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:sdMainFabClosedBackgroundColor="@color/colorPrimary"
         app:sdMainFabClosedSrc="@drawable/ic_share_24"
         app:sdMainFabOpenedBackgroundColor="@color/colorPrimary"
-        app:sdMainFabOpenedSrc="@drawable/ic_close_24" />
+        app:sdMainFabOpenedSrc="@drawable/ic_close_24"
+        app:sdOverlayLayout="@id/speeddial_overlay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

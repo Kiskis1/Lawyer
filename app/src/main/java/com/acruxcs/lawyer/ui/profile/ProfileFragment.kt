@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -25,10 +26,10 @@ import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.acruxcs.lawyer.utils.Utils.SHARED_AUTH_PROVIDER
 import com.acruxcs.lawyer.utils.Utils.SHARED_LOGGED_IN
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
-import com.acruxcs.lawyer.utils.Utils.checkSpinnerIfEmpty
 import com.acruxcs.lawyer.utils.Utils.edit
 import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
 import com.acruxcs.lawyer.utils.Utils.preferences
+import com.acruxcs.lawyer.utils.Utils.toggleVisibility
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
@@ -106,7 +107,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             recyclerView.adapter = lawyersCasesAdapter
             lawyersViewModel.getLawyersCases(MainApplication.user.value!!.uid)
                 .observe(viewLifecycleOwner, {
-                    lawyersCasesAdapter.swapData(it)
+                    if (it.isNotEmpty()) {
+                        if (textEmptyList.isVisible) textEmptyList.toggleVisibility()
+                        lawyersCasesAdapter.swapData(it)
+                    } else
+                        textEmptyList.toggleVisibility()
                 })
         }
     }
@@ -228,7 +233,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun updateCountry() {
         with(binding) {
             val country = editCountry.editableText.toString().trim()
-            checkSpinnerIfEmpty(editCountry, layoutCountry, requireContext()).yes {
+            checkFieldIfEmpty(editCountry, layoutCountry, requireContext()).yes {
                 return@updateCountry
             }
             Utils.hideKeyboard(requireContext(), requireView())
@@ -246,7 +251,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun updateCity() {
         with(binding) {
             val city = editCity.text.toString().trim()
-            checkSpinnerIfEmpty(editCity, layoutCity, requireContext()).yes {
+            checkFieldIfEmpty(editCity, layoutCity, requireContext()).yes {
                 return@updateCity
             }
             Utils.hideKeyboard(requireContext(), requireView())
