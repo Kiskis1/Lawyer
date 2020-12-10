@@ -44,23 +44,33 @@ class NewCaseDialog(private val fragment: Fragment, private val viewModel: Profi
                     editType.setText(case.type)
                     editOutcome.setText(case.outcome)
                     editDate.setText(DateFormat.getDateInstance().format(case.date))
-                    buttonAdd.setText(R.string.action_edit)
                 } else {
                     case = Case()
                 }
                 editDate.inputType = InputType.TYPE_NULL
-                buttonAdd.setOnClickListener {
-                    if (isValid()) {
-                        case.shortDesc = editDescription.text.toString().trim()
-                        case.court = editCourt.text.toString().trim()
-                        case.area = editArea.text.toString().trim()
-                        case.type = editType.text.toString().trim()
-                        case.outcome = editOutcome.text.toString().trim()
-                        viewModel.postCase(case)
 
-                        Utils.hideKeyboard(requireContext(), binding.root)
-                        dismiss()
+                toolbar.setNavigationOnClickListener {
+                    dismiss()
+                }
+                toolbar.setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.action_save -> {
+                            if (isValid()) {
+                                case.shortDesc = editDescription.text.toString().trim()
+                                case.court = editCourt.text.toString().trim()
+                                case.area = editArea.text.toString().trim()
+                                case.type = editType.text.toString().trim()
+                                case.outcome = editOutcome.text.toString().trim()
+                                viewModel.postCase(case)
+
+                                Utils.hideKeyboard(requireContext(), binding.root)
+                                dismiss()
+                            }
+                            true
+                        }
+                        else -> false
                     }
+
                 }
                 editDate.setOnClickListener {
                     picker.show(fragment.parentFragmentManager, "date_picker")
