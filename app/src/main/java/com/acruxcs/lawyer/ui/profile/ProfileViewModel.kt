@@ -3,6 +3,7 @@ package com.acruxcs.lawyer.ui.profile
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.Case
+import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.CasesRepository
 import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.utils.SingleLiveEvent
@@ -23,30 +24,6 @@ class ProfileViewModel : ViewModel() {
         return status
     }
 
-    fun updateCountry(country: String) {
-        usersRepository.updateCountry(country, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.SUCCESS
-        }.addOnFailureListener {
-            status.value = Status.ERROR
-        }
-    }
-
-    fun updateCity(city: String) {
-        usersRepository.updateCity(city, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.SUCCESS
-        }.addOnFailureListener {
-            status.value = Status.ERROR
-        }
-    }
-
-    fun updatePhone(phone: String) {
-        usersRepository.updatePhone(phone, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.SUCCESS
-        }.addOnFailureListener {
-            status.value = Status.ERROR
-        }
-    }
-
     fun updatePassword(password: String) {
         firebaseUser!!.updatePassword(password).addOnSuccessListener {
             status.value = Status.SUCCESS
@@ -61,45 +38,14 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    fun uploadImage(uri: Uri) {
+    fun uploadImage(uri: Uri, callback: (result: Int) -> Unit) {
         usersRepository.uploadImage(uri, firebaseUser!!.uid).addOnSuccessListener {
             status.value = Status.PICTURE_CHANGE_SUCCESS
+            callback(0)
         }.addOnFailureListener {
             status.value = Status.ERROR
+            callback(1)
         }
-    }
-
-    fun updateWonCases(wonCases: Int) {
-        usersRepository.updateWonCases(wonCases, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.SUCCESS
-        }.addOnFailureListener {
-            status.value = Status.ERROR
-        }
-    }
-
-    fun updateExperience(experience: Int) {
-        usersRepository.updateExperience(experience, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.SUCCESS
-        }.addOnFailureListener {
-            status.value = Status.ERROR
-        }
-    }
-
-    fun updateEducation(education: String) {
-        usersRepository.updateEducation(education, firebaseUser!!.uid).addOnSuccessListener {
-            status.value = Status.SUCCESS
-        }.addOnFailureListener {
-            status.value = Status.ERROR
-        }
-    }
-
-    fun updateSpecialization(specialization: String) {
-        usersRepository.updateSpecialization(specialization, firebaseUser!!.uid)
-            .addOnSuccessListener {
-                status.value = Status.SUCCESS
-            }.addOnFailureListener {
-                status.value = Status.ERROR
-            }
     }
 
     fun postCase(case: Case) {
@@ -125,6 +71,14 @@ class ProfileViewModel : ViewModel() {
             ic.onCallback(it.toString())
         }.addOnFailureListener {
             ic.onCallback(usersRepository.defaultPicture)
+        }
+    }
+
+    fun updateUser(user: User) {
+        usersRepository.updateUser(user).addOnSuccessListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
         }
     }
 

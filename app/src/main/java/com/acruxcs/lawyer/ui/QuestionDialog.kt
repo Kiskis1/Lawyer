@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.DialogQuestionBinding
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
@@ -34,7 +35,7 @@ class QuestionDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogQuestionBinding.inflate(LayoutInflater.from(requireContext()))
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
+            val builder = AlertDialog.Builder(it, R.style.DialogTheme)
             builder.setView(binding.root)
             with(binding) {
                 buttonSend.setOnClickListener {

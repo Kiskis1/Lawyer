@@ -16,12 +16,13 @@ import com.acruxcs.lawyer.utils.Utils.yes
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.DateFormat
 
+const val EDIT_TAG: String = "edit_case"
+
 class NewCaseDialog(private val fragment: Fragment, private val viewModel: ProfileViewModel) :
     DialogFragment() {
     private lateinit var case: Case
     private val picker = MaterialDatePicker.Builder.datePicker().build()
     private lateinit var binding: DialogNewCaseBinding
-    private val EDIT_TAG: String = "edit_case"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,7 @@ class NewCaseDialog(private val fragment: Fragment, private val viewModel: Profi
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogNewCaseBinding.inflate(LayoutInflater.from(requireContext()))
         return activity?.let { activity ->
-            val builder = AlertDialog.Builder(activity)
+            val builder = AlertDialog.Builder(activity, R.style.DialogTheme)
 
             with(binding) {
                 if (tag == EDIT_TAG) {
@@ -58,7 +59,6 @@ class NewCaseDialog(private val fragment: Fragment, private val viewModel: Profi
                         viewModel.postCase(case)
 
                         Utils.hideKeyboard(requireContext(), binding.root)
-                        // Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
                         dismiss()
                     }
                 }

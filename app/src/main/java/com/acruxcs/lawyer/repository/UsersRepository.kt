@@ -27,24 +27,6 @@ object UsersRepository {
 
     fun getImageRef(uid: String) = storage.child(uid)
 
-    fun updateCountry(country: String, uid: String) =
-        db.child("users").child(uid).child("country").setValue(country)
+    fun updateUser(user: User) = db.child("users").child(user.uid).setValue(user)
 
-    fun updateCity(city: String, uid: String) =
-        db.child("users").child(uid).child("city").setValue(city)
-
-    fun updatePhone(phone: String, uid: String) =
-        db.child("users").child(uid).child("phone").setValue(phone)
-
-    fun updateWonCases(wonCases: Int, uid: String) =
-        db.child("users").child(uid).child("wonCases").setValue(wonCases)
-
-    fun updateExperience(experience: Int, uid: String) =
-        db.child("users").child(uid).child("experience").setValue(experience)
-
-    fun updateSpecialization(specialization: String, uid: String) =
-        db.child("users").child(uid).child("specialization").setValue(specialization)
-
-    fun updateEducation(education: String, uid: String) =
-        db.child("users").child(uid).child("education").setValue(education)
 }
