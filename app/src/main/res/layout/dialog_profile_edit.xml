@@ -16,14 +16,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
+        <include
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/menu_save"
-            app:navigationIcon="@drawable/ic_arrow_back_24" />
+            layout="@layout/layout_toolbar" />
 
         <ScrollView
             android:layout_width="match_parent"

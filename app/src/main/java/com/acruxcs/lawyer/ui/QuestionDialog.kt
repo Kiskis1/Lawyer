@@ -38,19 +38,29 @@ class QuestionDialog : DialogFragment() {
             val builder = AlertDialog.Builder(it, R.style.DialogTheme)
             builder.setView(binding.root)
             with(binding) {
-                buttonSend.setOnClickListener {
-                    if (isValid()) {
-                        question.description = editDescription.text.toString().trim()
-                        question.country = editLocationCountry.text.toString().trim()
-                        question.city = editLocationCity.text.toString().trim()
-                        question.phone = editPhone.text.toString().trim()
-                        question.fullname = editName.text.toString().trim()
-                        question.destinationEmail = lawyer.email
-                        question.sender = Firebase.auth.currentUser!!.email.toString()
-                        repository.postQuestion(question)
-                        Utils.hideKeyboard(requireContext(), binding.root)
-                        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
-                        dismiss()
+                toolbar.toolbar.inflateMenu(R.menu.menu_send)
+                toolbar.toolbar.setNavigationOnClickListener {
+                    dismiss()
+                }
+                toolbar.toolbar.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.action_send -> {
+                            if (isValid()) {
+                                question.description = editDescription.text.toString().trim()
+                                question.country = editLocationCountry.text.toString().trim()
+                                question.city = editLocationCity.text.toString().trim()
+                                question.phone = editPhone.text.toString().trim()
+                                question.fullname = editName.text.toString().trim()
+                                question.destinationEmail = lawyer.email
+                                question.sender = Firebase.auth.currentUser!!.email.toString()
+                                repository.postQuestion(question)
+                                Utils.hideKeyboard(requireContext(), binding.root)
+                                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+                                dismiss()
+                            }
+                            true
+                        }
+                        else -> false
                     }
                 }
             }

@@ -49,10 +49,12 @@ class NewCaseDialog(private val fragment: Fragment, private val viewModel: Profi
                 }
                 editDate.inputType = InputType.TYPE_NULL
 
-                toolbar.setNavigationOnClickListener {
+                toolbar.toolbar.inflateMenu(R.menu.menu_save)
+
+                toolbar.toolbar.setNavigationOnClickListener {
                     dismiss()
                 }
-                toolbar.setOnMenuItemClickListener {
+                toolbar.toolbar.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.action_save -> {
                             if (isValid()) {
