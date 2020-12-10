@@ -64,6 +64,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.bottomMenu.setupWithNavController(navHostFragment.navController)
+        binding.bottomMenu.setOnNavigationItemReselectedListener {
+            navHostFragment.navController.popBackStack(it.itemId, false)
+        }
 
         if (preferences.getBoolean(SHARED_LOGGED_IN, false) && savedInstanceState == null) {
             navHostFragment.navController

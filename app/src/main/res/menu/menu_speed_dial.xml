@@ -8,4 +8,8 @@
         android:id="@+id/fab_message_lawyer"
         android:icon="@drawable/ic_question_24"
         android:title="@string/action_message" />
+    <item
+        android:id="@+id/fab_book_lawyer"
+        android:icon="@drawable/ic_booking_24"
+        android:title="@string/action_book_visit" />
 </menu>

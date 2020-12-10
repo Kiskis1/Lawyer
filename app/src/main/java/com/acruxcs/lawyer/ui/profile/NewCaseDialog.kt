@@ -49,14 +49,12 @@ class NewCaseDialog(private val fragment: Fragment, private val viewModel: Profi
                 }
                 editDate.inputType = InputType.TYPE_NULL
 
-                toolbar.toolbar.inflateMenu(R.menu.menu_save)
-
                 toolbar.toolbar.setNavigationOnClickListener {
                     dismiss()
                 }
                 toolbar.toolbar.setOnMenuItemClickListener {
                     when (it.itemId) {
-                        R.id.action_save -> {
+                        R.id.action_confirm -> {
                             if (isValid()) {
                                 case.shortDesc = editDescription.text.toString().trim()
                                 case.court = editCourt.text.toString().trim()

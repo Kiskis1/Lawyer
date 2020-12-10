@@ -46,6 +46,12 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                         Utils.showQuestionDialog(parentFragmentManager, lawyer)
                         speeddial.close()
                     }
+                    R.id.fab_book_lawyer -> {
+                        ReservationDialog.newInstance(lawyer)
+                            .show(parentFragmentManager, "reservation")
+                        println("ASDDASSADASDASDASDASD")
+                        speeddial.close()
+                    }
                 }
                 speeddial.close()
                 false

@@ -54,13 +54,12 @@ class ProfileEditDialog(private val viewModel: ProfileViewModel) :
                 role = MainApplication.user.value!!.role
                 editCountry.setAdapter(countryAdapter)
 
-                toolbar.toolbar.inflateMenu(R.menu.menu_save)
                 toolbar.toolbar.setNavigationOnClickListener {
                     dismiss()
                 }
                 toolbar.toolbar.setOnMenuItemClickListener {
                     when (it.itemId) {
-                        R.id.action_save -> {
+                        R.id.action_confirm -> {
                             updateProfile()
                             dismiss()
                             true

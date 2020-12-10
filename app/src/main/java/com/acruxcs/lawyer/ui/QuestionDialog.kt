@@ -40,13 +40,12 @@ class QuestionDialog : DialogFragment() {
             builder.setView(binding.root)
             setupEditTexts()
             with(binding) {
-                toolbar.toolbar.inflateMenu(R.menu.menu_send)
                 toolbar.toolbar.setNavigationOnClickListener {
                     dismiss()
                 }
                 toolbar.toolbar.setOnMenuItemClickListener { item ->
                     when (item.itemId) {
-                        R.id.action_send -> {
+                        R.id.action_confirm -> {
                             if (isValid()) {
                                 question.description = editDescription.text.toString().trim()
                                 question.country = editCountry.text.toString().trim()
