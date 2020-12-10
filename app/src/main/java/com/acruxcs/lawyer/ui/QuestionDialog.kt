@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.DialogQuestionBinding
 import com.acruxcs.lawyer.model.Question
@@ -37,6 +38,7 @@ class QuestionDialog : DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it, R.style.DialogTheme)
             builder.setView(binding.root)
+            setupEditTexts()
             with(binding) {
                 toolbar.toolbar.inflateMenu(R.menu.menu_send)
                 toolbar.toolbar.setNavigationOnClickListener {
@@ -47,8 +49,8 @@ class QuestionDialog : DialogFragment() {
                         R.id.action_send -> {
                             if (isValid()) {
                                 question.description = editDescription.text.toString().trim()
-                                question.country = editLocationCountry.text.toString().trim()
-                                question.city = editLocationCity.text.toString().trim()
+                                question.country = editCountry.text.toString().trim()
+                                question.city = editCity.text.toString().trim()
                                 question.phone = editPhone.text.toString().trim()
                                 question.fullname = editName.text.toString().trim()
                                 question.destinationEmail = lawyer.email
@@ -68,6 +70,15 @@ class QuestionDialog : DialogFragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
+    private fun setupEditTexts() {
+        with(binding) {
+            editCountry.setText(MainApplication.user.value!!.country)
+            editCity.setText(MainApplication.user.value!!.city)
+            editPhone.setText(MainApplication.user.value!!.phone)
+            editName.setText(MainApplication.user.value!!.fullname)
+        }
+    }
+
     private fun isValid(): Boolean {
         var valid = true
         with(binding) {
@@ -75,10 +86,10 @@ class QuestionDialog : DialogFragment() {
                 editDescription, layoutDescription, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
-                editLocationCountry, layoutLocationCountry, requireContext()
+                editCountry, layoutCountry, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
-                editLocationCity, layoutLocationCity, requireContext()
+                editCity, layoutCity, requireContext()
             ).yes { valid = false }
             checkFieldIfEmpty(
                 editPhone, layoutPhone, requireContext()
