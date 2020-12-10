@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
@@ -17,7 +16,9 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.DialogProfileEditBinding
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.countryAdapter
 import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
+import com.acruxcs.lawyer.utils.Utils.getCityAdapter
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.google.android.material.snackbar.Snackbar
 
@@ -26,22 +27,6 @@ class ProfileEditDialog(private val viewModel: ProfileViewModel) :
     private lateinit var binding: DialogProfileEditBinding
 
     private lateinit var selectedCountry: String
-
-    private val countryAdapter by lazy {
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.Countries,
-            android.R.layout.simple_dropdown_item_1line
-        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
-    }
-
-    private fun getCityAdapter(country: String) = ArrayAdapter.createFromResource(
-        requireContext(),
-        getCitiesByCountry(country),
-        android.R.layout.simple_dropdown_item_1line
-    ).also {
-        it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogProfileEditBinding.inflate(LayoutInflater.from(requireContext()))

@@ -7,6 +7,7 @@ import android.net.Uri
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -15,10 +16,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.QuestionDialog
+import com.google.android.gms.common.util.ArrayUtils
 import com.google.android.material.textfield.TextInputLayout
 
 object Utils {
@@ -95,6 +98,65 @@ object Utils {
         } else {
             View.VISIBLE
         }
+    }
+
+    val countryAdapter by lazy {
+        ArrayAdapter.createFromResource(
+            MainApplication.appContext,
+            R.array.Countries,
+            android.R.layout.simple_dropdown_item_1line
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+    }
+
+    private val allCities by lazy {
+        val array = mutableListOf<String>()
+        for (country in MainApplication.appContext.resources.getStringArray(R.array.Countries)) {
+            array.addAll(
+                MainApplication.appContext.resources.getStringArray(
+                    getCitiesByCountry(
+                        country
+                    )
+                )
+            )
+        }
+        array
+    }
+
+    val cityAdapter by lazy {
+        ArrayAdapter(
+            MainApplication.appContext,
+            android.R.layout.simple_dropdown_item_1line,
+            allCities
+        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+    }
+
+    val experienceAdapter by lazy {
+        ArrayAdapter(
+            MainApplication.appContext,
+            android.R.layout.simple_spinner_item,
+            ArrayUtils.toWrapperArray(MainApplication.appContext.resources.getIntArray(R.array.Experience))
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+    }
+    val specializationAdapter by lazy {
+        ArrayAdapter.createFromResource(
+            MainApplication.appContext,
+            R.array.Specializations,
+            android.R.layout.simple_dropdown_item_1line
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+    }
+
+    fun getCityAdapter(country: String) = ArrayAdapter.createFromResource(
+        MainApplication.appContext,
+        getCitiesByCountry(country),
+        android.R.layout.simple_dropdown_item_1line
+    ).also {
+        it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     }
 }
 
