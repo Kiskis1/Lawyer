@@ -20,7 +20,7 @@ import com.acruxcs.lawyer.utils.Utils
 
 class LawyersListAdapter(
     private val manager: FragmentManager,
-    private val viewModel: LawyersViewModel
+    private val viewModel: LawyersViewModel,
 ) :
     ListAdapter<User, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
 
@@ -69,6 +69,7 @@ class LawyersListAdapter(
                     )
                 textWonCases.text =
                     resources.getString(R.string.item_lawyer_number_of_won_cases, item.wonCases)
+                textAddress.text = resources.getString(R.string.item_lawyer_address, item.address)
                 textCountry.text =
                     resources.getString(R.string.item_lawyer_country, item.country)
                 textCity.text = resources.getString(R.string.item_lawyer_city, item.city)
@@ -94,12 +95,12 @@ class LawyersListAdapter(
     private class LawyerDC : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(
             oldItem: User,
-            newItem: User
+            newItem: User,
         ) = oldItem.email == newItem.email
 
         override fun areContentsTheSame(
             oldItem: User,
-            newItem: User
+            newItem: User,
         ) = oldItem == newItem
     }
 }

@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
 import coil.load
@@ -20,6 +19,7 @@ import com.acruxcs.lawyer.utils.Utils.countryAdapter
 import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
 import com.acruxcs.lawyer.utils.Utils.getCityAdapter
 import com.acruxcs.lawyer.utils.Utils.yes
+import com.crazylegend.kotlinextensions.fragments.shortToast
 import com.google.android.material.snackbar.Snackbar
 
 class ProfileEditDialog(private val viewModel: ProfileViewModel) :
@@ -37,29 +37,32 @@ class ProfileEditDialog(private val viewModel: ProfileViewModel) :
 
             with(binding) {
                 role = MainApplication.user.value!!.role
-                editCountry.setAdapter(countryAdapter)
 
-                toolbar.toolbar.setNavigationOnClickListener {
-                    dismiss()
-                }
-                toolbar.toolbar.setOnMenuItemClickListener {
-                    when (it.itemId) {
-                        R.id.action_confirm -> {
-                            updateProfile()
-                            dismiss()
-                            true
+                toolbar.toolbar.apply {
+                    setTitle(R.string.dialog_title_profile_edit)
+                    setNavigationOnClickListener {
+                        dismiss()
+                    }
+                    setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.action_confirm -> {
+                                updateProfile()
+                                dismiss()
+                                true
+                            }
+                            else -> false
                         }
-                        else -> false
                     }
                 }
-
-                editCountry.setOnItemClickListener { adapterView, _, i, _ ->
-                    selectedCountry = adapterView.getItemAtPosition(i).toString()
-                    editCity.setAdapter(getCityAdapter(selectedCountry))
-                    editCity.isEnabled = true
-                    Utils.hideKeyboard(requireContext(), requireView())
+                editCountry.apply {
+                    setAdapter(countryAdapter)
+                    setOnItemClickListener { adapterView, _, i, _ ->
+                        selectedCountry = adapterView.getItemAtPosition(i).toString()
+                        editCity.setAdapter(getCityAdapter(selectedCountry))
+                        editCity.isEnabled = true
+                        Utils.hideKeyboard(requireContext(), requireView())
+                    }
                 }
-
                 if (MainApplication.user.value!!.country == "")
                     editCity.isEnabled = false
                 else editCity.setAdapter(getCityAdapter(MainApplication.user.value!!.country))
@@ -81,6 +84,7 @@ class ProfileEditDialog(private val viewModel: ProfileViewModel) :
                 user.phone = editPhone.text.toString().trim()
                 user.country = editCountry.editableText.toString().trim()
                 user.city = editCity.editableText.toString().trim()
+                user.address = editAddress.text.toString().trim()
                 user.specialization = editSpecialization.text.toString().trim()
                 user.education = editEducation.text.toString().trim()
                 user.experience = Integer.parseInt(editExperience.text.toString().trim())
@@ -102,6 +106,9 @@ class ProfileEditDialog(private val viewModel: ProfileViewModel) :
                 valid = false
             }
             checkFieldIfEmpty(editEducation, layoutEducation, requireContext()).yes {
+                valid = false
+            }
+            checkFieldIfEmpty(editAddress, layoutAddress, requireContext()).yes {
                 valid = false
             }
             checkFieldIfEmpty(
@@ -140,11 +147,7 @@ class ProfileEditDialog(private val viewModel: ProfileViewModel) :
                             loadProfileImage()
                             Snackbar.make(binding.root, "Success", Snackbar.LENGTH_SHORT).show()
                         } else {
-                            Toast.makeText(
-                                context,
-                                "Something went wrong, please try again!",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            shortToast(R.string.error_something)
                         }
                     }
                 }
@@ -163,6 +166,7 @@ class ProfileEditDialog(private val viewModel: ProfileViewModel) :
             editCountry.setText(MainApplication.user.value!!.country)
             editCity.setText(MainApplication.user.value!!.city)
             editPhone.setText(MainApplication.user.value!!.phone)
+            editAddress.setText(MainApplication.user.value!!.address)
             editSpecialization.setText(MainApplication.user.value!!.specialization)
             editEducation.setText(MainApplication.user.value!!.education)
             editExperience.setText(MainApplication.user.value!!.experience.toString())

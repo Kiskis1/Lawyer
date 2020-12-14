@@ -20,7 +20,7 @@ import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
-import com.acruxcs.lawyer.ui.QuestionDialog
+import com.acruxcs.lawyer.ui.lawyersinfo.QuestionDialog
 import com.google.android.gms.common.util.ArrayUtils
 import com.google.android.material.textfield.TextInputLayout
 
@@ -73,7 +73,7 @@ object Utils {
     fun checkFieldIfEmpty(
         edit: EditText,
         layout: TextInputLayout,
-        context: Context
+        context: Context,
     ): Boolean {
         if (TextUtils.isEmpty(edit.editableText)) {
             layout.error = context.resources.getString(R.string.error_empty_field)

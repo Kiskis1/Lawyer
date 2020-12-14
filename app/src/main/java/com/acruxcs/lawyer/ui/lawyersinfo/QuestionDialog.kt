@@ -1,10 +1,9 @@
-package com.acruxcs.lawyer.ui
+package com.acruxcs.lawyer.ui.lawyersinfo
 
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
@@ -16,6 +15,7 @@ import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.yes
+import com.crazylegend.kotlinextensions.fragments.shortToast
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -40,28 +40,31 @@ class QuestionDialog : DialogFragment() {
             builder.setView(binding.root)
             setupEditTexts()
             with(binding) {
-                toolbar.toolbar.setNavigationOnClickListener {
-                    dismiss()
-                }
-                toolbar.toolbar.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.action_confirm -> {
-                            if (isValid()) {
-                                question.description = editDescription.text.toString().trim()
-                                question.country = editCountry.text.toString().trim()
-                                question.city = editCity.text.toString().trim()
-                                question.phone = editPhone.text.toString().trim()
-                                question.fullname = editName.text.toString().trim()
-                                question.destinationEmail = lawyer.email
-                                question.sender = Firebase.auth.currentUser!!.email.toString()
-                                repository.postQuestion(question)
-                                Utils.hideKeyboard(requireContext(), binding.root)
-                                Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
-                                dismiss()
+                toolbar.toolbar.apply {
+                    setNavigationOnClickListener {
+                        dismiss()
+                    }
+                    setTitle(R.string.dialog_title_question)
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.action_confirm -> {
+                                if (isValid()) {
+                                    question.description = editDescription.text.toString().trim()
+                                    question.country = editCountry.text.toString().trim()
+                                    question.city = editCity.text.toString().trim()
+                                    question.phone = editPhone.text.toString().trim()
+                                    question.fullname = editName.text.toString().trim()
+                                    question.destinationEmail = lawyer.email
+                                    question.sender = Firebase.auth.currentUser!!.email.toString()
+                                    repository.postQuestion(question)
+                                    Utils.hideKeyboard(requireContext(), binding.root)
+                                    shortToast(R.string.success)
+                                    dismiss()
+                                }
+                                true
                             }
-                            true
+                            else -> false
                         }
-                        else -> false
                     }
                 }
             }

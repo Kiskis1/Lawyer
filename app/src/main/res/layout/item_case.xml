@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="end"
-        android:paddingEnd="8dp"
+        android:paddingRight="8dp"
         android:text="&#8942;"
         android:textAppearance="?android:textAppearanceLarge"
         android:visibility="invisible" />

@@ -37,6 +37,7 @@
     <string name="item_lawyer_number_of_won_cases">Number of won cases: %d</string>
     <string name="item_lawyer_country">Country: %s</string>
     <string name="item_lawyer_city">City: %s</string>
+    <string name="item_lawyer_address">Address: %s</string>
     <plurals name="item_lawyer_experience">
         <item quantity="one">Experience: %d year</item>
         <item quantity="other">Experience: %d years</item>
@@ -49,9 +50,7 @@
     <string name="action_filter">Filter</string>
     <string name="action_call">Call</string>
     <string name="action_cancel">Cancel</string>
-    <string name="action_send">Send</string>
     <string name="action_logout">Logout</string>
-    <string name="action_add">Add</string>
 
     <string name="case_short_description">Short description</string>
     <string name="case_hint_court">Court</string>
@@ -71,8 +70,6 @@
     <string name="item_question_city">City: %s</string>
     <string name="item_question_phone">Phone: %s</string>
     <string name="item_question_full_name">Full name: %s</string>
-
-    <string name="main_text_user_info">Welcome: %s!</string>
 
     <string name="profile_your_cases">Your cases:</string>
     <string name="profile_switch_dark_mode">Switch Dark Mode</string>
@@ -104,9 +101,35 @@
 
     <string name="dialog_title_confirm">Confirm</string>
     <string name="dialog_are_you_sure">Are you sure you want to delete this item?</string>
-    <string name="action_update">Update</string>
-    <string name="action_save">Save</string>
     <string name="action_book_visit">Book visit</string>
     <string name="action_confirm">Confirm</string>
+    <string name="action_change_working_hours">Change working hours</string>
+    <string name="action_set_time">Set time</string>
+
+    <string name="day_monday">Monday</string>
+    <string name="day_tuesday">Tuesday</string>
+    <string name="day_wednesday">Wednesday</string>
+    <string name="day_thursday">Thursday</string>
+    <string name="day_friday">Friday</string>
+    <string name="day_saturday">Saturday</string>
+    <string name="day_sunday">Sunday</string>
+    <string name="action_reset">Reset</string>
+    <string name="error_select_date">Please select date</string>
+    <string name="error_select_time">Please select time</string>
+    <string name="success">Success</string>
+    <string name="error_something">Something went wrong, please try again!</string>
+    <string name="reservation_no_available_times">Lawyer doesn\'t have available times.\nTry another day</string>
+    <string name="dialog_title_working_hours">Working Hours</string>
+    <string name="dialog_title_reservation">Reservation</string>
+    <string name="dialog_title_edit">Edit</string>
+    <string name="dialog_title_profile_edit">Profile Edit</string>
+    <string name="dialog_title_new_case">New Case</string>
+    <string name="dialog_title_question">New Question</string>
+    <string name="profile_update_address">Address</string>
+
+    <string name="reservation_date">Date: %s</string>
+    <string name="reservation_lawyer_name">Lawyer: %s</string>
+    <string name="reservation_lawyer_address">Address: %s</string>
+    <string name="reservation_time">Time: %s</string>
 
 </resources>

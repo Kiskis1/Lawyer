@@ -3,6 +3,7 @@ package com.acruxcs.lawyer.model
 import android.os.Parcelable
 import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
+import java.util.Locale
 import java.util.UUID
 
 @Parcelize
@@ -14,6 +15,6 @@ data class Case(
     var type: String = "",
     var outcome: String = "",
     var date: Long = 0,
-    var id: String = UUID.randomUUID().toString().replace("-", "").toUpperCase(),
+    var id: String = UUID.randomUUID().toString().replace("-", "").toUpperCase(Locale.ENGLISH),
     var user: String = "",
 ) : Parcelable

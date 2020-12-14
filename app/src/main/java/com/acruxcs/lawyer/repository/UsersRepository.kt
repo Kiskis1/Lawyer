@@ -1,7 +1,9 @@
 package com.acruxcs.lawyer.repository
 
 import android.net.Uri
+import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.model.WorkingHours
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.UploadTask
@@ -28,5 +30,17 @@ object UsersRepository {
     fun getImageRef(uid: String) = storage.child(uid)
 
     fun updateUser(user: User) = db.child("users").child(user.uid).setValue(user)
+    fun updateHours(hours: WorkingHours, uid: String) =
+        db.child("users").child(uid).child("workingHours").setValue(hours)
 
+    fun createReservation(res: Reservation) = db.child("reservations").child(res.id).setValue(res)
+
+    fun getReservationsForUser(uid: String) =
+        db.child("reservations").orderByChild("lawyer").equalTo(uid)
+
+    fun getReservationsForLawyer(uid: String) =
+        db.child("reservations").orderByChild("user").equalTo(uid)
+
+    fun getLawyersReservations(dateLawyer: String) =
+        db.child("reservations").orderByChild("dateLawyer").equalTo(dateLawyer)
 }

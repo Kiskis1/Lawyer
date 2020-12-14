@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="dialog"
+            type="com.acruxcs.lawyer.ui.profile.WorkingHoursDialog" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="RtlHardcoded">
+
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_toolbar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color"
+                android:descendantFocusability="beforeDescendants"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                tools:ignore="RtlSymmetry">
+
+                <RelativeLayout
+                    android:id="@+id/layout_monday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingLeft="8dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_monday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/day_monday"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_monday_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/text_monday"
+                        android:layout_alignEnd="@id/text_monday_reset"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:hint="@string/action_set_time"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_monday_reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:clickable="true"
+                        android:elevation="300dp"
+                        android:focusable="true"
+                        android:gravity="top"
+                        android:onClick="@{dialog::resetTime}"
+                        android:padding="16dp"
+                        android:text="@string/action_reset"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_tuesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingLeft="8dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_tuesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:text="@string/day_tuesday"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_tuesday_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/text_tuesday"
+                        android:layout_alignEnd="@id/text_tuesday_reset"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:hint="@string/action_set_time"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_tuesday_reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentEnd="true"
+                        android:clickable="true"
+                        android:elevation="300dp"
+                        android:focusable="true"
+                        android:gravity="top"
+                        android:onClick="@{dialog::resetTime}"
+                        android:padding="16dp"
+                        android:text="@string/action_reset"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_wednesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingLeft="8dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_wednesday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/day_wednesday"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_wednesday_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/text_wednesday"
+                        android:layout_alignEnd="@id/text_wednesday_reset"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:hint="@string/action_set_time"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_wednesday_reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:clickable="true"
+                        android:elevation="300dp"
+                        android:focusable="true"
+                        android:gravity="top"
+                        android:onClick="@{dialog::resetTime}"
+                        android:padding="16dp"
+                        android:text="@string/action_reset"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_thursday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingLeft="8dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_thursday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:text="@string/day_thursday"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_thursday_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/text_thursday"
+                        android:layout_alignEnd="@id/text_thursday_reset"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:hint="@string/action_set_time"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_thursday_reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentEnd="true"
+                        android:clickable="true"
+                        android:elevation="300dp"
+                        android:focusable="true"
+                        android:gravity="top"
+                        android:onClick="@{dialog::resetTime}"
+                        android:padding="16dp"
+                        android:text="@string/action_reset"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_friday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingLeft="8dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_friday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/day_friday"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_friday_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/text_friday"
+                        android:layout_alignEnd="@id/text_friday_reset"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:hint="@string/action_set_time"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_friday_reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:clickable="true"
+                        android:elevation="300dp"
+                        android:focusable="true"
+                        android:gravity="top"
+                        android:onClick="@{dialog::resetTime}"
+                        android:padding="16dp"
+                        android:text="@string/action_reset"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_saturday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingLeft="8dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_saturday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:text="@string/day_saturday"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_saturday_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/text_saturday"
+                        android:layout_alignEnd="@id/text_saturday_reset"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:hint="@string/action_set_time"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_saturday_reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_alignParentEnd="true"
+                        android:clickable="true"
+                        android:elevation="300dp"
+                        android:focusable="true"
+                        android:gravity="top"
+                        android:onClick="@{dialog::resetTime}"
+                        android:padding="16dp"
+                        android:text="@string/action_reset"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_sunday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingLeft="8dp">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_sunday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/day_sunday"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_sunday_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignStart="@id/text_sunday"
+                        android:layout_alignEnd="@id/text_sunday_reset"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:hint="@string/action_set_time"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/text_sunday_reset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:clickable="true"
+                        android:elevation="300dp"
+                        android:focusable="true"
+                        android:gravity="top"
+                        android:onClick="@{dialog::resetTime}"
+                        android:padding="16dp"
+                        android:text="@string/action_reset"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

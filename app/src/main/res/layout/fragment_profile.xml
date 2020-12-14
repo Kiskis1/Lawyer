@@ -81,6 +81,21 @@
                         app:layout_constraintTop_toBottomOf="@+id/layout_password" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_working_hours"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        goneUnless="@{role}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/action_change_working_hours"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/textColor"
+                        app:icon="@drawable/ic_date_range_24"
+                        app:iconPadding="24dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/switch_dark_mode" />
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_logout"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="match_parent"
@@ -92,7 +107,7 @@
                         app:icon="@drawable/ic_logout"
                         app:iconPadding="24dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/switch_dark_mode" />
+                        app:layout_constraintTop_toBottomOf="@id/button_working_hours" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

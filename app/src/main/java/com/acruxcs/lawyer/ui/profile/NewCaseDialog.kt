@@ -38,6 +38,7 @@ class NewCaseDialog(private val fragment: Fragment, private val viewModel: Profi
 
             with(binding) {
                 if (tag == EDIT_TAG) {
+                    toolbar.toolbar.setTitle(R.string.dialog_title_edit)
                     editDescription.setText(case.shortDesc)
                     editCourt.setText(case.court)
                     editArea.setText(case.area)
@@ -46,37 +47,42 @@ class NewCaseDialog(private val fragment: Fragment, private val viewModel: Profi
                     editDate.setText(DateFormat.getDateInstance().format(case.date))
                 } else {
                     case = Case()
+                    toolbar.toolbar.setTitle(R.string.dialog_title_new_case)
                 }
-                editDate.inputType = InputType.TYPE_NULL
 
-                toolbar.toolbar.setNavigationOnClickListener {
-                    dismiss()
-                }
-                toolbar.toolbar.setOnMenuItemClickListener {
-                    when (it.itemId) {
-                        R.id.action_confirm -> {
-                            if (isValid()) {
-                                case.shortDesc = editDescription.text.toString().trim()
-                                case.court = editCourt.text.toString().trim()
-                                case.area = editArea.text.toString().trim()
-                                case.type = editType.text.toString().trim()
-                                case.outcome = editOutcome.text.toString().trim()
-                                viewModel.postCase(case)
-
-                                Utils.hideKeyboard(requireContext(), binding.root)
-                                dismiss()
-                            }
-                            true
+                editDate.apply {
+                    inputType = InputType.TYPE_NULL
+                    setOnClickListener {
+                        picker.show(fragment.parentFragmentManager, "date_picker")
+                        picker.addOnPositiveButtonClickListener {
+                            case.date = it
+                            editDate.setText(picker.headerText)
                         }
-                        else -> false
                     }
-
                 }
-                editDate.setOnClickListener {
-                    picker.show(fragment.parentFragmentManager, "date_picker")
-                    picker.addOnPositiveButtonClickListener {
-                        case.date = it
-                        editDate.setText(picker.headerText)
+
+                toolbar.toolbar.apply {
+                    setNavigationOnClickListener {
+                        dismiss()
+                    }
+                    setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.action_confirm -> {
+                                if (isValid()) {
+                                    case.shortDesc = editDescription.text.toString().trim()
+                                    case.court = editCourt.text.toString().trim()
+                                    case.area = editArea.text.toString().trim()
+                                    case.type = editType.text.toString().trim()
+                                    case.outcome = editOutcome.text.toString().trim()
+                                    viewModel.postCase(case)
+
+                                    Utils.hideKeyboard(requireContext(), binding.root)
+                                    dismiss()
+                                }
+                                true
+                            }
+                            else -> false
+                        }
                     }
                 }
             }

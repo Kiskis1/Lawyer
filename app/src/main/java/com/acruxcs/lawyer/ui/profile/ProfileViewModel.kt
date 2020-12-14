@@ -2,12 +2,14 @@ package com.acruxcs.lawyer.ui.profile
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.model.WorkingHours
 import com.acruxcs.lawyer.repository.CasesRepository
 import com.acruxcs.lawyer.repository.UsersRepository
-import com.acruxcs.lawyer.utils.SingleLiveEvent
 import com.acruxcs.lawyer.utils.Status
+import com.crazylegend.kotlinextensions.livedata.SingleLiveEvent
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.ktx.auth
@@ -76,6 +78,14 @@ class ProfileViewModel : ViewModel() {
 
     fun updateUser(user: User) {
         usersRepository.updateUser(user).addOnSuccessListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
+    }
+
+    fun saveHours(hours: WorkingHours) {
+        usersRepository.updateHours(hours, MainApplication.user.value!!.uid).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR

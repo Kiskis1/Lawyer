@@ -14,8 +14,10 @@ data class User(
     var phone: String = "",
     var uid: String = "",
     var role: UserTypes = UserTypes.User,
+    var address: String = "",
     var specialization: String = "",
     var education: String = "",
     var experience: Int = 0,
     var wonCases: Int = 0,
+    var workingHours: WorkingHours? = null,
 ) : Parcelable
