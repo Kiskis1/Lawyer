@@ -59,10 +59,8 @@ class TimeSelectionAdapter(private val interaction: Interaction? = null) :
             interaction?.onTimeSelected(clicked)
         }
 
-        fun bind(item: LocalTime) = with(itemView) {
-            with(binding) {
-                textTime.text = item.format(DateTimeFormatter.ofPattern("HH:mm"))
-            }
+        fun bind(item: LocalTime) = with(binding) {
+            textTime.text = item.format(DateTimeFormatter.ofPattern("HH:mm"))
         }
     }
 

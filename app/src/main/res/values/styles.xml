@@ -10,19 +10,4 @@
     <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
-
-    <style name="DialogTheme" parent="AppTheme">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:windowBackground">@color/background_color</item>
-        <!--        <item name="android:windowAnimationStyle">@style/MyDialogAnimation</item>-->
-    </style>
-
-    <style name="MyDialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
-        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
-        <item name="popEnterAnim">@anim/slide_in_right</item>
-        <item name="popExitAnim">@anim/slide_out_left</item>
-    </style>
-
 </resources>

@@ -34,7 +34,7 @@ class NewCaseFragment : Fragment(R.layout.fragment_new_case) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            if (tagas == EDIT_TAG && tagas != null) {
+            if (tagas != null && tagas == EDIT_TAG) {
                 toolbar.toolbar.setTitle(R.string.dialog_title_edit)
                 editDescription.setText(case?.shortDesc)
                 editCourt.setText(case?.court)

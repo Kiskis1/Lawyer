@@ -3,17 +3,25 @@ package com.acruxcs.lawyer.ui.main.reservation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.Reservation
-import com.acruxcs.lawyer.repository.UsersRepository
+import com.acruxcs.lawyer.repository.ReservationsRepository
+import com.acruxcs.lawyer.utils.Status
+import com.crazylegend.kotlinextensions.livedata.SingleLiveEvent
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 class ReservationsViewModel : ViewModel() {
 
-    private val db = UsersRepository
+    private val db = ReservationsRepository
 
     private val userReservations = MutableLiveData<List<Reservation>>()
     private val lawyerReservations = MutableLiveData<List<Reservation>>()
+
+    private val status = SingleLiveEvent<Status>()
+
+    fun getStatus(): SingleLiveEvent<Status> {
+        return status
+    }
 
     fun getReservationsForUser(uid: String): MutableLiveData<List<Reservation>> {
 
@@ -50,5 +58,13 @@ class ReservationsViewModel : ViewModel() {
         }
         db.getReservationsForLawyer(uid).addValueEventListener(listener)
         return lawyerReservations
+    }
+
+    fun deleteReservation(id: String) {
+        db.deleteReservation(id).addOnCompleteListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
     }
 }

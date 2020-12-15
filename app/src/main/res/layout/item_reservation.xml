@@ -8,6 +8,17 @@
     android:focusable="true"
     app:strokeColor="@drawable/stroke_color">
 
+    <TextView
+        android:id="@+id/menu_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:paddingRight="8dp"
+        android:text="@string/vertical_dots"
+        android:textAppearance="?android:textAppearanceLarge" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

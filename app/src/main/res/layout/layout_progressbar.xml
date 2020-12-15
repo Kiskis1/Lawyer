@@ -4,7 +4,6 @@
     android:id="@+id/progress_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
     android:clickable="true"
     android:elevation="300dp"
     android:focusable="true"

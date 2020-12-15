@@ -41,10 +41,6 @@ object Utils {
         dialog.create().show()
     }
 
-    // fun showQuestionDialog(manager: FragmentManager, item: User) {
-    //     QuestionDialog.newInstance(item).show(manager, "Question")
-    // }
-
     fun getCitiesByCountry(country: String): Int {
         return when (country) {
             "Lithuania" -> R.array.Lithuania

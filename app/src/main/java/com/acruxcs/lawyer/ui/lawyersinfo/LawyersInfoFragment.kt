@@ -16,10 +16,13 @@ import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.profile.ProfileViewModel
+import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 import com.acruxcs.lawyer.utils.Utils.toggleVisibility
+import com.crazylegend.kotlinextensions.fragments.shortToast
 import com.crazylegend.viewbinding.viewBinding
+import com.google.android.material.snackbar.Snackbar
 
 class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     private lateinit var lawyer: User
@@ -27,7 +30,6 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     private val list = mutableListOf<Case>()
     private val viewModel: LawyersViewModel by viewModels()
     private val binding by viewBinding(FragmentLawyersInfoBinding::bind)
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +40,12 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Reservation>("reservation")
             ?.observe(
                 viewLifecycleOwner) {
                 viewModel.createReservation(it)
             }
+        viewModel.getStatus().observe(this) { handleStatus(it) }
         with(binding) {
             speeddial.inflate(R.menu.menu_speed_dial)
             speeddial.setOnActionSelectedListener { item ->
@@ -53,7 +55,6 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                         speeddial.close()
                     }
                     R.id.fab_message_lawyer -> {
-                        // Utils.showQuestionDialog(parentFragmentManager, lawyer)
                         findNavController().navigate(R.id.action_lawyersInfoFragment_to_questionFragment,
                             bundleOf(ARG_LAWYER to lawyer))
                         speeddial.close()
@@ -104,6 +105,17 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                     }
                 }
             })
+        }
+    }
+
+    private fun handleStatus(it: Status?) {
+        when (it) {
+            Status.SUCCESS ->
+                Snackbar.make(requireView(), R.string.success, Snackbar.LENGTH_SHORT).show()
+
+            Status.ERROR -> shortToast(R.string.error_something)
+
+            else -> shortToast(R.string.error_something)
         }
     }
 }

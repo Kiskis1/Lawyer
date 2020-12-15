@@ -35,6 +35,12 @@
         android:name="com.acruxcs.lawyer.ui.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_newReservationFragment"
+            app:destination="@id/newReservationFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
     </fragment>
     <fragment
         android:id="@+id/lawyersFragment"
@@ -121,6 +127,14 @@
         <argument
             android:name="lawyer"
             app:argType="com.acruxcs.lawyer.model.User" />
+        <argument
+            android:name="tag"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="reservation"
+            app:argType="com.acruxcs.lawyer.model.Reservation"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/workingHoursFragment"

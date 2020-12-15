@@ -13,4 +13,8 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/progress_bar"
+        layout="@layout/layout_progressbar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

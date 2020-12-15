@@ -4,12 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.repository.QuestionsRepository
+import com.acruxcs.lawyer.utils.Status
+import com.crazylegend.kotlinextensions.livedata.SingleLiveEvent
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 class QuestionsViewModel : ViewModel() {
-    private val questionsRepository = QuestionsRepository
+    private val db = QuestionsRepository
 
     //advokatui
     private val askedQuestions = MutableLiveData<List<Question>>()
@@ -17,8 +19,14 @@ class QuestionsViewModel : ViewModel() {
     //naudotojo
     private val sentQuestions = MutableLiveData<List<Question>>()
 
+    private val status = SingleLiveEvent<Status>()
+
+    fun getStatus(): SingleLiveEvent<Status> {
+        return status
+    }
+
     //advokatui uzduoti klaus
-    fun getAskedQuestions(email: String): MutableLiveData<List<Question>> {
+    fun getAskedQuestions(id: String): MutableLiveData<List<Question>> {
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<Question>()
@@ -32,12 +40,12 @@ class QuestionsViewModel : ViewModel() {
                 println(error.message)
             }
         }
-        questionsRepository.getAskedQuestions(email).addValueEventListener(listener)
+        db.getAskedQuestions(id).addValueEventListener(listener)
         return askedQuestions
     }
 
     //naudotojo uzduoti klaus
-    fun getSentQuestions(email: String): MutableLiveData<List<Question>> {
+    fun getSentQuestions(id: String): MutableLiveData<List<Question>> {
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<Question>()
@@ -51,7 +59,15 @@ class QuestionsViewModel : ViewModel() {
                 println(error.message)
             }
         }
-        questionsRepository.getSentQuestions(email).addValueEventListener(listener)
+        db.getSentQuestions(id).addValueEventListener(listener)
         return sentQuestions
+    }
+
+    fun deleteQuestion(id: String) {
+        db.deleteQuestion(id).addOnCompleteListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
     }
 }

@@ -22,26 +22,29 @@ import java.time.format.DateTimeFormatter
 
 class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
     TimeSelectionAdapter.Interaction {
-    private lateinit var lawyer: User
-    private lateinit var reservation: Reservation
+    private var lawyer: User? = null
+    private var reservation: Reservation? = null
     private var selectedDate: LocalDate? = null
     private var selectedTime: LocalTime? = null
     private val binding by viewBinding(FragmentNewReservationBinding::bind)
     private val viewModel: LawyersViewModel by viewModels()
+    private var tagas: String? = null
 
     private val timeAdapter by lazy { TimeSelectionAdapter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            lawyer = it.getParcelable(Utils.ARG_LAWYER)!!
-            reservation = Reservation(lawyer = lawyer)
+            lawyer = it.getParcelable(Utils.ARG_LAWYER)
+            tagas = it.getString("tag")
+            reservation = it.getParcelable("reservation")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        reservation.user = MainApplication.user.value!!.uid
+        if (lawyer == null)
+            lawyer = reservation!!.lawyer
         with(binding) {
             recyclerView.adapter = timeAdapter
             toolbar.toolbar.apply {
@@ -50,7 +53,7 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
                     findNavController().navigateUp()
                 }
             }
-            lawyer.workingHours?.let {
+            lawyer!!.workingHours?.let {
                 toolbar.toolbar.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.action_confirm -> {
@@ -62,12 +65,18 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
                                 shortToast(R.string.error_select_time)
                                 return@setOnMenuItemClickListener true
                             }
-                            reservation.date = "$selectedDate"
-                            reservation.time = "$selectedTime"
-                            reservation.dateLawyer = "$selectedDate" + "_" + lawyer.uid
-                            viewModel.createReservation(reservation)
-                            // findNavController().previousBackStackEntry?.savedStateHandle?.set("reservation",
-                            //     reservation)
+                            if (tagas != null && tagas == "edit_reservation") {
+                                reservation!!.date = "$selectedDate"
+                                reservation!!.time = "$selectedTime"
+                                reservation!!.dateLawyer = "$selectedDate" + "_" + lawyer!!.uid
+                            } else {
+                                reservation = Reservation(lawyer = lawyer)
+                                reservation!!.user = MainApplication.user.value!!.uid
+                                reservation!!.date = "$selectedDate"
+                                reservation!!.time = "$selectedTime"
+                                reservation!!.dateLawyer = "$selectedDate" + "_" + lawyer!!.uid
+                            }
+                            viewModel.createReservation(reservation!!)
                             findNavController().navigateUp()
                             true
                         }
@@ -92,7 +101,7 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
                                 LocalDate.parse(str, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                             selectedTime = null
                             timeAdapter.resetSelected()
-                            viewModel.getAvailableTimes(str, dayOfWeek, lawyer)
+                            viewModel.getAvailableTimes(str, dayOfWeek, lawyer!!)
                                 .observe(viewLifecycleOwner, {
                                     timeAdapter.swapData(it)
                                 })

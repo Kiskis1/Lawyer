@@ -7,8 +7,11 @@ import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.CasesRepository
+import com.acruxcs.lawyer.repository.ReservationsRepository
 import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.ui.profile.ProfileViewModel
+import com.acruxcs.lawyer.utils.Status
+import com.crazylegend.kotlinextensions.livedata.SingleLiveEvent
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -20,11 +23,18 @@ import java.util.stream.Collectors
 class LawyersViewModel : ViewModel() {
     private val usersRepository = UsersRepository
     private val casesRepository = CasesRepository
+    private val reservationsRepository = ReservationsRepository
     private val lawyers = MutableLiveData<List<User>>()
     private val cases = MutableLiveData<List<Case>>()
     private val availableTimes = MutableLiveData<List<LocalTime>>()
 
     private val regex = "(\\d+):(\\d+)".toRegex()
+
+    private val status = SingleLiveEvent<Status>()
+
+    fun getStatus(): SingleLiveEvent<Status> {
+        return status
+    }
 
     fun getLawyers(): MutableLiveData<List<User>> {
         val listener = object : ValueEventListener {
@@ -63,7 +73,11 @@ class LawyersViewModel : ViewModel() {
     }
 
     fun createReservation(res: Reservation) {
-        usersRepository.createReservation(res)
+        reservationsRepository.createReservation(res).addOnSuccessListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
     }
 
     fun getImageRef(uid: String, ic: ProfileViewModel.Companion.ImageCallback) {
@@ -85,7 +99,7 @@ class LawyersViewModel : ViewModel() {
         return list.stream().filter(composite).collect(Collectors.toList())
     }
 
-    fun getTimeRange(range: String): MutableList<LocalTime> {
+    private fun getTimeRange(range: String): MutableList<LocalTime> {
         if (range == "") return mutableListOf()
         val timeList = mutableListOf<LocalTime>()
         val matches = regex.findAll(range)
@@ -126,7 +140,8 @@ class LawyersViewModel : ViewModel() {
         }
 
         val dateLawyer = "${date}_${lawyer.uid}"
-        usersRepository.getLawyersReservations(dateLawyer).addListenerForSingleValueEvent(listener)
+        reservationsRepository.getLawyersReservations(dateLawyer)
+            .addListenerForSingleValueEvent(listener)
         return availableTimes
     }
 

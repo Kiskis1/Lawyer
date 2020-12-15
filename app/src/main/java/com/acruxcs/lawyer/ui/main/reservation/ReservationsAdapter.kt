@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,11 +12,12 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemReservationBinding
 import com.acruxcs.lawyer.model.Reservation
 
-class ReservationsAdapter :
+class ReservationsAdapter(private val interaction: Interaction? = null) :
     ListAdapter<Reservation, ReservationsAdapter.ReservationsViewHolder>(ReservationDC()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ReservationsViewHolder(
-        ItemReservationBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
+        ItemReservationBinding.inflate(LayoutInflater.from(parent.context), parent, false).root,
+        interaction
     )
 
     override fun onBindViewHolder(holder: ReservationsViewHolder, position: Int) =
@@ -27,7 +29,10 @@ class ReservationsAdapter :
 
     inner class ReservationsViewHolder(
         itemView: View,
+        private val interaction: Interaction?,
     ) : RecyclerView.ViewHolder(itemView), OnClickListener {
+
+        private val binding = ItemReservationBinding.bind(itemView)
 
         init {
             itemView.setOnClickListener(this)
@@ -38,10 +43,24 @@ class ReservationsAdapter :
             if (adapterPosition == RecyclerView.NO_POSITION) return
 
             val clicked = getItem(adapterPosition)
+            val popup = PopupMenu(v?.context, binding.menuButton)
+            popup.inflate(R.menu.menu_reservation_actions)
+            popup.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_edit -> {
+                        interaction?.onActionSelected(R.id.action_edit, clicked, itemView)
+                    }
+                    R.id.action_delete -> {
+                        interaction?.onActionSelected(R.id.action_delete, clicked, itemView)
+                    }
+                }
+                true
+            }
+            popup.show()
         }
 
         fun bind(item: Reservation) = with(itemView) {
-            with(ItemReservationBinding.bind(itemView)) {
+            with(binding) {
                 textLawyer.text =
                     resources.getString(R.string.reservation_lawyer_name, item.lawyer!!.fullname)
                 textDate.text = resources.getString(R.string.reservation_date, item.date)
@@ -50,6 +69,10 @@ class ReservationsAdapter :
                     resources.getString(R.string.reservation_lawyer_address, item.lawyer!!.address)
             }
         }
+    }
+
+    interface Interaction {
+        fun onActionSelected(action: Int, item: Reservation, v: View)
     }
 
     private class ReservationDC : DiffUtil.ItemCallback<Reservation>() {

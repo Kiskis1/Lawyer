@@ -16,20 +16,21 @@ import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.kotlinextensions.fragments.shortToast
 import com.crazylegend.viewbinding.viewBinding
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class QuestionFragment : Fragment(R.layout.fragment_question) {
     private val repository = QuestionsRepository
 
-    private var question = Question()
-    private lateinit var lawyer: User
+    private var question: Question? = null
+    private var lawyer: User? = null
     private val binding by viewBinding(FragmentQuestionBinding::bind)
+    private var tagas: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            lawyer = it.getParcelable(ARG_LAWYER)!!
+            lawyer = it.getParcelable(ARG_LAWYER)
+            tagas = it.getString("tag")
+            question = it.getParcelable("question")
         }
     }
 
@@ -37,23 +38,33 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
         super.onViewCreated(view, savedInstanceState)
         setupEditTexts()
         with(binding) {
+            if (tagas != null && tagas == "edit_question") {
+                toolbar.toolbar.setTitle(R.string.dialog_title_edit)
+                editDescription.setText(question?.description)
+                editCountry.setText(question?.country)
+                editCity.setText(question?.city)
+                editPhone.setText(question?.phone)
+                editName.setText(question?.fullname)
+            } else {
+                question = Question()
+                toolbar.toolbar.setTitle(R.string.dialog_title_new_case)
+            }
             toolbar.toolbar.apply {
                 setNavigationOnClickListener {
                     findNavController().navigateUp()
                 }
-                setTitle(R.string.dialog_title_question)
                 setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.action_confirm -> {
                             if (isValid()) {
-                                question.description = editDescription.text.toString().trim()
-                                question.country = editCountry.text.toString().trim()
-                                question.city = editCity.text.toString().trim()
-                                question.phone = editPhone.text.toString().trim()
-                                question.fullname = editName.text.toString().trim()
-                                question.destinationEmail = lawyer.email
-                                question.sender = Firebase.auth.currentUser!!.email.toString()
-                                repository.postQuestion(question)
+                                question!!.description = editDescription.text.toString().trim()
+                                question!!.country = editCountry.text.toString().trim()
+                                question!!.city = editCity.text.toString().trim()
+                                question!!.phone = editPhone.text.toString().trim()
+                                question!!.fullname = editName.text.toString().trim()
+                                if (tagas == null) question!!.destination = lawyer!!.uid
+                                question!!.sender = MainApplication.user.value!!.uid
+                                repository.postQuestion(question!!)
                                 Utils.hideKeyboard(requireContext(), binding.root)
                                 shortToast(R.string.success)
                                 findNavController().navigateUp()
