@@ -26,8 +26,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:textColor="@color/textColor"
         android:textColorHint="@color/textColor"
         app:errorEnabled="true"
@@ -39,10 +42,9 @@
             android:id="@+id/edit_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
             android:autofillHints="username"
             android:hint="@string/hint_email"
+            android:nextFocusDown="@id/edit_password"
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
             android:textSize="20sp" />
@@ -50,8 +52,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:textColor="@color/textColor"
         android:textColorHint="@color/textColor"
         app:errorEnabled="true"
@@ -62,9 +67,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_password"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_height="wrap_content"
             android:autofillHints="password"
             android:hint="@string/hint_password"
             android:imeOptions="actionDone"
