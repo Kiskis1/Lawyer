@@ -1,20 +1,20 @@
 package com.acruxcs.lawyer.ui.lawyersinfo
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemCaseBinding
 import com.acruxcs.lawyer.model.Case
-import com.acruxcs.lawyer.ui.profile.NewCaseDialog
 import com.acruxcs.lawyer.ui.profile.ProfileViewModel
 import java.text.DateFormat
 
@@ -52,14 +52,9 @@ class LawyersCaseAdapter(private val fragment: Fragment, private val viewModel: 
                 popup.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.action_edit -> {
-                            NewCaseDialog(fragment, viewModel).apply {
-                                arguments = Bundle().apply {
-                                    this.putParcelable("case", clicked)
-                                }
-                            }.show(
-                                fragment.parentFragmentManager,
-                                "edit_case"
-                            )
+                            val bundle = bundleOf("case" to clicked, "tag" to "edit_case")
+                            fragment.findNavController()
+                                .navigate(R.id.action_profileFragment_to_newCaseFragment, bundle)
                         }
                         R.id.action_delete -> {
                             val dialog = AlertDialog.Builder(itemView.context)
@@ -100,12 +95,12 @@ class LawyersCaseAdapter(private val fragment: Fragment, private val viewModel: 
     private class CaseDC : DiffUtil.ItemCallback<Case>() {
         override fun areItemsTheSame(
             oldItem: Case,
-            newItem: Case
+            newItem: Case,
         ) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
             oldItem: Case,
-            newItem: Case
+            newItem: Case,
         ) = oldItem == newItem
     }
 }

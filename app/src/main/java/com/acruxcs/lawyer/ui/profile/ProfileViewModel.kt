@@ -40,13 +40,11 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    fun uploadImage(uri: Uri, callback: (result: Int) -> Unit) {
+    fun uploadImage(uri: Uri) {
         usersRepository.uploadImage(uri, firebaseUser!!.uid).addOnSuccessListener {
             status.value = Status.PICTURE_CHANGE_SUCCESS
-            callback(0)
         }.addOnFailureListener {
             status.value = Status.ERROR
-            callback(1)
         }
     }
 

@@ -2,14 +2,17 @@ package com.acruxcs.lawyer.ui.lawyersinfo
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.metadata
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLawyersInfoBinding
 import com.acruxcs.lawyer.model.Case
+import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.profile.ProfileViewModel
@@ -25,6 +28,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     private val viewModel: LawyersViewModel by viewModels()
     private val binding by viewBinding(FragmentLawyersInfoBinding::bind)
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,6 +38,12 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Reservation>("reservation")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.createReservation(it)
+            }
         with(binding) {
             speeddial.inflate(R.menu.menu_speed_dial)
             speeddial.setOnActionSelectedListener { item ->
@@ -43,12 +53,14 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                         speeddial.close()
                     }
                     R.id.fab_message_lawyer -> {
-                        Utils.showQuestionDialog(parentFragmentManager, lawyer)
+                        // Utils.showQuestionDialog(parentFragmentManager, lawyer)
+                        findNavController().navigate(R.id.action_lawyersInfoFragment_to_questionFragment,
+                            bundleOf(ARG_LAWYER to lawyer))
                         speeddial.close()
                     }
                     R.id.fab_book_lawyer -> {
-                        ReservationDialog.newInstance(lawyer, viewModel)
-                            .show(parentFragmentManager, "reservation")
+                        findNavController().navigate(R.id.action_lawyersInfoFragment_to_newReservationFragment,
+                            bundleOf(ARG_LAWYER to lawyer))
                         speeddial.close()
                     }
                 }

@@ -1,8 +1,13 @@
 package com.acruxcs.lawyer.model
 
+import android.os.Parcelable
+import androidx.annotation.Keep
+import kotlinx.parcelize.Parcelize
 import java.util.Locale
 import java.util.UUID
 
+@Parcelize
+@Keep
 data class Reservation(
     var id: String = UUID.randomUUID().toString().replace("-", "").toUpperCase(Locale.ENGLISH),
     var date: String = "",
@@ -11,4 +16,4 @@ data class Reservation(
     var lawyer: User? = null,
     var user: String = "",
     var dateLawyer: String = "",
-)
+) : Parcelable

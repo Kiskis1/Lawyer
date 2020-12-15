@@ -11,7 +11,6 @@ import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.SharedPrefRepository
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_DARK_MODE_ON
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
-import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_USER_DATA
 import com.acruxcs.lawyer.repository.SharedPrefRepository.edit
 import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
 import com.acruxcs.lawyer.repository.UsersRepository
@@ -25,7 +24,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
 
@@ -85,7 +83,8 @@ class MainActivity : AppCompatActivity() {
             R.id.mainFragment,
             R.id.lawyersFragment,
             R.id.profileFragment,
-            R.id.loginFragment -> finish()
+            R.id.loginFragment,
+            -> finish()
             else -> super.onBackPressed()
         }
     }
@@ -96,7 +95,6 @@ class MainActivity : AppCompatActivity() {
                 val temp = snapshot.getValue(User::class.java)
                 preferences
                     .edit {
-                        it.putString(SHARED_USER_DATA, Gson().toJson(temp))
                         it.putBoolean(SHARED_LOGGED_IN, true)
                     }
                 MainApplication.user.postValue(temp)

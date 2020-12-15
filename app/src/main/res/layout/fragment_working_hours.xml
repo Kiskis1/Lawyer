@@ -5,7 +5,7 @@
 
         <variable
             name="dialog"
-            type="com.acruxcs.lawyer.ui.profile.WorkingHoursDialog" />
+            type="com.acruxcs.lawyer.ui.profile.WorkingHoursFragment" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

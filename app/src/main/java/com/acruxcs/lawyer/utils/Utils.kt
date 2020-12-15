@@ -12,7 +12,6 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.BindingAdapter
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -20,7 +19,6 @@ import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
-import com.acruxcs.lawyer.ui.lawyersinfo.QuestionDialog
 import com.google.android.gms.common.util.ArrayUtils
 import com.google.android.material.textfield.TextInputLayout
 
@@ -43,9 +41,9 @@ object Utils {
         dialog.create().show()
     }
 
-    fun showQuestionDialog(manager: FragmentManager, item: User) {
-        QuestionDialog.newInstance(item).show(manager, "Question")
-    }
+    // fun showQuestionDialog(manager: FragmentManager, item: User) {
+    //     QuestionDialog.newInstance(item).show(manager, "Question")
+    // }
 
     fun getCitiesByCountry(country: String): Int {
         return when (country) {

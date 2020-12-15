@@ -5,8 +5,9 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,9 +18,10 @@ import com.acruxcs.lawyer.databinding.ItemLawyerBinding
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.profile.ProfileViewModel
 import com.acruxcs.lawyer.utils.Utils
+import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 
 class LawyersListAdapter(
-    private val manager: FragmentManager,
+    private val fragment: Fragment,
     private val viewModel: LawyersViewModel,
 ) :
     ListAdapter<User, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
@@ -86,7 +88,9 @@ class LawyersListAdapter(
                     }
                 })
                 buttonQuestion.setOnClickListener {
-                    Utils.showQuestionDialog(manager, item)
+                    fragment.findNavController()
+                        .navigate(R.id.action_lawyersFragment_to_questionFragment,
+                            bundleOf(ARG_LAWYER to item))
                 }
             }
         }

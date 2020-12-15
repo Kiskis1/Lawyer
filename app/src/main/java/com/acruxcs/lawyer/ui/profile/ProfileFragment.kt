@@ -1,17 +1,24 @@
 package com.acruxcs.lawyer.ui.profile
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.metadata
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentProfileBinding
+import com.acruxcs.lawyer.model.Case
+import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.model.WorkingHours
 import com.acruxcs.lawyer.repository.SharedPrefRepository
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_DARK_MODE_ON
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
@@ -42,14 +49,27 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         viewModel.getStatus().observe(this, { handleStatus(it) })
         loadProfileImage()
 
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<User>("user")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.updateUser(it)
+            }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Case>("case")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.postCase(it)
+            }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<WorkingHours>("hours")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.saveHours(it)
+            }
         with(binding) {
             role = MainApplication.user.value!!.role
 
-            pictureLayout.buttonEditPicture.setOnClickListener {
-                ProfileEditDialog(viewModel).show(
-                    parentFragmentManager,
-                    "edit_profile"
-                )
+            buttonProfileEdit.setOnClickListener {
+                findNavController().navigate(R.id.action_profileFragment_to_profileEditFragment)
             }
 
             if (!preferences.getStringSet(
@@ -72,14 +92,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 Utils.switchDarkMode(b)
             }
             buttonWorkingHours.setOnClickListener {
-                WorkingHoursDialog(viewModel).show(parentFragmentManager, "working_hours")
+                findNavController().navigate(R.id.action_profileFragment_to_workingHoursFragment)
+            }
+
+            pictureLayout.buttonEditPicture.setOnClickListener {
+                selectImage()
             }
 
             fabAddCase.setOnClickListener {
-                NewCaseDialog(this@ProfileFragment, viewModel).show(
-                    parentFragmentManager,
-                    "new_case"
-                )
+                findNavController()
+                    .navigate(R.id.action_profileFragment_to_newCaseFragment)
             }
 
             layoutPassword.setEndIconOnClickListener {
@@ -140,6 +162,24 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         Firebase.auth.signOut()
         LoginManager.getInstance()?.logOut()
         (activity as MainActivity).googleSignInClient.signOut()
+    }
+
+    private val selectImageForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val intent = it.data
+                if (intent != null) {
+                    binding.pictureLayout.imagePicture.invalidate()
+                    viewModel.uploadImage(intent.data!!)
+                }
+            }
+        }
+
+    private fun selectImage() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        selectImageForResult.launch(Intent.createChooser(intent, "Select Image from here..."))
     }
 
     private fun handleStatus(status: Status?) {

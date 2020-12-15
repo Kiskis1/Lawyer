@@ -35,10 +35,6 @@
         android:name="com.acruxcs.lawyer.ui.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
-        <argument
-            android:name="isNewUser"
-            android:defaultValue="false"
-            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/lawyersFragment"
@@ -55,12 +51,22 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_lawyersFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
     </fragment>
     <fragment
         android:id="@+id/lawyersInfoFragment"
         android:name="com.acruxcs.lawyer.ui.lawyersinfo.LawyersInfoFragment"
         android:label="fragment_lawyers_info"
-        tools:layout="@layout/fragment_lawyers_info" />
+        tools:layout="@layout/fragment_lawyers_info">
+        <action
+            android:id="@+id/action_lawyersInfoFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+        <action
+            android:id="@+id/action_lawyersInfoFragment_to_newReservationFragment"
+            app:destination="@id/newReservationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.acruxcs.lawyer.ui.profile.ProfileFragment"
@@ -68,5 +74,56 @@
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_newCaseFragment"
+            app:destination="@id/newCaseFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_profileFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_workingHoursFragment"
+            app:destination="@id/workingHoursFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newCaseFragment"
+        android:name="com.acruxcs.lawyer.ui.profile.NewCaseFragment"
+        android:label="NewCaseFragment">
+        <argument
+            android:name="case"
+            app:argType="com.acruxcs.lawyer.model.Case"
+            app:nullable="true" />
+        <argument
+            android:name="tag"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionFragment"
+        android:name="com.acruxcs.lawyer.ui.lawyersinfo.QuestionFragment"
+        android:label="QuestionFragment" />
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.acruxcs.lawyer.ui.profile.ProfileEditFragment"
+        android:label="fragment_profile_edit"
+        tools:layout="@layout/fragment_profile_edit">
+        <argument
+            android:name="pictureurl"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/newReservationFragment"
+        android:name="com.acruxcs.lawyer.ui.lawyersinfo.NewReservationFragment"
+        android:label="NewReservationFragment">
+        <argument
+            android:name="lawyer"
+            app:argType="com.acruxcs.lawyer.model.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/workingHoursFragment"
+        android:name="com.acruxcs.lawyer.ui.profile.WorkingHoursFragment"
+        android:label="WorkingHoursFragment" />
 </navigation>

@@ -47,7 +47,6 @@
                         android:id="@+id/layout_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:textColor="@color/textColor"
                         android:textColorHint="@color/textColor"
                         app:endIconContentDescription="Send updated info"
@@ -68,14 +67,15 @@
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_dark_mode"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_night_mode"
                         android:drawablePadding="24dp"
                         android:text="@string/profile_switch_dark_mode"
+                        android:textAlignment="textStart"
                         android:textColor="@color/textColor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/layout_password" />
@@ -96,18 +96,34 @@
                         app:layout_constraintTop_toBottomOf="@id/switch_dark_mode" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_profile_edit"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        goneUnless="@{role}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/action_update_profile_information"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/textColor"
+                        app:icon="@drawable/ic_person_24"
+                        app:iconPadding="24dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/button_working_hours" />
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_logout"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/action_logout"
                         android:textAlignment="textStart"
                         android:textColor="@color/textColor"
                         app:icon="@drawable/ic_logout"
-                        app:iconPadding="24dp"
+                        app:iconPadding="20dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/button_working_hours" />
+                        app:layout_constraintTop_toBottomOf="@id/button_profile_edit" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

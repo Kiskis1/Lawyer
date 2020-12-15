@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
-import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_USER_DATA
 import com.acruxcs.lawyer.repository.SharedPrefRepository.edit
 import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
 import com.acruxcs.lawyer.repository.UsersRepository
@@ -15,7 +14,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
 
 class LoginViewModel : ViewModel() {
     private val usersRepository = UsersRepository
@@ -46,7 +44,6 @@ class LoginViewModel : ViewModel() {
                 MainApplication.user.postValue(temp)
                 preferences
                     .edit {
-                        it.putString(SHARED_USER_DATA, Gson().toJson(temp))
                         it.putBoolean(SHARED_LOGGED_IN, true)
                     }
             }

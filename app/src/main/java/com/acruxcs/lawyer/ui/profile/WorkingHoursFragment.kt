@@ -1,51 +1,44 @@
 package com.acruxcs.lawyer.ui.profile
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
-import com.acruxcs.lawyer.databinding.DialogWorkingHoursBinding
+import com.acruxcs.lawyer.databinding.FragmentWorkingHoursBinding
 import com.acruxcs.lawyer.model.WorkingHours
+import com.crazylegend.viewbinding.viewBinding
 import zion830.com.range_picker_dialog.TimeRangePickerDialog
 
-class WorkingHoursDialog(private val viewModel: ProfileViewModel) :
-    DialogFragment() {
-    private lateinit var binding: DialogWorkingHoursBinding
+class WorkingHoursFragment : Fragment(R.layout.fragment_working_hours) {
+    private val binding by viewBinding(FragmentWorkingHoursBinding::bind)
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DialogWorkingHoursBinding.inflate(LayoutInflater.from(requireContext()))
-        return activity?.let { activity ->
-            val builder = AlertDialog.Builder(activity, R.style.DialogTheme)
-            setupLayouts()
-            setupTextViews()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupLayouts()
+        setupTextViews()
 
-            with(binding) {
-                toolbar.toolbar.apply {
-                    setNavigationOnClickListener {
-                        dismiss()
-                    }
-                    setTitle(R.string.dialog_title_working_hours)
-                    setOnMenuItemClickListener {
-                        when (it.itemId) {
-                            R.id.action_confirm -> {
-                                saveHours()
-                                dismiss()
-                                true
-                            }
-                            else -> false
+        with(binding) {
+            toolbar.toolbar.apply {
+                setNavigationOnClickListener {
+                    findNavController().navigateUp()
+                }
+                setTitle(R.string.dialog_title_working_hours)
+                setOnMenuItemClickListener {
+                    when (it.itemId) {
+                        R.id.action_confirm -> {
+                            saveHours()
+                            findNavController().navigateUp()
+                            true
                         }
+                        else -> false
                     }
                 }
             }
-
-            builder.setView(binding.root)
-            builder.create()
-        } ?: throw IllegalStateException("Activity cannot be null")
+        }
     }
 
     private fun setupTextViews() {
@@ -71,7 +64,7 @@ class WorkingHoursDialog(private val viewModel: ProfileViewModel) :
             hours.friday = textFridayTime.text.toString()
             hours.saturday = textSaturdayTime.text.toString()
             hours.sunday = textSundayTime.text.toString()
-            viewModel.saveHours(hours)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set("hours", hours)
         }
     }
 
