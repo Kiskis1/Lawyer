@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".ui.profile.NewCaseFragment">
 
     <include
         android:id="@+id/toolbar"
@@ -13,17 +13,23 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor"
                 app:errorEnabled="true"
@@ -35,9 +41,7 @@
                     android:id="@+id/edit_description"
                     android:layout_width="match_parent"
                     android:layout_height="122dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="@string/hint_description"
+                    android:hint="@string/case_short_description"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="textMultiLine"
@@ -45,9 +49,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_country"
+                android:id="@+id/layout_court"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor"
                 app:errorEnabled="true"
@@ -56,12 +62,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/layout_description">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_country"
+                    android:id="@+id/edit_court"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="@string/hint_country"
+                    android:hint="@string/case_hint_court"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="text"
@@ -69,23 +73,23 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_city"
+                android:id="@+id/layout_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_country">
+                app:layout_constraintTop_toBottomOf="@id/layout_court">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_city"
+                    android:id="@+id/edit_area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="@string/hint_city"
+                    android:hint="@string/case_hint_area"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="text"
@@ -93,51 +97,78 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_phone"
+                android:id="@+id/layout_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_city">
+                app:layout_constraintTop_toBottomOf="@+id/layout_area">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_phone"
+                    android:id="@+id/edit_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="@string/hint_phone"
+                    android:hint="@string/case_hint_type"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
-                    android:inputType="phone"
+                    android:inputType="text"
                     android:textSize="20sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_name"
+                android:id="@+id/layout_outcome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_phone">
+                app:layout_constraintTop_toBottomOf="@id/layout_type">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_name"
+                    android:id="@+id/edit_outcome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:hint="@string/hint_full_name"
+                    android:hint="@string/case_hint_outcome"
                     android:imeOptions="actionDone"
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/textColor"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_outcome">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/hint_date"
+                    android:inputType="none"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_outcome" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
