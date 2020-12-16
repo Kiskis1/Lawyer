@@ -15,5 +15,6 @@ data class Reservation(
     var reason: String = "",
     var lawyer: User? = null,
     var user: String = "",
+    var inPerson: Boolean = true,
     var dateLawyer: String = "",
 ) : Parcelable

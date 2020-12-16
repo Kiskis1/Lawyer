@@ -29,8 +29,8 @@ import com.acruxcs.lawyer.ui.lawyersinfo.LawyersCaseAdapter
 import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
-import com.acruxcs.lawyer.utils.Utils.toggleVisibility
 import com.crazylegend.kotlinextensions.fragments.shortToast
+import com.crazylegend.kotlinextensions.views.toggleVisibilityInvisibleToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
@@ -48,23 +48,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getStatus().observe(this, { handleStatus(it) })
         loadProfileImage()
+        observeBackStack()
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<User>("user")
-            ?.observe(
-                viewLifecycleOwner) {
-                viewModel.updateUser(it)
-            }
-
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Case>("case")
-            ?.observe(
-                viewLifecycleOwner) {
-                viewModel.postCase(it)
-            }
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<WorkingHours>("hours")
-            ?.observe(
-                viewLifecycleOwner) {
-                viewModel.saveHours(it)
-            }
         with(binding) {
             role = MainApplication.user.value!!.role
 
@@ -112,12 +97,31 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             lawyersViewModel.getLawyersCases(MainApplication.user.value!!.uid)
                 .observe(viewLifecycleOwner, {
                     if (it.isNotEmpty()) {
-                        if (textEmptyList.isVisible) textEmptyList.toggleVisibility()
+                        if (textEmptyList.isVisible) textEmptyList.toggleVisibilityInvisibleToVisible()
                         lawyersCasesAdapter.swapData(it)
                     } else
-                        textEmptyList.toggleVisibility()
+                        textEmptyList.toggleVisibilityInvisibleToVisible()
                 })
         }
+    }
+
+    private fun observeBackStack() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<User>("user")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.updateUser(it)
+            }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Case>("case")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.postCase(it)
+            }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<WorkingHours>("hours")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.saveHours(it)
+            }
     }
 
     private fun updatePassword() {

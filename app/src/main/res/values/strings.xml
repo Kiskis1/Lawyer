@@ -118,7 +118,7 @@
     <string name="error_select_time">Please select time</string>
     <string name="success">Success</string>
     <string name="error_something">Something went wrong, please try again!</string>
-    <string name="reservation_no_available_times">Lawyer doesn\'t have available times.\nTry another day</string>
+    <string name="reservation_no_available_dates">Lawyer doesn\'t have available times.\nTry another day</string>
     <string name="dialog_title_working_hours">Working Hours</string>
     <string name="dialog_title_reservation">Reservation</string>
     <string name="dialog_title_edit">Edit</string>
@@ -130,9 +130,15 @@
     <string name="reservation_date">Date: %s</string>
     <string name="reservation_lawyer_name">Lawyer: %s</string>
     <string name="reservation_lawyer_address">Address: %s</string>
+    <string name="reservation_visit_type_person">Visit type: In person</string>
+    <string name="reservation_visit_type_remote">Visit type: Remote</string>
     <string name="reservation_time">Time: %s</string>
     <string name="action_update_profile_information">Update profile information</string>
     <string name="vertical_dots">⋮</string>
     <string name="action_change_time">Change time</string>
+    <string name="visit_type_in_person">In person</string>
+    <string name="visit_type_remote">Remote</string>
+    <string name="visit_type_text">Visit type</string>
+    <string name="reservation_no_available_times">Lawyer doesn\'t have available times on this day.\nTry another day,</string>
 
 </resources>

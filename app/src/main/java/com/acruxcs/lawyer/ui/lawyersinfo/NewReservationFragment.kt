@@ -2,6 +2,7 @@ package com.acruxcs.lawyer.ui.lawyersinfo
 
 import android.os.Bundle
 import android.view.View
+import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -14,6 +15,7 @@ import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.crazylegend.kotlinextensions.fragments.shortToast
+import com.crazylegend.kotlinextensions.views.toggleVisibilityInvisibleToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.vivekkaushik.datepicker.OnDateSelectedListener
 import java.time.LocalDate
@@ -39,12 +41,16 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
             tagas = it.getString("tag")
             reservation = it.getParcelable("reservation")
         }
+        if (tagas == null && tagas != "edit_reservation") {
+            reservation = Reservation(lawyer = lawyer)
+            reservation!!.user = MainApplication.user.value!!.uid
+        }
+        if (lawyer == null)
+            lawyer = reservation!!.lawyer
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (lawyer == null)
-            lawyer = reservation!!.lawyer
         with(binding) {
             recyclerView.adapter = timeAdapter
             toolbar.toolbar.apply {
@@ -65,17 +71,9 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
                                 shortToast(R.string.error_select_time)
                                 return@setOnMenuItemClickListener true
                             }
-                            if (tagas != null && tagas == "edit_reservation") {
-                                reservation!!.date = "$selectedDate"
-                                reservation!!.time = "$selectedTime"
-                                reservation!!.dateLawyer = "$selectedDate" + "_" + lawyer!!.uid
-                            } else {
-                                reservation = Reservation(lawyer = lawyer)
-                                reservation!!.user = MainApplication.user.value!!.uid
-                                reservation!!.date = "$selectedDate"
-                                reservation!!.time = "$selectedTime"
-                                reservation!!.dateLawyer = "$selectedDate" + "_" + lawyer!!.uid
-                            }
+                            reservation!!.date = "$selectedDate"
+                            reservation!!.time = "$selectedTime"
+                            reservation!!.dateLawyer = "$selectedDate" + "_" + lawyer!!.uid
                             viewModel.createReservation(reservation!!)
                             findNavController().navigateUp()
                             true
@@ -83,47 +81,65 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
                         else -> false
                     }
                 }
+                visitTypeGroup.setOnCheckedChangeListener(radioGroupListener)
                 dayPicker.apply {
                     setInitialDate(
                         LocalDate.now().year,
                         LocalDate.now().month.value - 1,
                         LocalDate.now().dayOfMonth
                     )
-                    setOnDateSelectedListener(object : OnDateSelectedListener {
-                        override fun onDateSelected(
-                            year: Int,
-                            month: Int,
-                            day: Int,
-                            dayOfWeek: Int,
-                        ) {
-                            val str = String.format("$year-%02d-%02d", month + 1, day)
-                            selectedDate =
-                                LocalDate.parse(str, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                            selectedTime = null
-                            timeAdapter.resetSelected()
-                            viewModel.getAvailableTimes(str, dayOfWeek, lawyer!!)
-                                .observe(viewLifecycleOwner, {
-                                    timeAdapter.swapData(it)
-                                })
-                        }
-
-                        override fun onDisabledDateSelected(
-                            year: Int,
-                            month: Int,
-                            day: Int,
-                            dayOfWeek: Int,
-                            isDisabled: Boolean,
-                        ) = Unit
-                    })
+                    setOnDateSelectedListener(dateSelectedListener)
 
                 }
             } ?: run {
                 toolbar.toolbar.menu.findItem(R.id.action_confirm).isVisible = false
                 textEmptyList.visibility = View.VISIBLE
+                visitTypeGroup.visibility = View.GONE
                 recyclerView.visibility = View.GONE
                 dayPicker.visibility = View.GONE
             }
         }
+    }
+
+    private val radioGroupListener = RadioGroup.OnCheckedChangeListener { _, id ->
+        when (id) {
+            R.id.radio_person ->
+                reservation!!.inPerson = true
+            R.id.radio_remote ->
+                reservation!!.inPerson = false
+        }
+    }
+
+    private val dateSelectedListener = object : OnDateSelectedListener {
+        override fun onDateSelected(
+            year: Int,
+            month: Int,
+            day: Int,
+            dayOfWeek: Int,
+        ) {
+            val str = String.format("$year-%02d-%02d", month + 1, day)
+            selectedDate =
+                LocalDate.parse(str, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            selectedTime = null
+            timeAdapter.resetSelected()
+            viewModel.getAvailableTimes(str, dayOfWeek, lawyer!!)
+                .observe(viewLifecycleOwner, {
+                    timeAdapter.swapData(it)
+                    if (it.isEmpty() && binding.textNoTimes.visibility == View.INVISIBLE) {
+                        binding.textNoTimes.toggleVisibilityInvisibleToVisible()
+                    } else if (it.isNotEmpty() && binding.textNoTimes.visibility == View.VISIBLE) {
+                        binding.textNoTimes.toggleVisibilityInvisibleToVisible()
+                    }
+                })
+        }
+
+        override fun onDisabledDateSelected(
+            year: Int,
+            month: Int,
+            day: Int,
+            dayOfWeek: Int,
+            isDisabled: Boolean,
+        ) = Unit
     }
 
     override fun onTimeSelected(time: LocalTime?) {

@@ -67,6 +67,10 @@ class ReservationsAdapter(private val interaction: Interaction? = null) :
                 textTime.text = resources.getString(R.string.reservation_time, item.time)
                 textAddress.text =
                     resources.getString(R.string.reservation_lawyer_address, item.lawyer!!.address)
+                textVisitType.text = when (item.inPerson) {
+                    true -> resources.getString(R.string.reservation_visit_type_person)
+                    false -> resources.getString(R.string.reservation_visit_type_remote)
+                }
             }
         }
     }

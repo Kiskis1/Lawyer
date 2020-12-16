@@ -86,14 +86,6 @@ object Utils {
         })
     }
 
-    fun View.toggleVisibility() {
-        visibility = if (visibility == View.VISIBLE) {
-            View.INVISIBLE
-        } else {
-            View.VISIBLE
-        }
-    }
-
     val countryAdapter by lazy {
         ArrayAdapter.createFromResource(
             MainApplication.appContext,

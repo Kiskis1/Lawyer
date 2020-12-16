@@ -31,6 +31,7 @@ class ReservationsViewModel : ViewModel() {
                 for (reservation in snapshot.children) {
                     reservation.getValue(Reservation::class.java)?.let { list.add(it) }
                 }
+                list.sortWith(compareBy<Reservation> { it.date }.thenBy { it.time })
                 userReservations.postValue(list)
             }
 
@@ -49,6 +50,7 @@ class ReservationsViewModel : ViewModel() {
                 for (reservation in snapshot.children) {
                     reservation.getValue(Reservation::class.java)?.let { list.add(it) }
                 }
+                list.sortWith(compareBy<Reservation> { it.date }.thenBy { it.time })
                 lawyerReservations.postValue(list)
             }
 
