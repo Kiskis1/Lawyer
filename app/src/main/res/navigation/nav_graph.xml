@@ -47,16 +47,9 @@
         android:name="com.acruxcs.lawyer.ui.lawyers.LawyersFragment"
         android:label="lawyers_fragment"
         tools:layout="@layout/fragment_lawyers">
-        <argument
-            android:name="lawyer"
-            app:argType="com.acruxcs.lawyer.model.User" />
         <action
             android:id="@+id/action_lawyersFragment_to_lawyersInfoFragment"
-            app:destination="@id/lawyersInfoFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:destination="@id/lawyersInfoFragment" />
         <action
             android:id="@+id/action_lawyersFragment_to_questionFragment"
             app:destination="@id/questionFragment" />
@@ -72,6 +65,9 @@
         <action
             android:id="@+id/action_lawyersInfoFragment_to_newReservationFragment"
             app:destination="@id/newReservationFragment" />
+        <argument
+            android:name="lawyer"
+            app:argType="com.acruxcs.lawyer.model.User" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -83,10 +79,8 @@
         <action
             android:id="@+id/action_profileFragment_to_newCaseFragment"
             app:destination="@id/newCaseFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:enterAnim="@anim/slide_up"
+            app:popExitAnim="@anim/slide_down" />
         <action
             android:id="@+id/action_profileFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />

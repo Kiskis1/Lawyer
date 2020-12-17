@@ -74,7 +74,8 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
                             reservation!!.date = "$selectedDate"
                             reservation!!.time = "$selectedTime"
                             reservation!!.dateLawyer = "$selectedDate" + "_" + lawyer!!.uid
-                            viewModel.createReservation(reservation!!)
+                            findNavController().previousBackStackEntry?.savedStateHandle?.set("reservation",
+                                reservation!!)
                             findNavController().navigateUp()
                             true
                         }

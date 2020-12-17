@@ -69,4 +69,12 @@ class ReservationsViewModel : ViewModel() {
             status.value = Status.ERROR
         }
     }
+
+    fun createReservation(reservation: Reservation) {
+        db.createReservation(reservation).addOnCompleteListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
+    }
 }

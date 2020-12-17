@@ -28,17 +28,20 @@ object Utils {
     const val MIN_PASS_LENGTH = 6
 
     fun showCallDialog(context: Context, item: User) {
-        val dialog = AlertDialog.Builder(context)
-        dialog.setMessage(R.string.call_dialog_message)
-        dialog.setTitle(R.string.call_dialog_title)
-        dialog.setPositiveButton(R.string.action_call) { _, _ ->
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage(R.string.call_dialog_message)
+        builder.setTitle(R.string.call_dialog_title)
+        builder.setPositiveButton(R.string.action_call) { _, _ ->
             val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", item.phone, null))
             context.startActivity(intent)
         }
-        dialog.setNegativeButton(R.string.action_cancel) { d, _ ->
+        builder.setNegativeButton(R.string.action_cancel) { d, _ ->
             d.cancel()
         }
-        dialog.create().show()
+
+        val dialog = builder.create()
+        dialog.window?.attributes?.windowAnimations = R.style.CallDialogAnim
+        dialog.show()
     }
 
     fun getCitiesByCountry(country: String): Int {

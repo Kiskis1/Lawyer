@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.Case
+import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.CasesRepository
+import com.acruxcs.lawyer.repository.QuestionsRepository
 import com.acruxcs.lawyer.repository.ReservationsRepository
 import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.ui.profile.ProfileViewModel
@@ -23,6 +25,7 @@ import java.util.stream.Collectors
 class LawyersViewModel : ViewModel() {
     private val usersRepository = UsersRepository
     private val casesRepository = CasesRepository
+    private val questionsRepository = QuestionsRepository
     private val reservationsRepository = ReservationsRepository
     private val lawyers = MutableLiveData<List<User>>()
     private val cases = MutableLiveData<List<Case>>()
@@ -97,6 +100,14 @@ class LawyersViewModel : ViewModel() {
                 p1.and(p2)
             }
         return list.stream().filter(composite).collect(Collectors.toList())
+    }
+
+    fun postQuestion(question: Question) {
+        questionsRepository.postQuestion(question).addOnCompleteListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
     }
 
     private fun getTimeRange(range: String): MutableList<LocalTime> {

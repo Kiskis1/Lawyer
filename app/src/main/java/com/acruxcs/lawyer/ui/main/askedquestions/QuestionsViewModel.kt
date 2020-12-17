@@ -70,4 +70,12 @@ class QuestionsViewModel : ViewModel() {
             status.value = Status.ERROR
         }
     }
+
+    fun postQuestion(question: Question) {
+        db.postQuestion(question).addOnCompleteListener {
+            status.value = Status.SUCCESS
+        }.addOnFailureListener {
+            status.value = Status.ERROR
+        }
+    }
 }

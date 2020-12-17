@@ -1,8 +1,10 @@
 package com.acruxcs.lawyer.ui.lawyersinfo
 
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,6 +14,7 @@ import coil.metadata
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLawyersInfoBinding
 import com.acruxcs.lawyer.model.Case
+import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
@@ -36,17 +39,16 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
         arguments?.let {
             lawyer = it.getParcelable(ARG_LAWYER)!!
         }
+        sharedElementEnterTransition = TransitionInflater.from(requireContext())
+            .inflateTransition(android.R.transition.move)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Reservation>("reservation")
-            ?.observe(
-                viewLifecycleOwner) {
-                viewModel.createReservation(it)
-            }
+        observeBackStack()
         viewModel.getStatus().observe(this) { handleStatus(it) }
         with(binding) {
+            ViewCompat.setTransitionName(binding.imageProfile, lawyer.uid)
             speeddial.inflate(R.menu.menu_speed_dial)
             speeddial.setOnActionSelectedListener { item ->
                 when (item.id) {
@@ -106,6 +108,19 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                 }
             })
         }
+    }
+
+    private fun observeBackStack() {
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Reservation>("reservation")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.createReservation(it)
+            }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Question>("question")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.postQuestion(it)
+            }
     }
 
     private fun handleStatus(it: Status?) {

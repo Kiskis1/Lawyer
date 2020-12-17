@@ -5,8 +5,10 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -30,8 +32,11 @@ class LawyersListAdapter(
         ItemLawyerBinding.inflate(LayoutInflater.from(parent.context), parent, false).root
     )
 
-    override fun onBindViewHolder(holder: LawyerListViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: LawyerListViewHolder, position: Int) {
         holder.bind(getItem(position))
+        ViewCompat.setTransitionName(ItemLawyerBinding.bind(holder.itemView).imageProfile,
+            getItem(position).uid)
+    }
 
     fun swapData(data: List<User>) {
         submitList(data.toMutableList())
@@ -40,6 +45,7 @@ class LawyersListAdapter(
     inner class LawyerListViewHolder(
         itemView: View,
     ) : RecyclerView.ViewHolder(itemView), OnClickListener {
+        private val binding = ItemLawyerBinding.bind(itemView)
 
         init {
             itemView.setOnClickListener(this)
@@ -50,14 +56,15 @@ class LawyersListAdapter(
             if (adapterPosition == RecyclerView.NO_POSITION) return
 
             val clicked = getItem(adapterPosition)
-            val bundle = bundleOf()
-            bundle.putParcelable("lawyer", clicked)
+            val dir = LawyersFragmentDirections.actionLawyersFragmentToLawyersInfoFragment(clicked)
+            val extra = FragmentNavigatorExtras(Pair(binding.imageProfile,
+                ViewCompat.getTransitionName(binding.imageProfile)!!))
             v!!.findNavController()
-                .navigate(R.id.action_lawyersFragment_to_lawyersInfoFragment, bundle)
+                .navigate(dir, extra)
         }
 
         fun bind(item: User) = with(itemView) {
-            with(ItemLawyerBinding.bind(itemView)) {
+            with(binding) {
                 textName.text = resources.getString(R.string.item_lawyer_name, item.fullname)
                 textEducation.text =
                     resources.getString(R.string.item_lawyer_education, item.education)

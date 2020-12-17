@@ -25,6 +25,11 @@ class ReservationsFragment : Fragment(R.layout.fragment_reservations),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Reservation>("reservation")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.createReservation(it)
+            }
         with(binding) {
             progressBar.progressLayout.visibility = View.VISIBLE
             recyclerView.visibility = View.INVISIBLE

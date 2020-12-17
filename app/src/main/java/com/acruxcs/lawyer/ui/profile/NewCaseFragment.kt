@@ -60,7 +60,6 @@ class NewCaseFragment : Fragment(R.layout.fragment_new_case) {
 
             toolbar.toolbar.apply {
                 setNavigationOnClickListener {
-                    // dismiss()
                     findNavController().navigateUp()
                 }
                 setOnMenuItemClickListener {
@@ -72,11 +71,8 @@ class NewCaseFragment : Fragment(R.layout.fragment_new_case) {
                                 case!!.area = editArea.text.toString().trim()
                                 case!!.type = editType.text.toString().trim()
                                 case!!.outcome = editOutcome.text.toString().trim()
-                                // viewModel.postCase(case)
-
                                 findNavController().previousBackStackEntry?.savedStateHandle?.set("case",
                                     case)
-
                                 Utils.hideKeyboard(requireContext(), binding.root)
                                 findNavController().navigateUp()
                             }

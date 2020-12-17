@@ -25,6 +25,11 @@ class AskedQuestionsFragment : Fragment(R.layout.fragment_asked_questions),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getStatus().observe(this, { handleStatus(it) })
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Question>("question")
+            ?.observe(
+                viewLifecycleOwner) {
+                viewModel.postQuestion(it)
+            }
         with(binding) {
             progressBar.progressLayout.visibility = View.VISIBLE
             recyclerView.visibility = View.INVISIBLE

@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.ViewAnimationUtils
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.acruxcs.lawyer.R
@@ -16,6 +17,7 @@ import com.acruxcs.lawyer.utils.Utils.experienceAdapter
 import com.acruxcs.lawyer.utils.Utils.specializationAdapter
 import com.acruxcs.lawyer.utils.Utils.yes
 import java.util.function.Predicate
+import kotlin.math.hypot
 
 class FilterDialog(private val fragment: Fragment) : DialogFragment() {
 
@@ -81,7 +83,23 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
                         dialog.cancel()
                     }
 
-                builder.create()
+                val fab = (fragment as LawyersFragment).binding.fab
+                val dialog = builder.create()
+                dialog.setOnShowListener {
+                    val view = dialog?.window?.decorView
+                    val endRadius = hypot(view!!.width.toDouble(), view.height.toDouble()).toInt()
+                    val cx = (fab.x + fab.width / 2).toInt()
+                    val cy = (fab.y + fab.height + 56).toInt()
+                    ViewAnimationUtils.createCircularReveal(view,
+                        cx,
+                        cy,
+                        0F,
+                        endRadius.toFloat()).also {
+                        it.duration = 350
+                        it.start()
+                    }
+                }
+                dialog
             }
 
         } ?: throw IllegalStateException("Activity cannot be null")
