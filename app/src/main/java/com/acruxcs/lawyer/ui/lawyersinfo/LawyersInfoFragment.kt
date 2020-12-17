@@ -40,15 +40,15 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
             lawyer = it.getParcelable(ARG_LAWYER)!!
         }
         sharedElementEnterTransition = TransitionInflater.from(requireContext())
-            .inflateTransition(android.R.transition.move)
+            .inflateTransition(R.transition.move)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeBackStack()
+        setTransitions()
         viewModel.getStatus().observe(this) { handleStatus(it) }
         with(binding) {
-            ViewCompat.setTransitionName(binding.imageProfile, lawyer.uid)
             speeddial.inflate(R.menu.menu_speed_dial)
             speeddial.setOnActionSelectedListener { item ->
                 when (item.id) {
@@ -98,6 +98,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                 )
             textWonCases.text =
                 resources.getString(R.string.item_lawyer_number_of_won_cases, lawyer.wonCases)
+            textAddress.text = resources.getString(R.string.item_lawyer_address, lawyer.address)
             viewModel.getImageRef(lawyer.uid, object : ProfileViewModel.Companion.ImageCallback {
                 override fun onCallback(value: String) {
                     imageProfile.load(value) {
@@ -108,6 +109,18 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                 }
             })
         }
+    }
+
+    private fun setTransitions() {
+        ViewCompat.setTransitionName(binding.imageProfile, lawyer.uid)
+        ViewCompat.setTransitionName(binding.textName, lawyer.fullname)
+        ViewCompat.setTransitionName(binding.textEducation, lawyer.uid + lawyer.education)
+        ViewCompat.setTransitionName(binding.textSpecialization, lawyer.uid + lawyer.specialization)
+        ViewCompat.setTransitionName(binding.textExperience,
+            lawyer.uid + lawyer.experience.toString())
+        ViewCompat.setTransitionName(binding.textWonCases, lawyer.uid + lawyer.wonCases.toString())
+        ViewCompat.setTransitionName(binding.textCity, lawyer.uid + lawyer.city)
+        ViewCompat.setTransitionName(binding.textAddress, lawyer.uid + lawyer.address)
     }
 
     private fun observeBackStack() {

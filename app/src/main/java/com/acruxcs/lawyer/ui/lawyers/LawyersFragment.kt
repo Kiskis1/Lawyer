@@ -42,7 +42,6 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers),
             viewModel.getLawyers().observe(viewLifecycleOwner, {
                 list.clear()
                 list.addAll(it)
-
                 lawyersAdapter.swapData(list)
                 (view.parent as? ViewGroup)?.doOnPreDraw {
                     startPostponedEnterTransition()

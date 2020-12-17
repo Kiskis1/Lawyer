@@ -34,8 +34,6 @@ class LawyersListAdapter(
 
     override fun onBindViewHolder(holder: LawyerListViewHolder, position: Int) {
         holder.bind(getItem(position))
-        ViewCompat.setTransitionName(ItemLawyerBinding.bind(holder.itemView).imageProfile,
-            getItem(position).uid)
     }
 
     fun swapData(data: List<User>) {
@@ -57,14 +55,34 @@ class LawyersListAdapter(
 
             val clicked = getItem(adapterPosition)
             val dir = LawyersFragmentDirections.actionLawyersFragmentToLawyersInfoFragment(clicked)
-            val extra = FragmentNavigatorExtras(Pair(binding.imageProfile,
-                ViewCompat.getTransitionName(binding.imageProfile)!!))
+            val extra = FragmentNavigatorExtras(
+                Pair(binding.imageProfile, ViewCompat.getTransitionName(binding.imageProfile)!!),
+                Pair(binding.textName, ViewCompat.getTransitionName(binding.textName)!!),
+                Pair(binding.textEducation, ViewCompat.getTransitionName(binding.textEducation)!!),
+                Pair(binding.textSpecialization,
+                    ViewCompat.getTransitionName(binding.textSpecialization)!!),
+                Pair(binding.textExperience,
+                    ViewCompat.getTransitionName(binding.textExperience)!!),
+                Pair(binding.textWonCases, ViewCompat.getTransitionName(binding.textWonCases)!!),
+                Pair(binding.textCity, ViewCompat.getTransitionName(binding.textCity)!!),
+                Pair(binding.textAddress, ViewCompat.getTransitionName(binding.textAddress)!!))
             v!!.findNavController()
                 .navigate(dir, extra)
         }
 
         fun bind(item: User) = with(itemView) {
             with(binding) {
+                ViewCompat.setTransitionName(binding.imageProfile, item.uid)
+                ViewCompat.setTransitionName(binding.textName, item.fullname)
+                ViewCompat.setTransitionName(binding.textEducation, item.uid + item.education)
+                ViewCompat.setTransitionName(binding.textSpecialization,
+                    item.uid + item.specialization)
+                ViewCompat.setTransitionName(binding.textExperience,
+                    item.uid + item.experience.toString())
+                ViewCompat.setTransitionName(binding.textWonCases,
+                    item.uid + item.wonCases.toString())
+                ViewCompat.setTransitionName(binding.textCity, item.uid + item.city)
+                ViewCompat.setTransitionName(binding.textAddress, item.uid + item.address)
                 textName.text = resources.getString(R.string.item_lawyer_name, item.fullname)
                 textEducation.text =
                     resources.getString(R.string.item_lawyer_education, item.education)
