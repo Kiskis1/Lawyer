@@ -11,11 +11,8 @@ import com.google.firebase.storage.ktx.storage
 object UsersRepository {
     private val db = Firebase.database.reference.child("users")
     private val storage = Firebase.storage.reference.child("images")
-    const val defaultPicture =
-        "https://firebasestorage.googleapis.com/v0/b/lawyer-fc8a1.appspot.com" +
-            "/o/images%2Fdefault.png?alt=media&token=de3a9f9e-333c-414e-8c59-74fdc51db56f"
 
-    fun writeNewUser(user: User) = db.child(user.uid).setValue(user)
+    fun setUser(user: User) = db.child(user.uid).setValue(user)
 
     fun getUser(userId: String?) = userId?.let { db.child(it) }
 
@@ -23,14 +20,16 @@ object UsersRepository {
 
     fun uploadImage(file: Uri, uid: String): UploadTask {
         val reference = storage.child(uid)
+        println("IMAGE")
+        reference.downloadUrl.addOnSuccessListener {
+            setUserImage(uid, it.toString())
+        }
         return reference.putFile(file)
     }
 
-    fun getImageRef(uid: String) = storage.child(uid)
+    private fun setUserImage(uid: String, ref: String) =
+        db.child(uid).child("imageRef").setValue(ref)
 
-    fun updateUser(user: User) = db.child(user.uid).setValue(user)
     fun updateHours(hours: WorkingHours, uid: String) =
         db.child(uid).child("workingHours").setValue(hours)
-
-
 }

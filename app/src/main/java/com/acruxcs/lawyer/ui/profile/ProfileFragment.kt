@@ -5,32 +5,35 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.metadata
+import com.acruxcs.lawyer.ActivityViewModel
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentProfileBinding
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.model.WorkingHours
 import com.acruxcs.lawyer.repository.SharedPrefRepository
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_DARK_MODE_ON
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
 import com.acruxcs.lawyer.repository.SharedPrefRepository.edit
 import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
-import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.ui.lawyersinfo.LawyersCaseAdapter
 import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.crazylegend.kotlinextensions.fragments.shortToast
-import com.crazylegend.kotlinextensions.views.toggleVisibilityInvisibleToVisible
+import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
@@ -38,7 +41,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-    private val lawyersViewModel: LawyersViewModel by viewModels()
+    private val activityViewModel: ActivityViewModel by activityViewModels()
     private val viewModel: ProfileViewModel by viewModels()
     private val lawyersCasesAdapter by lazy { LawyersCaseAdapter(this, viewModel) }
 
@@ -52,6 +55,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         with(binding) {
             role = MainApplication.user.value!!.role
+            wanted = UserTypes.Lawyer
 
             buttonProfileEdit.setOnClickListener {
                 findNavController().navigate(R.id.action_profileFragment_to_profileEditFragment)
@@ -89,18 +93,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     .navigate(R.id.action_profileFragment_to_newCaseFragment)
             }
 
+            buttonHistory.setOnClickListener {
+                findNavController().navigate(R.id.action_profileFragment_to_historyFragment)
+            }
+
             layoutPassword.setEndIconOnClickListener {
                 updatePassword()
             }
 
             recyclerView.adapter = lawyersCasesAdapter
-            lawyersViewModel.getLawyersCases(MainApplication.user.value!!.uid)
+            activityViewModel.getLawyersCases(MainApplication.user.value!!.uid)
                 .observe(viewLifecycleOwner, {
+                    lawyersCasesAdapter.swapData(it)
                     if (it.isNotEmpty()) {
-                        if (textEmptyList.isVisible) textEmptyList.toggleVisibilityInvisibleToVisible()
-                        lawyersCasesAdapter.swapData(it)
+                        if (textEmptyList.isVisible) textEmptyList.toggleVisibilityGoneToVisible()
                     } else
-                        textEmptyList.toggleVisibilityInvisibleToVisible()
+                        if (textEmptyList.isGone) textEmptyList.toggleVisibilityGoneToVisible()
                 })
         }
     }
@@ -143,19 +151,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun loadProfileImage() {
-        viewModel.getImageRef(
-            MainApplication.user.value!!.uid,
-            object : ProfileViewModel.Companion.ImageCallback {
-                override fun onCallback(value: String) {
-                    with(binding.pictureLayout) {
-                        imagePicture.load(value) {
-                            error(R.drawable.ic_person_24)
-                            if (imagePicture.metadata != null)
-                                placeholderMemoryCacheKey(imagePicture.metadata!!.memoryCacheKey)
-                        }
-                    }
-                }
-            })
+        with(binding.pictureLayout) {
+            println(MainApplication.user.value!!.imageRef)
+            imagePicture.load(MainApplication.user.value!!.imageRef) {
+                error(R.drawable.ic_person_24)
+                placeholderMemoryCacheKey(imagePicture.metadata?.memoryCacheKey)
+            }
+        }
     }
 
     private fun logout() {

@@ -31,7 +31,6 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
     private val binding by viewBinding(FragmentNewReservationBinding::bind)
     private val viewModel: LawyersViewModel by viewModels()
     private var tagas: String? = null
-    private var selected = -1
 
     private val timeAdapter by lazy { TimeSelectionAdapter(this) }
 

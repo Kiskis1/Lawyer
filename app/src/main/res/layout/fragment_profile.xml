@@ -9,6 +9,10 @@
         <variable
             name="role"
             type="com.acruxcs.lawyer.model.UserTypes" />
+
+        <variable
+            name="wanted"
+            type="com.acruxcs.lawyer.model.UserTypes" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,7 +88,8 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_working_hours"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
-                        goneUnless="@{role}"
+                        role="@{role}"
+                        wanted="@{wanted}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -99,7 +104,6 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_profile_edit"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
-                        goneUnless="@{role}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -110,6 +114,20 @@
                         app:iconPadding="24dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/button_working_hours" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_history"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/profile_reservation_history"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/textColor"
+                        app:icon="@drawable/ic_history_24"
+                        app:iconPadding="24dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/button_profile_edit" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_logout"
@@ -124,12 +142,13 @@
                         app:icon="@drawable/ic_logout"
                         app:iconPadding="20dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/button_profile_edit" />
+                        app:layout_constraintTop_toBottomOf="@id/button_history" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    goneUnless="@{role}"
+                    role="@{role}"
+                    wanted="@{wanted}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -139,13 +158,23 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/constraint_settings">
 
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <TextView
                         android:id="@+id/text_cases"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="@string/profile_your_cases"
+                        android:textColor="@color/textColor"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@id/divider" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_view"
@@ -161,7 +190,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/profile_empty_cases"
-                        android:visibility="invisible"
+                        android:textColor="@color/textColor"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/text_cases" />
@@ -174,7 +204,8 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add_case"
-            goneUnless="@{role}"
+            role="@{role}"
+            wanted="@{wanted}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

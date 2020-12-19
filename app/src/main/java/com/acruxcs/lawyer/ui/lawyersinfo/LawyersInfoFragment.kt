@@ -5,12 +5,15 @@ import android.transition.TransitionInflater
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.metadata
+import com.acruxcs.lawyer.ActivityViewModel
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLawyersInfoBinding
 import com.acruxcs.lawyer.model.Case
@@ -18,12 +21,11 @@ import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
-import com.acruxcs.lawyer.ui.profile.ProfileViewModel
 import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 import com.crazylegend.kotlinextensions.fragments.shortToast
-import com.crazylegend.kotlinextensions.views.toggleVisibilityInvisibleToVisible
+import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -32,6 +34,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     private val lawyersCasesAdapter by lazy { LawyersCaseAdapter(this, null) }
     private val list = mutableListOf<Case>()
     private val viewModel: LawyersViewModel by viewModels()
+    private val activityViewModel: ActivityViewModel by activityViewModels()
     private val binding by viewBinding(FragmentLawyersInfoBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,14 +75,14 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
             }
 
             recyclerView.adapter = lawyersCasesAdapter
-            viewModel.getLawyersCases(lawyer.uid).observe(viewLifecycleOwner, {
+            activityViewModel.getLawyersCases(lawyer.uid).observe(viewLifecycleOwner, {
+                list.clear()
+                list.addAll(it)
+                lawyersCasesAdapter.swapData(list)
                 if (it.isNotEmpty()) {
-                    if (textEmptyCases.isVisible) textEmptyCases.toggleVisibilityInvisibleToVisible()
-                    list.clear()
-                    list.addAll(it)
-                    lawyersCasesAdapter.swapData(list)
+                    if (textEmptyCases.isVisible) textEmptyCases.toggleVisibilityGoneToVisible()
                 } else
-                    textEmptyCases.toggleVisibilityInvisibleToVisible()
+                    if (textEmptyCases.isGone) textEmptyCases.toggleVisibilityGoneToVisible()
 
             })
 
@@ -99,15 +102,10 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
             textWonCases.text =
                 resources.getString(R.string.item_lawyer_number_of_won_cases, lawyer.wonCases)
             textAddress.text = resources.getString(R.string.item_lawyer_address, lawyer.address)
-            viewModel.getImageRef(lawyer.uid, object : ProfileViewModel.Companion.ImageCallback {
-                override fun onCallback(value: String) {
-                    imageProfile.load(value) {
-                        error(R.drawable.ic_person_24)
-                        if (imageProfile.metadata != null)
-                            placeholderMemoryCacheKey(imageProfile.metadata!!.memoryCacheKey)
-                    }
-                }
-            })
+            imageProfile.load(lawyer.imageRef) {
+                error(R.drawable.ic_person_24)
+                placeholderMemoryCacheKey(imageProfile.metadata?.memoryCacheKey)
+            }
         }
     }
 

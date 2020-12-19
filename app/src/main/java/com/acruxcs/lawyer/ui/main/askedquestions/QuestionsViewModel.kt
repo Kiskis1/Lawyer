@@ -13,11 +13,7 @@ import com.google.firebase.database.ValueEventListener
 class QuestionsViewModel : ViewModel() {
     private val db = QuestionsRepository
 
-    //advokatui
     private val askedQuestions = MutableLiveData<List<Question>>()
-
-    //naudotojo
-    private val sentQuestions = MutableLiveData<List<Question>>()
 
     private val status = SingleLiveEvent<Status>()
 
@@ -52,7 +48,7 @@ class QuestionsViewModel : ViewModel() {
                 for (question in snapshot.children) {
                     question.getValue(Question::class.java)?.let { list.add(it) }
                 }
-                sentQuestions.postValue(list)
+                askedQuestions.postValue(list)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -60,7 +56,7 @@ class QuestionsViewModel : ViewModel() {
             }
         }
         db.getSentQuestions(id).addValueEventListener(listener)
-        return sentQuestions
+        return askedQuestions
     }
 
     fun deleteQuestion(id: String) {

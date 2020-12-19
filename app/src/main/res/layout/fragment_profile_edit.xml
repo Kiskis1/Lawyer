@@ -9,6 +9,10 @@
         <variable
             name="role"
             type="com.acruxcs.lawyer.model.UserTypes" />
+
+        <variable
+            name="wanted"
+            type="com.acruxcs.lawyer.model.UserTypes" />
     </data>
 
     <LinearLayout
@@ -104,7 +108,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_address"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    goneUnless="@{role}"
+                    role="@{role}"
+                    wanted="@{wanted}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -126,7 +131,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_specialization"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    goneUnless="@{role}"
+                    role="@{role}"
+                    wanted="@{wanted}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -148,7 +154,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_education"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    goneUnless="@{role}"
+                    role="@{role}"
+                    wanted="@{wanted}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -170,7 +177,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_experience"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    goneUnless="@{role}"
+                    role="@{role}"
+                    wanted="@{wanted}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -192,7 +200,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_won_cases"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    goneUnless="@{role}"
+                    role="@{role}"
+                    wanted="@{wanted}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"

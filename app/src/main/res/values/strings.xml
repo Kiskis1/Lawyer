@@ -92,7 +92,7 @@
 
     <string name="title_reservations">Reservations</string>
     <string name="title_asked_questions">Asked Questions</string>
-    <string name="profile_empty_cases">You don\'t have any cases. Try adding some.</string>
+    <string name="profile_empty_cases">You don\'t have any cases.\nTry adding some.</string>
     <string name="lawyersinfo_empty_cases">Lawyer doesn\'t have any cases added.</string>
     <string name="error_invalid_name">Full name is not valid.</string>
     <string name="error_invalid_email">Email is not valid</string>
@@ -133,12 +133,19 @@
     <string name="reservation_visit_type_person">Visit type: In person</string>
     <string name="reservation_visit_type_remote">Visit type: Remote</string>
     <string name="reservation_time">Time: %s</string>
-    <string name="action_update_profile_information">Update profile information</string>
+    <string name="action_update_profile_information">Change profile information</string>
     <string name="vertical_dots">⋮</string>
     <string name="action_change_time">Change time</string>
     <string name="visit_type_in_person">In person</string>
     <string name="visit_type_remote">Remote</string>
     <string name="visit_type_text">Visit type</string>
-    <string name="reservation_no_available_times">Lawyer doesn\'t have available times on this day.\nTry another day,</string>
+    <string name="reservation_no_available_times">Lawyer doesn\'t have available times on this day.\nTry another day.</string>
+    <string name="reservation_no_active_reservation">No reservations to show.\nGo to lawyers tab and choose a lawyer.</string>
+    <string name="reservation_no_reservations">No reservations to show.</string>
+    <string name="question_no_questions">No questions to show.</string>
+    <string name="question_no_active_questions">No questions to show.\nGo to lawyers tab and choose a lawyer</string>
+    <string name="history_your_previous_reservations">Your previous reservations</string>
+    <string name="profile_reservation_history">Reservation history</string>
+    <string name="history_no_prev_reserv">You don\'t have any previous reservations.</string>
 
 </resources>

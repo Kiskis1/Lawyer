@@ -3,6 +3,8 @@ package com.acruxcs.lawyer.ui.main.reservation
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -10,8 +12,10 @@ import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentReservationsBinding
 import com.acruxcs.lawyer.model.Reservation
+import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.utils.Status
 import com.crazylegend.kotlinextensions.fragments.shortToast
+import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -20,6 +24,7 @@ class ReservationsFragment : Fragment(R.layout.fragment_reservations),
     ReservationsAdapter.Interaction {
     private val binding by viewBinding(FragmentReservationsBinding::bind)
     private val viewModel: ReservationsViewModel by viewModels()
+    private val role = MainApplication.user.value!!.role
 
     private val reservationsAdapter by lazy { ReservationsAdapter(this) }
 
@@ -28,20 +33,40 @@ class ReservationsFragment : Fragment(R.layout.fragment_reservations),
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Reservation>("reservation")
             ?.observe(
                 viewLifecycleOwner) {
-                viewModel.createReservation(it)
+                viewModel.postReservation(it)
             }
+        viewModel.getStatus().observe(this@ReservationsFragment, { handleStatus(it) })
         with(binding) {
             progressBar.progressLayout.visibility = View.VISIBLE
-            recyclerView.visibility = View.INVISIBLE
             recyclerView.adapter = reservationsAdapter
+            recyclerView.visibility = View.INVISIBLE
 
-            viewModel.getReservationsForLawyer(MainApplication.user.value!!.uid)
-                .observe(viewLifecycleOwner, {
-                    reservationsAdapter.swapData(it)
-                    progressBar.progressLayout.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
-                })
-            viewModel.getStatus().observe(this@ReservationsFragment, { handleStatus(it) })
+            if (role == UserTypes.User) {
+                textNoItems.text = resources.getString(R.string.reservation_no_active_reservation)
+                viewModel.getReservationsForUser(MainApplication.user.value!!.uid)
+                    .observe(viewLifecycleOwner) {
+                        submitList(it)
+                    }
+            } else if (role == UserTypes.Lawyer) {
+                textNoItems.text = resources.getString(R.string.reservation_no_reservations)
+                viewModel.getReservationsForLawyer(MainApplication.user.value!!.uid)
+                    .observe(viewLifecycleOwner, {
+                        submitList(it)
+                    })
+            }
+
+        }
+    }
+
+    private fun submitList(list: List<Reservation>) {
+        with(binding) {
+            reservationsAdapter.swapData(list)
+            if (list.isNotEmpty()) {
+                if (textNoItems.isVisible) textNoItems.toggleVisibilityGoneToVisible()
+            } else
+                if (textNoItems.isGone) textNoItems.toggleVisibilityGoneToVisible()
+            progressBar.progressLayout.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
     }
 
@@ -69,8 +94,10 @@ class ReservationsFragment : Fragment(R.layout.fragment_reservations),
 
     private fun handleStatus(it: Status?) {
         when (it) {
-            Status.SUCCESS ->
+            Status.SUCCESS -> {
                 Snackbar.make(requireView(), R.string.success, Snackbar.LENGTH_SHORT).show()
+                reservationsAdapter.notifyDataSetChanged()
+            }
 
             Status.UPDATE_SUCCESS -> {
                 Snackbar.make(requireView(), R.string.success, Snackbar.LENGTH_SHORT).show()

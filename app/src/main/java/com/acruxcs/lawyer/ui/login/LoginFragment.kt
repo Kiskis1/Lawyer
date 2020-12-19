@@ -11,8 +11,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.acruxcs.lawyer.ActivityViewModel
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLoginBinding
@@ -37,6 +39,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var callbackManager: CallbackManager
     private val viewModel: LoginViewModel by viewModels()
+    private val activityViewModel: ActivityViewModel by activityViewModels()
     private val binding by viewBinding(FragmentLoginBinding::bind)
 
     private lateinit var activityProgressLayout: FrameLayout
@@ -123,7 +126,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         ).addOnCompleteListener(requireActivity()) { task ->
             if (task.isSuccessful) {
                 val user = task.result!!.user!!
-                viewModel.getUserData(user.uid)
+                activityViewModel.getUserData(user.uid)
                 Utils.hideKeyboard(requireContext(), requireView())
                 preferences.edit {
                     this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
@@ -152,7 +155,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             if (task.result!!.additionalUserInfo!!.isNewUser) {
                                 viewModel.createNewUser(task)
                             } else {
-                                viewModel.getUserData(user.uid)
+                                activityViewModel.getUserData(user.uid)
                             }
                             preferences.edit {
                                 this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
@@ -181,7 +184,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         if (task.result!!.additionalUserInfo!!.isNewUser) {
                             viewModel.createNewUser(task)
                         } else {
-                            viewModel.getUserData(user.uid)
+                            activityViewModel.getUserData(user.uid)
                         }
                         preferences.edit {
                             this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))

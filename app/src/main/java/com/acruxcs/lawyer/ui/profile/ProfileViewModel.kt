@@ -65,17 +65,8 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    fun getImageRef(uid: String, ic: ImageCallback) {
-        val reference = usersRepository.getImageRef(uid)
-        reference.downloadUrl.addOnSuccessListener {
-            ic.onCallback(it.toString())
-        }.addOnFailureListener {
-            ic.onCallback(usersRepository.defaultPicture)
-        }
-    }
-
     fun updateUser(user: User) {
-        usersRepository.updateUser(user).addOnSuccessListener {
+        usersRepository.setUser(user).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
@@ -87,12 +78,6 @@ class ProfileViewModel : ViewModel() {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
-        }
-    }
-
-    companion object {
-        interface ImageCallback {
-            fun onCallback(value: String)
         }
     }
 }

@@ -3,6 +3,8 @@ package com.acruxcs.lawyer.ui.main.askedquestions
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -10,8 +12,10 @@ import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentAskedQuestionsBinding
 import com.acruxcs.lawyer.model.Question
+import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.utils.Status
 import com.crazylegend.kotlinextensions.fragments.shortToast
+import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -21,6 +25,7 @@ class AskedQuestionsFragment : Fragment(R.layout.fragment_asked_questions),
     private val viewModel: QuestionsViewModel by viewModels()
     private val binding by viewBinding(FragmentAskedQuestionsBinding::bind)
     private val questionsAdapter by lazy { QuestionListAdapter(this) }
+    private val role = MainApplication.user.value!!.role
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,12 +40,31 @@ class AskedQuestionsFragment : Fragment(R.layout.fragment_asked_questions),
             recyclerView.visibility = View.INVISIBLE
             recyclerView.adapter = questionsAdapter
 
-            viewModel.getAskedQuestions(MainApplication.user.value!!.uid)
-                .observe(viewLifecycleOwner, {
-                    questionsAdapter.swapData(it)
-                    progressBar.progressLayout.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
-                })
+            if (role == UserTypes.User) {
+                textNoItems.text = resources.getString(R.string.question_no_active_questions)
+                viewModel.getSentQuestions(MainApplication.user.value!!.uid)
+                    .observe(viewLifecycleOwner) {
+                        submitList(it)
+                    }
+            } else if (role == UserTypes.Lawyer) {
+                textNoItems.text = resources.getString(R.string.question_no_questions)
+                viewModel.getAskedQuestions(MainApplication.user.value!!.uid)
+                    .observe(viewLifecycleOwner, {
+                        submitList(it)
+                    })
+            }
+        }
+    }
+
+    private fun submitList(list: List<Question>) {
+        with(binding) {
+            questionsAdapter.swapData(list)
+            if (list.isNotEmpty()) {
+                if (textNoItems.isVisible) textNoItems.toggleVisibilityGoneToVisible()
+            } else
+                if (textNoItems.isGone) textNoItems.toggleVisibilityGoneToVisible()
+            progressBar.progressLayout.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
     }
 

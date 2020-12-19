@@ -2,31 +2,25 @@ package com.acruxcs.lawyer
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.acruxcs.lawyer.databinding.ActivityMainBinding
-import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.SharedPrefRepository
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_DARK_MODE_ON
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
-import com.acruxcs.lawyer.repository.SharedPrefRepository.edit
 import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
-import com.acruxcs.lawyer.repository.UsersRepository
 import com.acruxcs.lawyer.utils.Utils
 import com.crazylegend.viewbinding.viewBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
-
     lateinit var googleSignInClient: GoogleSignInClient
 
     private val _binding by viewBinding(ActivityMainBinding::inflate)
@@ -34,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     val binding get() = _binding
 
     private lateinit var navHostFragment: NavHostFragment
+    private val viewModel: ActivityViewModel by viewModels()
 
     override fun onStart() {
         super.onStart()
@@ -53,14 +48,14 @@ class MainActivity : AppCompatActivity() {
 
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
-        navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.loginFragment || destination.id == R.id.registerFragment) {
-                binding.bottomMenu.visibility = View.GONE
-            } else {
-                binding.bottomMenu.visibility = View.VISIBLE
-            }
-        }
+        //
+        // navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
+        //     if (destination.id == R.id.loginFragment || destination.id == R.id.registerFragment) {
+        //         binding.bottomMenu.visibility = View.GONE
+        //     } else {
+        //         binding.bottomMenu.visibility = View.VISIBLE
+        //     }
+        // }
         binding.bottomMenu.setupWithNavController(navHostFragment.navController)
         binding.bottomMenu.setOnNavigationItemReselectedListener {
             navHostFragment.navController.popBackStack(it.itemId, false)
@@ -72,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         }
         Utils.switchDarkMode(preferences.getBoolean(SHARED_DARK_MODE_ON, false))
         if (savedInstanceState == null) {
-            getUserData(Firebase.auth.currentUser?.uid)
+            viewModel.getUserData(Firebase.auth.currentUser?.uid)
         } else {
             binding.progressBar.progressLayout.visibility = View.GONE
         }
@@ -87,25 +82,5 @@ class MainActivity : AppCompatActivity() {
             -> finish()
             else -> super.onBackPressed()
         }
-    }
-
-    private fun getUserData(userId: String?) {
-        val userListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val temp = snapshot.getValue(User::class.java)
-                preferences
-                    .edit {
-                        it.putBoolean(SHARED_LOGGED_IN, true)
-                    }
-                MainApplication.user.postValue(temp)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                println(error.message)
-            }
-        }
-
-        UsersRepository.getUser(userId)
-            ?.addValueEventListener(userListener)
     }
 }

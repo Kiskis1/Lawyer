@@ -83,6 +83,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/lawyersinfo_notable_cases"
+        android:textColor="@color/textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout" />
 
@@ -94,7 +95,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="5dp"
         android:text="@string/lawyersinfo_empty_cases"
-        android:visibility="invisible"
+        android:textColor="@color/textColor"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_cases" />

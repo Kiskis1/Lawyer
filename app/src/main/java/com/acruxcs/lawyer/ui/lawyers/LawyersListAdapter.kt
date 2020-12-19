@@ -18,13 +18,11 @@ import coil.metadata
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemLawyerBinding
 import com.acruxcs.lawyer.model.User
-import com.acruxcs.lawyer.ui.profile.ProfileViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 
 class LawyersListAdapter(
     private val fragment: Fragment,
-    private val viewModel: LawyersViewModel,
 ) :
     ListAdapter<User, LawyersListAdapter.LawyerListViewHolder>(LawyerDC()) {
 
@@ -103,15 +101,10 @@ class LawyersListAdapter(
                 buttonCall.setOnClickListener {
                     Utils.showCallDialog(itemView.context, item)
                 }
-                viewModel.getImageRef(item.uid, object : ProfileViewModel.Companion.ImageCallback {
-                    override fun onCallback(value: String) {
-                        imageProfile.load(value) {
-                            error(R.drawable.ic_person_24)
-                            if (imageProfile.metadata != null)
-                                placeholderMemoryCacheKey(imageProfile.metadata!!.memoryCacheKey)
-                        }
-                    }
-                })
+                imageProfile.load(item.imageRef) {
+                    error(R.drawable.ic_person_24)
+                    placeholderMemoryCacheKey(imageProfile.metadata?.memoryCacheKey)
+                }
                 buttonQuestion.setOnClickListener {
                     fragment.findNavController()
                         .navigate(R.id.action_lawyersFragment_to_questionFragment,

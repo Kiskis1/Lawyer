@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentProfileEditBinding
+import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.countryAdapter
@@ -26,7 +27,7 @@ class ProfileEditFragment :
         setupEditTexts()
         with(binding) {
             role = MainApplication.user.value!!.role
-
+            wanted = UserTypes.Lawyer
             toolbar.toolbar.apply {
                 setTitle(R.string.dialog_title_profile_edit)
                 setNavigationOnClickListener {

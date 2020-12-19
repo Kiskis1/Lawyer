@@ -21,11 +21,15 @@ import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
 import com.google.android.gms.common.util.ArrayUtils
 import com.google.android.material.textfield.TextInputLayout
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 object Utils {
 
     const val ARG_LAWYER = "lawyer"
     const val MIN_PASS_LENGTH = 6
+
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
 
     fun showCallDialog(context: Context, item: User) {
         val builder = AlertDialog.Builder(context)
@@ -149,7 +153,7 @@ object Utils {
     }
 }
 
-@BindingAdapter("goneUnless")
-fun goneUnless(view: View, role: UserTypes?) {
-    view.visibility = if (role == UserTypes.Lawyer) View.VISIBLE else View.GONE
+@BindingAdapter(value = ["role", "wanted"], requireAll = true)
+fun goneUnless(view: View, role: UserTypes, wanted: UserTypes) {
+    view.visibility = if (role == wanted) View.VISIBLE else View.GONE
 }

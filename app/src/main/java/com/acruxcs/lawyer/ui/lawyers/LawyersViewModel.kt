@@ -3,15 +3,12 @@ package com.acruxcs.lawyer.ui.lawyers
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
-import com.acruxcs.lawyer.repository.CasesRepository
 import com.acruxcs.lawyer.repository.QuestionsRepository
 import com.acruxcs.lawyer.repository.ReservationsRepository
 import com.acruxcs.lawyer.repository.UsersRepository
-import com.acruxcs.lawyer.ui.profile.ProfileViewModel
 import com.acruxcs.lawyer.utils.Status
 import com.crazylegend.kotlinextensions.livedata.SingleLiveEvent
 import com.google.firebase.database.DataSnapshot
@@ -24,20 +21,16 @@ import java.util.stream.Collectors
 
 class LawyersViewModel : ViewModel() {
     private val usersRepository = UsersRepository
-    private val casesRepository = CasesRepository
     private val questionsRepository = QuestionsRepository
     private val reservationsRepository = ReservationsRepository
     private val lawyers = MutableLiveData<List<User>>()
-    private val cases = MutableLiveData<List<Case>>()
     private val availableTimes = MutableLiveData<List<LocalTime>>()
 
     private val regex = "(\\d+):(\\d+)".toRegex()
 
     private val status = SingleLiveEvent<Status>()
 
-    fun getStatus(): SingleLiveEvent<Status> {
-        return status
-    }
+    fun getStatus() = status
 
     fun getLawyers(): MutableLiveData<List<User>> {
         val listener = object : ValueEventListener {
@@ -57,38 +50,11 @@ class LawyersViewModel : ViewModel() {
         return lawyers
     }
 
-    fun getLawyersCases(uid: String): MutableLiveData<List<Case>> {
-        val listener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val list = mutableListOf<Case>()
-                for (case in snapshot.children) {
-                    case.getValue(Case::class.java)?.let { list.add(it) }
-                }
-                cases.postValue(list)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                println(error.message)
-            }
-        }
-        casesRepository.getLawyersCases(uid).addValueEventListener(listener)
-        return cases
-    }
-
     fun createReservation(res: Reservation) {
-        reservationsRepository.createReservation(res).addOnSuccessListener {
+        reservationsRepository.postReservation(res).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
-        }
-    }
-
-    fun getImageRef(uid: String, ic: ProfileViewModel.Companion.ImageCallback) {
-        val reference = usersRepository.getImageRef(uid)
-        reference.downloadUrl.addOnSuccessListener {
-            ic.onCallback(it.toString())
-        }.addOnFailureListener {
-            ic.onCallback(usersRepository.defaultPicture)
         }
     }
 

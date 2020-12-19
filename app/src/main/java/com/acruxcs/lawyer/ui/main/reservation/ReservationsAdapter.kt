@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemReservationBinding
 import com.acruxcs.lawyer.model.Reservation
+import com.acruxcs.lawyer.utils.Utils.dateFormat
+import java.util.Date
 
 class ReservationsAdapter(private val interaction: Interaction? = null) :
     ListAdapter<Reservation, ReservationsAdapter.ReservationsViewHolder>(ReservationDC()) {
@@ -43,20 +45,16 @@ class ReservationsAdapter(private val interaction: Interaction? = null) :
             if (adapterPosition == RecyclerView.NO_POSITION) return
 
             val clicked = getItem(adapterPosition)
-            val popup = PopupMenu(v?.context, binding.menuButton)
-            popup.inflate(R.menu.menu_reservation_actions)
-            popup.setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.action_edit -> {
-                        interaction?.onActionSelected(R.id.action_edit, clicked, itemView)
-                    }
-                    R.id.action_delete -> {
-                        interaction?.onActionSelected(R.id.action_delete, clicked, itemView)
-                    }
+            val strDate = dateFormat.parse("${clicked.date} ${clicked.time}")
+            if (!Date().after(strDate)) {
+                val popup = PopupMenu(v?.context, binding.menuButton)
+                popup.inflate(R.menu.menu_reservation_actions)
+                popup.setOnMenuItemClickListener {
+                    interaction?.onActionSelected(it.itemId, clicked, itemView)
+                    true
                 }
-                true
+                popup.show()
             }
-            popup.show()
         }
 
         fun bind(item: Reservation) = with(itemView) {

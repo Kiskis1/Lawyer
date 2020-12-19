@@ -20,4 +20,5 @@ data class User(
     var experience: Int = 0,
     var wonCases: Int = 0,
     var workingHours: WorkingHours? = null,
+    var imageRef: String = "",
 ) : Parcelable

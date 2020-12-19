@@ -9,7 +9,7 @@ object ReservationsRepository {
 
     fun deleteReservation(id: String) = db.child(id).removeValue()
 
-    fun createReservation(res: Reservation) = db.child(res.id).setValue(res)
+    fun postReservation(res: Reservation) = db.child(res.id).setValue(res)
 
     fun getReservationsForUser(uid: String) =
         db.orderByChild("lawyer").equalTo(uid)

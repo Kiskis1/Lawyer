@@ -16,6 +16,7 @@
         android:paddingRight="8dp"
         android:text="@string/vertical_dots"
         android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="@color/textColor"
         android:visibility="invisible" />
 
     <LinearLayout

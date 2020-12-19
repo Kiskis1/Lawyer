@@ -44,14 +44,7 @@ class QuestionListAdapter(private val interaction: Interaction? = null) :
             val popup = PopupMenu(v?.context, binding.menuButton)
             popup.inflate(R.menu.menu_question_actions)
             popup.setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.action_edit -> {
-                        interaction?.onActionSelected(R.id.action_edit, clicked, itemView)
-                    }
-                    R.id.action_delete -> {
-                        interaction?.onActionSelected(R.id.action_delete, clicked, itemView)
-                    }
-                }
+                interaction?.onActionSelected(it.itemId, clicked, itemView)
                 true
             }
             popup.show()

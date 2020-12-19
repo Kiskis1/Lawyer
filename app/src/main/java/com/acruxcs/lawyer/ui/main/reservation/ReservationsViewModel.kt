@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.repository.ReservationsRepository
 import com.acruxcs.lawyer.utils.Status
+import com.acruxcs.lawyer.utils.Utils
 import com.crazylegend.kotlinextensions.livedata.SingleLiveEvent
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import java.util.Date
 
 class ReservationsViewModel : ViewModel() {
 
@@ -19,9 +21,7 @@ class ReservationsViewModel : ViewModel() {
 
     private val status = SingleLiveEvent<Status>()
 
-    fun getStatus(): SingleLiveEvent<Status> {
-        return status
-    }
+    fun getStatus() = status
 
     fun getReservationsForUser(uid: String): MutableLiveData<List<Reservation>> {
 
@@ -48,7 +48,11 @@ class ReservationsViewModel : ViewModel() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<Reservation>()
                 for (reservation in snapshot.children) {
-                    reservation.getValue(Reservation::class.java)?.let { list.add(it) }
+                    val item = reservation.getValue(Reservation::class.java)
+                    val strDate = Utils.dateFormat.parse("${item!!.date} ${item.time}")
+                    if (!Date().after(strDate)) {
+                        list.add(item)
+                    }
                 }
                 list.sortWith(compareBy<Reservation> { it.date }.thenBy { it.time })
                 lawyerReservations.postValue(list)
@@ -70,8 +74,8 @@ class ReservationsViewModel : ViewModel() {
         }
     }
 
-    fun createReservation(reservation: Reservation) {
-        db.createReservation(reservation).addOnCompleteListener {
+    fun postReservation(reservation: Reservation) {
+        db.postReservation(reservation).addOnCompleteListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
