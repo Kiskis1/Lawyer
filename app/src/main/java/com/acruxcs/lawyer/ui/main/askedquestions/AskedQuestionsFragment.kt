@@ -2,7 +2,6 @@ package com.acruxcs.lawyer.ui.main.askedquestions
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -13,6 +12,7 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentAskedQuestionsBinding
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.UserTypes
+import com.acruxcs.lawyer.ui.main.MainFragmentDirections
 import com.acruxcs.lawyer.utils.Status
 import com.crazylegend.kotlinextensions.fragments.shortToast
 import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
@@ -86,9 +86,10 @@ class AskedQuestionsFragment : Fragment(R.layout.fragment_asked_questions),
     override fun onActionSelected(action: Int, item: Question, v: View) {
         when (action) {
             R.id.action_edit -> {
-                val bundle = bundleOf("question" to item, "tag" to "edit_question")
-                findNavController()
-                    .navigate(R.id.action_mainFragment_to_questionFragment, bundle)
+                val dir = MainFragmentDirections.actionMainFragmentToQuestionFragment(null,
+                    item,
+                    "edit_question")
+                findNavController().navigate(dir)
             }
             R.id.action_delete -> {
                 val dialog = MaterialAlertDialogBuilder(v.context)

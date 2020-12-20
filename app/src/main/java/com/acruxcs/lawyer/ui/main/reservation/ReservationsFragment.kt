@@ -2,7 +2,6 @@ package com.acruxcs.lawyer.ui.main.reservation
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -13,6 +12,7 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentReservationsBinding
 import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.UserTypes
+import com.acruxcs.lawyer.ui.main.MainFragmentDirections
 import com.acruxcs.lawyer.utils.Status
 import com.crazylegend.kotlinextensions.fragments.shortToast
 import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
@@ -73,9 +73,12 @@ class ReservationsFragment : Fragment(R.layout.fragment_reservations),
     override fun onActionSelected(action: Int, item: Reservation, v: View) {
         when (action) {
             R.id.action_edit -> {
-                val bundle = bundleOf("reservation" to item, "tag" to "edit_reservation")
+                val dir =
+                    MainFragmentDirections.actionMainFragmentToNewReservationFragment(item.lawyer!!,
+                        "edit_reservation",
+                        item)
                 findNavController()
-                    .navigate(R.id.action_mainFragment_to_newReservationFragment, bundle)
+                    .navigate(dir)
             }
             R.id.action_delete -> {
                 val dialog = MaterialAlertDialogBuilder(v.context)

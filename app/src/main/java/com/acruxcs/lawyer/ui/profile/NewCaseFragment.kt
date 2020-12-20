@@ -5,6 +5,7 @@ import android.text.InputType
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentNewCaseBinding
 import com.acruxcs.lawyer.model.Case
@@ -22,13 +23,12 @@ class NewCaseFragment : Fragment(R.layout.fragment_new_case) {
     private val picker = MaterialDatePicker.Builder.datePicker().build()
     private val binding by viewBinding(FragmentNewCaseBinding::bind)
     private var tagas: String? = null
+    private val args: NewCaseFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            case = it.getParcelable("case")
-            tagas = it.getString("tag")
-        }
+        case = args.case
+        tagas = args.tag
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

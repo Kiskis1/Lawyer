@@ -7,13 +7,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentNewReservationBinding
 import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
-import com.acruxcs.lawyer.utils.Utils
 import com.crazylegend.kotlinextensions.fragments.shortToast
 import com.crazylegend.kotlinextensions.views.toggleVisibilityInvisibleToVisible
 import com.crazylegend.viewbinding.viewBinding
@@ -31,22 +31,19 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
     private val binding by viewBinding(FragmentNewReservationBinding::bind)
     private val viewModel: LawyersViewModel by viewModels()
     private var tagas: String? = null
+    private val args: NewReservationFragmentArgs by navArgs()
 
     private val timeAdapter by lazy { TimeSelectionAdapter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            lawyer = it.getParcelable(Utils.ARG_LAWYER)
-            tagas = it.getString("tag")
-            reservation = it.getParcelable("reservation")
-        }
+        lawyer = args.lawyer
+        tagas = args.tag
+        reservation = args.reservation
         if (tagas == null && tagas != "edit_reservation") {
             reservation = Reservation(lawyer = lawyer)
             reservation!!.user = MainApplication.user.value!!.uid
         }
-        if (lawyer == null)
-            lawyer = reservation!!.lawyer
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

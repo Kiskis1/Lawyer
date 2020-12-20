@@ -3,7 +3,6 @@ package com.acruxcs.lawyer.ui.lawyersinfo
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -11,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import coil.load
 import coil.metadata
 import com.acruxcs.lawyer.ActivityViewModel
@@ -23,7 +23,6 @@ import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
-import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 import com.crazylegend.kotlinextensions.fragments.shortToast
 import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
@@ -36,12 +35,11 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     private val viewModel: LawyersViewModel by viewModels()
     private val activityViewModel: ActivityViewModel by activityViewModels()
     private val binding by viewBinding(FragmentLawyersInfoBinding::bind)
+    private val args: LawyersInfoFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            lawyer = it.getParcelable(ARG_LAWYER)!!
-        }
+        lawyer = args.lawyer
         sharedElementEnterTransition = TransitionInflater.from(requireContext())
             .inflateTransition(R.transition.move)
     }
@@ -50,6 +48,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
         super.onViewCreated(view, savedInstanceState)
         observeBackStack()
         setTransitions()
+        setTextViews()
         viewModel.getStatus().observe(this) { handleStatus(it) }
         with(binding) {
             speeddial.inflate(R.menu.menu_speed_dial)
@@ -60,13 +59,17 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                         speeddial.close()
                     }
                     R.id.fab_message_lawyer -> {
-                        findNavController().navigate(R.id.action_lawyersInfoFragment_to_questionFragment,
-                            bundleOf(ARG_LAWYER to lawyer))
+                        val dir =
+                            LawyersInfoFragmentDirections.actionLawyersInfoFragmentToQuestionFragment(
+                                lawyer, null, null)
+                        findNavController().navigate(dir)
                         speeddial.close()
                     }
                     R.id.fab_book_lawyer -> {
-                        findNavController().navigate(R.id.action_lawyersInfoFragment_to_newReservationFragment,
-                            bundleOf(ARG_LAWYER to lawyer))
+                        val dir =
+                            LawyersInfoFragmentDirections.actionLawyersInfoFragmentToNewReservationFragment(
+                                lawyer, null, null)
+                        findNavController().navigate(dir)
                         speeddial.close()
                     }
                 }
@@ -83,9 +86,12 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                     if (textEmptyCases.isVisible) textEmptyCases.toggleVisibilityGoneToVisible()
                 } else
                     if (textEmptyCases.isGone) textEmptyCases.toggleVisibilityGoneToVisible()
-
             })
+        }
+    }
 
+    private fun setTextViews() {
+        with(binding) {
             textName.text =
                 resources.getString(R.string.item_lawyer_name, lawyer.fullname)
             textEducation.text =

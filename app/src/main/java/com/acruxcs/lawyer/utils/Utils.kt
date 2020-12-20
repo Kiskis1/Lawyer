@@ -26,7 +26,6 @@ import java.util.Locale
 
 object Utils {
 
-    const val ARG_LAWYER = "lawyer"
     const val MIN_PASS_LENGTH = 6
 
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
@@ -93,7 +92,7 @@ object Utils {
         })
     }
 
-    val countryAdapter by lazy {
+    val countryAdapter =
         ArrayAdapter.createFromResource(
             MainApplication.appContext,
             R.array.Countries,
@@ -101,7 +100,7 @@ object Utils {
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
-    }
+
 
     private val allCities by lazy {
         val array = mutableListOf<String>()
@@ -117,15 +116,14 @@ object Utils {
         array
     }
 
-    val cityAdapter by lazy {
+    val cityAdapter =
         ArrayAdapter(
             MainApplication.appContext,
             android.R.layout.simple_dropdown_item_1line,
             allCities
         ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
-    }
 
-    val experienceAdapter by lazy {
+    val experienceAdapter =
         ArrayAdapter(
             MainApplication.appContext,
             android.R.layout.simple_spinner_item,
@@ -133,8 +131,8 @@ object Utils {
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
-    }
-    val specializationAdapter by lazy {
+
+    val specializationAdapter =
         ArrayAdapter.createFromResource(
             MainApplication.appContext,
             R.array.Specializations,
@@ -142,7 +140,6 @@ object Utils {
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
-    }
 
     fun getCityAdapter(country: String) = ArrayAdapter.createFromResource(
         MainApplication.appContext,

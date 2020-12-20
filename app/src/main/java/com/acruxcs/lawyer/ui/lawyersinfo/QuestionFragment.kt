@@ -6,13 +6,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentQuestionBinding
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.utils.Utils
-import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
@@ -22,14 +22,13 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
     private var lawyer: User? = null
     private val binding by viewBinding(FragmentQuestionBinding::bind)
     private var tagas: String? = null
+    private val args: QuestionFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            lawyer = it.getParcelable(ARG_LAWYER)
-            tagas = it.getString("tag")
-            question = it.getParcelable("question")
-        }
+        lawyer = args.lawyer
+        tagas = args.tag
+        question = args.question
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

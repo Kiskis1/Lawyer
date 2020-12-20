@@ -89,8 +89,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
 
             fabAddCase.setOnClickListener {
-                findNavController()
-                    .navigate(R.id.action_profileFragment_to_newCaseFragment)
+                val dir =
+                    ProfileFragmentDirections.actionProfileFragmentToNewCaseFragment(null, null)
+                findNavController().navigate(dir)
             }
 
             buttonHistory.setOnClickListener {

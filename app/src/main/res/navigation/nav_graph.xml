@@ -107,13 +107,25 @@
     <fragment
         android:id="@+id/questionFragment"
         android:name="com.acruxcs.lawyer.ui.lawyersinfo.QuestionFragment"
-        android:label="QuestionFragment" />
+        android:label="QuestionFragment">
+        <argument
+            android:name="lawyer"
+            app:argType="com.acruxcs.lawyer.model.User"
+            app:nullable="true" />
+        <argument
+            android:name="question"
+            app:argType="com.acruxcs.lawyer.model.Question"
+            app:nullable="true" />
+        <argument
+            android:name="tag"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/profileEditFragment"
         android:name="com.acruxcs.lawyer.ui.profile.ProfileEditFragment"
         android:label="fragment_profile_edit"
-        tools:layout="@layout/fragment_profile_edit">
-    </fragment>
+        tools:layout="@layout/fragment_profile_edit" />
     <fragment
         android:id="@+id/newReservationFragment"
         android:name="com.acruxcs.lawyer.ui.lawyersinfo.NewReservationFragment"

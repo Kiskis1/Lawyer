@@ -19,12 +19,6 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
     private val binding by viewBinding(FragmentHistoryBinding::bind)
     private val viewModel: ActivityViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {

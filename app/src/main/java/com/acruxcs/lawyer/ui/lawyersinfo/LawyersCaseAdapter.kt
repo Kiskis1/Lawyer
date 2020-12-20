@@ -6,7 +6,6 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemCaseBinding
 import com.acruxcs.lawyer.model.Case
+import com.acruxcs.lawyer.ui.profile.ProfileFragmentDirections
 import com.acruxcs.lawyer.ui.profile.ProfileViewModel
 import java.text.DateFormat
 
@@ -52,9 +52,11 @@ class LawyersCaseAdapter(private val fragment: Fragment, private val viewModel: 
                 popup.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.action_edit -> {
-                            val bundle = bundleOf("case" to clicked, "tag" to "edit_case")
-                            fragment.findNavController()
-                                .navigate(R.id.action_profileFragment_to_newCaseFragment, bundle)
+                            val dir =
+                                ProfileFragmentDirections.actionProfileFragmentToNewCaseFragment(
+                                    clicked,
+                                    "edit_case")
+                            fragment.findNavController().navigate(dir)
                         }
                         R.id.action_delete -> {
                             val dialog = AlertDialog.Builder(itemView.context)

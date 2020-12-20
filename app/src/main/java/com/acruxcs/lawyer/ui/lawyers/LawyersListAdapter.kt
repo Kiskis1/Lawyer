@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -19,7 +18,6 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemLawyerBinding
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.utils.Utils
-import com.acruxcs.lawyer.utils.Utils.ARG_LAWYER
 
 class LawyersListAdapter(
     private val fragment: Fragment,
@@ -106,9 +104,11 @@ class LawyersListAdapter(
                     placeholderMemoryCacheKey(imageProfile.metadata?.memoryCacheKey)
                 }
                 buttonQuestion.setOnClickListener {
-                    fragment.findNavController()
-                        .navigate(R.id.action_lawyersFragment_to_questionFragment,
-                            bundleOf(ARG_LAWYER to item))
+                    val dir =
+                        LawyersFragmentDirections.actionLawyersFragmentToQuestionFragment(item,
+                            null,
+                            null)
+                    fragment.findNavController().navigate(dir)
                 }
             }
         }
