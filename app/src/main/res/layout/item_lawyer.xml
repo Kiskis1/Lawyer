@@ -65,16 +65,11 @@
                     android:textColor="@color/textColor" />
 
                 <TextView
-                    android:id="@+id/text_country"
+                    android:id="@+id/text_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/textColor" />
 
-                <TextView
-                    android:id="@+id/text_city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/textColor" />
 
                 <TextView
                     android:id="@+id/text_address"

@@ -11,6 +11,7 @@ import com.acruxcs.lawyer.databinding.FragmentNewCaseBinding
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.getSpecializationAdapter
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -46,6 +47,8 @@ class NewCaseFragment : Fragment(R.layout.fragment_new_case) {
                 case = Case()
                 toolbar.toolbar.setTitle(R.string.dialog_title_new_case)
             }
+
+            editArea.setAdapter(getSpecializationAdapter(requireContext()))
 
             editDate.apply {
                 inputType = InputType.TYPE_NULL

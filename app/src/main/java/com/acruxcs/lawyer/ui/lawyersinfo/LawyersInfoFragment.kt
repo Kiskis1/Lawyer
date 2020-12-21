@@ -20,6 +20,7 @@ import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
@@ -55,7 +56,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
             speeddial.setOnActionSelectedListener { item ->
                 when (item.id) {
                     R.id.fab_call_lawyer -> {
-                        Utils.showCallDialog(requireContext(), lawyer)
+                        Utils.showCallDialog(requireContext(), lawyer.phone, UserTypes.Lawyer)
                         speeddial.close()
                     }
                     R.id.fab_message_lawyer -> {
@@ -98,7 +99,8 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                 resources.getString(R.string.item_lawyer_education, lawyer.education)
             textSpecialization.text =
                 resources.getString(R.string.item_lawyer_specialization, lawyer.specialization)
-            textCity.text = resources.getString(R.string.item_lawyer_city, lawyer.city)
+            textLocation.text =
+                resources.getString(R.string.item_lawyer_location, lawyer.country, lawyer.city)
             textExperience.text =
                 resources.getQuantityString(
                     R.plurals.item_lawyer_experience,
@@ -123,7 +125,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
         ViewCompat.setTransitionName(binding.textExperience,
             lawyer.uid + lawyer.experience.toString())
         ViewCompat.setTransitionName(binding.textWonCases, lawyer.uid + lawyer.wonCases.toString())
-        ViewCompat.setTransitionName(binding.textCity, lawyer.uid + lawyer.city)
+        ViewCompat.setTransitionName(binding.textLocation, lawyer.uid + lawyer.city)
         ViewCompat.setTransitionName(binding.textAddress, lawyer.uid + lawyer.address)
     }
 

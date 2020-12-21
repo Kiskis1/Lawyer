@@ -10,13 +10,13 @@ import android.widget.Toast
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.acruxcs.lawyer.MainActivity
-import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentRegisterBinding
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
+import com.acruxcs.lawyer.repository.SharedPrefRepository
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
 import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
 import com.acruxcs.lawyer.utils.Utils
@@ -179,15 +179,15 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 if (task.isSuccessful) {
                     user.uid = task.result?.user!!.uid
                     viewModel.createNewUser(user)
-                    MainApplication.user.postValue(user)
+                    MainActivity.user.postValue(user)
                     preferences.edit {
                         this.putBoolean(SHARED_LOGGED_IN, true)
+                        this.putStringSet(SharedPrefRepository.SHARED_AUTH_PROVIDER,
+                            Utils.getProviderIdSet(task.result?.user!!))
                     }
                     activityProgressLayout.visibility = View.GONE
-                    requireView().findNavController()
-                        .navigate(
-                            R.id.action_registerFragment_to_mainFragment
-                        )
+                    val dir = RegisterFragmentDirections.actionRegisterFragmentToMainFragment()
+                    findNavController().navigate(dir)
                 } else {
                     // If sign in fails, display a message to the user.
                     activityProgressLayout.visibility = View.GONE

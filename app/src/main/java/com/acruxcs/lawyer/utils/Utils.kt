@@ -9,18 +9,19 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.acruxcs.lawyer.MainApplication
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
-import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
 import com.google.android.gms.common.util.ArrayUtils
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseUser
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -30,12 +31,21 @@ object Utils {
 
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
 
-    fun showCallDialog(context: Context, item: User) {
+    fun showCallDialog(context: Context, phone: String, type: UserTypes) {
+        if (phone == "" || phone == "N/A") {
+            Toast.makeText(context, R.string.error_no_phone_number, Toast.LENGTH_SHORT).show()
+            return
+        }
         val builder = AlertDialog.Builder(context)
-        builder.setMessage(R.string.call_dialog_message)
-        builder.setTitle(R.string.call_dialog_title)
+        if (type == UserTypes.Lawyer) {
+            builder.setMessage(R.string.call_dialog_message_lawyer)
+            builder.setTitle(R.string.call_dialog_title_lawyer)
+        } else {
+            builder.setMessage(R.string.call_dialog_message_user)
+            builder.setTitle(R.string.call_dialog_title_user)
+        }
         builder.setPositiveButton(R.string.action_call) { _, _ ->
-            val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", item.phone, null))
+            val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null))
             context.startActivity(intent)
         }
         builder.setNegativeButton(R.string.action_cancel) { d, _ ->
@@ -92,57 +102,68 @@ object Utils {
         })
     }
 
-    val countryAdapter =
-        ArrayAdapter.createFromResource(
-            MainApplication.appContext,
-            R.array.Countries,
-            android.R.layout.simple_dropdown_item_1line
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+    fun getProviderIdSet(user: FirebaseUser): MutableSet<String> {
+        val set = mutableSetOf<String>()
+        for (providerData in user.providerData) {
+            set.add(providerData.providerId)
         }
+        return set
+    }
 
+    fun getCountryAdapter(context: Context) = ArrayAdapter.createFromResource(
+        context,
+        R.array.Countries,
+        android.R.layout.simple_dropdown_item_1line
+    ).also {
+        it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+    }
 
     private val allCities by lazy {
         val array = mutableListOf<String>()
-        for (country in MainApplication.appContext.resources.getStringArray(R.array.Countries)) {
+        for (country in MainActivity.appContext.resources.getStringArray(R.array.Countries)) {
             array.addAll(
-                MainApplication.appContext.resources.getStringArray(
-                    getCitiesByCountry(
-                        country
-                    )
-                )
+                MainActivity.appContext.resources.getStringArray(getCitiesByCountry(country))
             )
         }
         array
     }
 
-    val cityAdapter =
+    fun getAllCityAdapter(context: Context) =
         ArrayAdapter(
-            MainApplication.appContext,
+            context,
             android.R.layout.simple_dropdown_item_1line,
             allCities
         ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
 
-    val experienceAdapter =
+    fun getExperienceAdapter(context: Context) =
         ArrayAdapter(
-            MainApplication.appContext,
-            android.R.layout.simple_spinner_item,
-            ArrayUtils.toWrapperArray(MainApplication.appContext.resources.getIntArray(R.array.Experience))
+            context,
+            android.R.layout.simple_dropdown_item_1line,
+            ArrayUtils.toWrapperArray(MainActivity.appContext.resources.getIntArray(R.array.Experience))
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
 
-    val specializationAdapter =
+    fun getSpecializationAdapter(context: Context) =
         ArrayAdapter.createFromResource(
-            MainApplication.appContext,
+            context,
             R.array.Specializations,
             android.R.layout.simple_dropdown_item_1line
         ).also {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
 
-    fun getCityAdapter(country: String) = ArrayAdapter.createFromResource(
-        MainApplication.appContext,
+    fun getPaymentTypeAdapter(context: Context) =
+        ArrayAdapter.createFromResource(
+            context,
+            R.array.PaymentTypes,
+            android.R.layout.simple_dropdown_item_1line
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+
+    fun getCityAdapter(context: Context, country: String) = ArrayAdapter.createFromResource(
+        context,
         getCitiesByCountry(country),
         android.R.layout.simple_dropdown_item_1line
     ).also {

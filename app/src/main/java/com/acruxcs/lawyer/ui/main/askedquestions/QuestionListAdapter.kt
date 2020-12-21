@@ -52,11 +52,11 @@ class QuestionListAdapter(private val interaction: Interaction? = null) :
 
         fun bind(item: Question) = with(itemView) {
             with(binding) {
-                textDescription.text =
-                    resources.getString(R.string.item_question_description, item.description)
+                textQuestion.text = item.description
                 textCountry.text =
                     resources.getString(R.string.item_question_country, item.country)
                 textCity.text = resources.getString(R.string.item_question_city, item.city)
+                textEmail.text = resources.getString(R.string.item_question_email, item.email)
                 textPhone.text = resources.getString(R.string.item_question_phone, item.phone)
                 textFullname.text =
                     resources.getString(R.string.item_question_full_name, item.fullname)

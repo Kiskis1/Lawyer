@@ -14,6 +14,7 @@ import com.crazylegend.kotlinextensions.livedata.SingleLiveEvent
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.function.Predicate
@@ -102,13 +103,25 @@ class LawyersViewModel : ViewModel() {
                 for (reserv in snapshot.children) {
                     reserv.getValue(Reservation::class.java)?.let { list.add(it) }
                 }
-                val all = getLawyerWorkingTimes(dayOfWeek, lawyer)
+                val workingHours = getLawyerWorkingTimes(dayOfWeek, lawyer)
                 if (list.isNotEmpty()) {
                     for (item in list) {
-                        all.remove(LocalTime.parse(item.time, DateTimeFormatter.ofPattern("HH:mm")))
+                        val timeItem =
+                            LocalTime.parse(item.time, DateTimeFormatter.ofPattern("HH:mm"))
+                        workingHours.remove(timeItem)
+                    }
+                    val local = LocalTime.of(LocalTime.now().hour, LocalTime.now().minute)
+                    if (LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) == date) {
+                        val iter = workingHours.iterator()
+                        while (iter.hasNext()) {
+                            val hour = iter.next()
+                            if (local.isAfter(hour)) {
+                                iter.remove()
+                            }
+                        }
                     }
                 }
-                availableTimes.postValue(all)
+                availableTimes.postValue(workingHours)
             }
 
             override fun onCancelled(error: DatabaseError) {

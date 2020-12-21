@@ -1,6 +1,5 @@
 package com.acruxcs.lawyer.ui.lawyers
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -11,11 +10,12 @@ import androidx.fragment.app.Fragment
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.DialogFilterBinding
 import com.acruxcs.lawyer.model.User
-import com.acruxcs.lawyer.utils.Utils.cityAdapter
-import com.acruxcs.lawyer.utils.Utils.countryAdapter
-import com.acruxcs.lawyer.utils.Utils.experienceAdapter
-import com.acruxcs.lawyer.utils.Utils.specializationAdapter
+import com.acruxcs.lawyer.utils.Utils.getAllCityAdapter
+import com.acruxcs.lawyer.utils.Utils.getCountryAdapter
+import com.acruxcs.lawyer.utils.Utils.getExperienceAdapter
+import com.acruxcs.lawyer.utils.Utils.getSpecializationAdapter
 import com.acruxcs.lawyer.utils.Utils.yes
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.function.Predicate
 import kotlin.math.hypot
 
@@ -53,14 +53,14 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogFilterBinding.inflate(LayoutInflater.from(requireContext()))
         return activity?.let { activity ->
-            val builder = AlertDialog.Builder(activity)
+            val builder = MaterialAlertDialogBuilder(activity)
             with(binding) {
 
-                filterSpinnerCountry.setAdapter(countryAdapter)
-                filterSpinnerCity.setAdapter(cityAdapter)
+                filterSpinnerCountry.setAdapter(getCountryAdapter(fragment.requireContext()))
+                filterSpinnerCity.setAdapter(getAllCityAdapter(fragment.requireContext()))
 
-                filterSpinnerSpecialization.setAdapter(specializationAdapter)
-                filterSpinnerExperience.setAdapter(experienceAdapter)
+                filterSpinnerSpecialization.setAdapter(getSpecializationAdapter(fragment.requireContext()))
+                filterSpinnerExperience.setAdapter(getExperienceAdapter(fragment.requireContext()))
 
                 builder.setView(binding.root)
                     .setPositiveButton(
@@ -86,7 +86,7 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
                 val fab = (fragment as LawyersFragment).binding.fab
                 val dialog = builder.create()
                 dialog.setOnShowListener {
-                    val view = dialog?.window?.decorView
+                    val view = dialog.window?.decorView
                     val endRadius = hypot(view!!.width.toDouble(), view.height.toDouble()).toInt()
                     val cx = (fab.x + fab.width / 2).toInt()
                     val cy = (fab.y + fab.height + 56).toInt()

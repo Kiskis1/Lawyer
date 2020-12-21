@@ -17,6 +17,7 @@ import coil.metadata
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemLawyerBinding
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.utils.Utils
 
 class LawyersListAdapter(
@@ -60,7 +61,7 @@ class LawyersListAdapter(
                 Pair(binding.textExperience,
                     ViewCompat.getTransitionName(binding.textExperience)!!),
                 Pair(binding.textWonCases, ViewCompat.getTransitionName(binding.textWonCases)!!),
-                Pair(binding.textCity, ViewCompat.getTransitionName(binding.textCity)!!),
+                Pair(binding.textLocation, ViewCompat.getTransitionName(binding.textLocation)!!),
                 Pair(binding.textAddress, ViewCompat.getTransitionName(binding.textAddress)!!))
             v!!.findNavController()
                 .navigate(dir, extra)
@@ -77,7 +78,7 @@ class LawyersListAdapter(
                     item.uid + item.experience.toString())
                 ViewCompat.setTransitionName(binding.textWonCases,
                     item.uid + item.wonCases.toString())
-                ViewCompat.setTransitionName(binding.textCity, item.uid + item.city)
+                ViewCompat.setTransitionName(binding.textLocation, item.uid + item.city)
                 ViewCompat.setTransitionName(binding.textAddress, item.uid + item.address)
                 textName.text = resources.getString(R.string.item_lawyer_name, item.fullname)
                 textEducation.text =
@@ -93,11 +94,10 @@ class LawyersListAdapter(
                 textWonCases.text =
                     resources.getString(R.string.item_lawyer_number_of_won_cases, item.wonCases)
                 textAddress.text = resources.getString(R.string.item_lawyer_address, item.address)
-                textCountry.text =
-                    resources.getString(R.string.item_lawyer_country, item.country)
-                textCity.text = resources.getString(R.string.item_lawyer_city, item.city)
+                textLocation.text =
+                    resources.getString(R.string.item_lawyer_location, item.country, item.city)
                 buttonCall.setOnClickListener {
-                    Utils.showCallDialog(itemView.context, item)
+                    Utils.showCallDialog(itemView.context, item.phone, UserTypes.Lawyer)
                 }
                 imageProfile.load(item.imageRef) {
                     error(R.drawable.ic_person_24)

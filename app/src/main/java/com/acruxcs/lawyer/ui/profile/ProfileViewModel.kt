@@ -2,7 +2,7 @@ package com.acruxcs.lawyer.ui.profile
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.acruxcs.lawyer.MainApplication
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.WorkingHours
@@ -74,7 +74,7 @@ class ProfileViewModel : ViewModel() {
     }
 
     fun saveHours(hours: WorkingHours) {
-        usersRepository.updateHours(hours, MainApplication.user.value!!.uid).addOnSuccessListener {
+        usersRepository.updateHours(hours, MainActivity.user.value!!.uid).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR

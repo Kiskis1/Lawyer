@@ -14,12 +14,15 @@ import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.utils.Utils.dateFormat
 import java.util.Date
 
-class ReservationsAdapter(private val interaction: Interaction? = null) :
+class ReservationsAdapter(
+    private val interaction: Interaction? = null,
+    private val history: Boolean = false,
+) :
     ListAdapter<Reservation, ReservationsAdapter.ReservationsViewHolder>(ReservationDC()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ReservationsViewHolder(
         ItemReservationBinding.inflate(LayoutInflater.from(parent.context), parent, false).root,
-        interaction
+        interaction, history
     )
 
     override fun onBindViewHolder(holder: ReservationsViewHolder, position: Int) =
@@ -32,12 +35,14 @@ class ReservationsAdapter(private val interaction: Interaction? = null) :
     inner class ReservationsViewHolder(
         itemView: View,
         private val interaction: Interaction?,
+        history: Boolean,
     ) : RecyclerView.ViewHolder(itemView), OnClickListener {
 
         private val binding = ItemReservationBinding.bind(itemView)
 
         init {
             itemView.setOnClickListener(this)
+            binding.menuButton.visibility = if (!history) View.VISIBLE else View.INVISIBLE
         }
 
         override fun onClick(v: View?) {
@@ -59,16 +64,17 @@ class ReservationsAdapter(private val interaction: Interaction? = null) :
 
         fun bind(item: Reservation) = with(itemView) {
             with(binding) {
-                textLawyer.text =
-                    resources.getString(R.string.reservation_lawyer_name, item.lawyer!!.fullname)
-                textDate.text = resources.getString(R.string.reservation_date, item.date)
-                textTime.text = resources.getString(R.string.reservation_time, item.time)
-                textAddress.text =
-                    resources.getString(R.string.reservation_lawyer_address, item.lawyer!!.address)
+                textFullname.text = item.lawyer!!.fullname
+                textDate.text = item.date
+                textTime.text = item.time
+                textAddress.text = item.lawyer!!.address
                 textVisitType.text = when (item.inPerson) {
                     true -> resources.getString(R.string.reservation_visit_type_person)
                     false -> resources.getString(R.string.reservation_visit_type_remote)
                 }
+                textPaymentType.text =
+                    resources.getString(R.string.item_reservation_payment_type,
+                        item.lawyer!!.fullname)
             }
         }
     }

@@ -44,9 +44,9 @@
             android:layout_height="wrap_content"
             android:autofillHints="username"
             android:hint="@string/hint_email"
-            android:nextFocusDown="@id/edit_password"
             android:imeOptions="actionNext"
             android:inputType="textEmailAddress"
+            android:nextFocusDown="@id/edit_password"
             android:textSize="20sp" />
     </com.google.android.material.textfield.TextInputLayout>
 

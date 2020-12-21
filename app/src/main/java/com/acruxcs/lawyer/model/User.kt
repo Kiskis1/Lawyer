@@ -9,9 +9,9 @@ import kotlinx.parcelize.Parcelize
 data class User(
     var email: String = "",
     var fullname: String = "",
-    var country: String = "",
-    var city: String = "",
-    var phone: String = "",
+    var country: String = "N/A",
+    var city: String = "N/A",
+    var phone: String = "N/A",
     var uid: String = "",
     var role: UserTypes = UserTypes.User,
     var address: String = "N/A",
@@ -21,4 +21,5 @@ data class User(
     var wonCases: Int = 0,
     var workingHours: WorkingHours? = null,
     var imageRef: String = "",
+    var paymentTypes: String = "",
 ) : Parcelable

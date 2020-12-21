@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.acruxcs.lawyer.MainApplication
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentProfileEditBinding
 import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
-import com.acruxcs.lawyer.utils.Utils.countryAdapter
 import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
 import com.acruxcs.lawyer.utils.Utils.getCityAdapter
+import com.acruxcs.lawyer.utils.Utils.getCountryAdapter
+import com.acruxcs.lawyer.utils.Utils.getPaymentTypeAdapter
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 
@@ -26,7 +27,7 @@ class ProfileEditFragment :
         super.onViewCreated(view, savedInstanceState)
         setupEditTexts()
         with(binding) {
-            role = MainApplication.user.value!!.role
+            role = MainActivity.user.value!!.role
             wanted = UserTypes.Lawyer
             toolbar.toolbar.apply {
                 setTitle(R.string.dialog_title_profile_edit)
@@ -45,23 +46,25 @@ class ProfileEditFragment :
                 }
             }
             editCountry.apply {
-                setAdapter(countryAdapter)
+                setAdapter(getCountryAdapter(requireContext()))
                 setOnItemClickListener { adapterView, _, i, _ ->
                     selectedCountry = adapterView.getItemAtPosition(i).toString()
-                    editCity.setAdapter(getCityAdapter(selectedCountry))
+                    editCity.setAdapter(getCityAdapter(requireContext(), selectedCountry))
                     editCity.isEnabled = true
                     Utils.hideKeyboard(requireContext(), requireView())
                 }
             }
-            if (MainApplication.user.value!!.country == "")
+            editPaymentType.setAdapter(getPaymentTypeAdapter(requireContext()))
+            if (MainActivity.user.value!!.country == "")
                 editCity.isEnabled = false
-            else editCity.setAdapter(getCityAdapter(MainApplication.user.value!!.country))
+            else editCity.setAdapter(getCityAdapter(requireContext(),
+                MainActivity.user.value!!.country))
         }
     }
 
     private fun updateProfile() {
         if (isValid()) {
-            val user = MainApplication.user.value!!
+            val user = MainActivity.user.value!!
             with(binding) {
                 user.phone = editPhone.text.toString().trim()
                 user.country = editCountry.editableText.toString().trim()
@@ -71,6 +74,7 @@ class ProfileEditFragment :
                 user.education = editEducation.text.toString().trim()
                 user.experience = Integer.parseInt(editExperience.text.toString().trim())
                 user.wonCases = Integer.parseInt(editWonCases.text.toString().trim())
+                user.paymentTypes = editPaymentType.editableText.toString().trim()
             }
             findNavController().previousBackStackEntry?.savedStateHandle?.set("user", user)
             findNavController().navigateUp()
@@ -105,6 +109,9 @@ class ProfileEditFragment :
             checkFieldIfEmpty(editCity, layoutCity, requireContext()).yes {
                 valid = false
             }
+            checkFieldIfEmpty(editPaymentType, layoutPaymentType, requireContext()).yes {
+                valid = false
+            }
             if (!resources.getStringArray(
                     getCitiesByCountry(
                         editCountry.editableText.toString().trim()
@@ -112,6 +119,7 @@ class ProfileEditFragment :
                 )
                     .contains(editCity.editableText.toString().trim())
             ) {
+                valid = false
                 editCity.editableText.clear()
             }
 
@@ -121,14 +129,15 @@ class ProfileEditFragment :
 
     private fun setupEditTexts() {
         with(binding) {
-            editCountry.setText(MainApplication.user.value!!.country)
-            editCity.setText(MainApplication.user.value!!.city)
-            editPhone.setText(MainApplication.user.value!!.phone)
-            editAddress.setText(MainApplication.user.value!!.address)
-            editSpecialization.setText(MainApplication.user.value!!.specialization)
-            editEducation.setText(MainApplication.user.value!!.education)
-            editExperience.setText(MainApplication.user.value!!.experience.toString())
-            editWonCases.setText(MainApplication.user.value!!.wonCases.toString())
+            editCountry.setText(MainActivity.user.value!!.country)
+            editCity.setText(MainActivity.user.value!!.city)
+            editPhone.setText(MainActivity.user.value!!.phone)
+            editAddress.setText(MainActivity.user.value!!.address)
+            editSpecialization.setText(MainActivity.user.value!!.specialization)
+            editEducation.setText(MainActivity.user.value!!.education)
+            editExperience.setText(MainActivity.user.value!!.experience.toString())
+            editWonCases.setText(MainActivity.user.value!!.wonCases.toString())
+            editPaymentType.setText(MainActivity.user.value!!.paymentTypes)
         }
     }
 }

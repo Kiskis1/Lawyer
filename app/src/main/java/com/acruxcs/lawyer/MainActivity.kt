@@ -1,17 +1,20 @@
 package com.acruxcs.lawyer
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.acruxcs.lawyer.databinding.ActivityMainBinding
+import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.SharedPrefRepository
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_DARK_MODE_ON
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
 import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
+import com.acruxcs.lawyer.ui.login.LoginFragmentDirections
 import com.acruxcs.lawyer.utils.Utils
 import com.crazylegend.viewbinding.viewBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -48,39 +51,55 @@ class MainActivity : AppCompatActivity() {
 
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        //
-        // navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
-        //     if (destination.id == R.id.loginFragment || destination.id == R.id.registerFragment) {
-        //         binding.bottomMenu.visibility = View.GONE
-        //     } else {
-        //         binding.bottomMenu.visibility = View.VISIBLE
-        //     }
-        // }
+
         binding.bottomMenu.setupWithNavController(navHostFragment.navController)
         binding.bottomMenu.setOnNavigationItemReselectedListener {
             navHostFragment.navController.popBackStack(it.itemId, false)
         }
 
-        if (preferences.getBoolean(SHARED_LOGGED_IN, false) && savedInstanceState == null) {
-            navHostFragment.navController
-                .navigate(R.id.mainFragment)
+        viewModel.bottomNavigationVisibility.observe(this) { navVisibility ->
+            binding.bottomMenu.visibility = navVisibility
         }
+        navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.mainFragment,
+                R.id.profileFragment,
+                R.id.lawyersFragment,
+                -> viewModel.showBottomNav()
+                else -> viewModel.hideBottomNav()
+
+            }
+        }
+
+        if (preferences.getBoolean(SHARED_LOGGED_IN, false) && savedInstanceState == null) {
+            val dir = LoginFragmentDirections.actionLoginFragmentToMainFragment()
+            navHostFragment.navController
+                .navigate(dir)
+        }
+        appContext = baseContext
         Utils.switchDarkMode(preferences.getBoolean(SHARED_DARK_MODE_ON, false))
         if (savedInstanceState == null) {
             viewModel.getUserData(Firebase.auth.currentUser?.uid)
         } else {
             binding.progressBar.progressLayout.visibility = View.GONE
         }
+
     }
 
     override fun onBackPressed() {
-        when (navHostFragment.findNavController().currentDestination?.id) {
+        when (navHostFragment.navController.currentDestination?.id) {
             R.id.mainFragment,
-            R.id.lawyersFragment,
-            R.id.profileFragment,
             R.id.loginFragment,
             -> finish()
+            R.id.lawyersFragment,
+            R.id.profileFragment,
+            -> navHostFragment.navController.navigate(R.id.mainFragment)
             else -> super.onBackPressed()
         }
+    }
+
+    companion object {
+        val user = MutableLiveData<User>()
+        lateinit var appContext: Context
     }
 }

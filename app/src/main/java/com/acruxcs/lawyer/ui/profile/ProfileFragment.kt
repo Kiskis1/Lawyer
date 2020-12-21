@@ -16,7 +16,6 @@ import coil.load
 import coil.metadata
 import com.acruxcs.lawyer.ActivityViewModel
 import com.acruxcs.lawyer.MainActivity
-import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentProfileBinding
 import com.acruxcs.lawyer.model.Case
@@ -54,7 +53,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         observeBackStack()
 
         with(binding) {
-            role = MainApplication.user.value!!.role
+            role = MainActivity.user.value!!.role
             wanted = UserTypes.Lawyer
 
             buttonProfileEdit.setOnClickListener {
@@ -103,7 +102,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
 
             recyclerView.adapter = lawyersCasesAdapter
-            activityViewModel.getLawyersCases(MainApplication.user.value!!.uid)
+            activityViewModel.getLawyersCases(MainActivity.user.value!!.uid)
                 .observe(viewLifecycleOwner, {
                     lawyersCasesAdapter.swapData(it)
                     if (it.isNotEmpty()) {
@@ -153,8 +152,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun loadProfileImage() {
         with(binding.pictureLayout) {
-            println(MainApplication.user.value!!.imageRef)
-            imagePicture.load(MainApplication.user.value!!.imageRef) {
+            println(MainActivity.user.value!!.imageRef)
+            imagePicture.load(MainActivity.user.value!!.imageRef) {
                 error(R.drawable.ic_person_24)
                 placeholderMemoryCacheKey(imagePicture.metadata?.memoryCacheKey)
             }

@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.acruxcs.lawyer.MainApplication
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentReservationsBinding
 import com.acruxcs.lawyer.model.Reservation
@@ -24,7 +24,7 @@ class ReservationsFragment : Fragment(R.layout.fragment_reservations),
     ReservationsAdapter.Interaction {
     private val binding by viewBinding(FragmentReservationsBinding::bind)
     private val viewModel: ReservationsViewModel by viewModels()
-    private val role = MainApplication.user.value!!.role
+    private val role = MainActivity.user.value!!.role
 
     private val reservationsAdapter by lazy { ReservationsAdapter(this) }
 
@@ -43,13 +43,13 @@ class ReservationsFragment : Fragment(R.layout.fragment_reservations),
 
             if (role == UserTypes.User) {
                 textNoItems.text = resources.getString(R.string.reservation_no_active_reservation)
-                viewModel.getReservationsForUser(MainApplication.user.value!!.uid)
+                viewModel.getReservationsForUser(MainActivity.user.value!!.uid)
                     .observe(viewLifecycleOwner) {
                         submitList(it)
                     }
             } else if (role == UserTypes.Lawyer) {
                 textNoItems.text = resources.getString(R.string.reservation_no_reservations)
-                viewModel.getReservationsForLawyer(MainApplication.user.value!!.uid)
+                viewModel.getReservationsForLawyer(MainActivity.user.value!!.uid)
                     .observe(viewLifecycleOwner, {
                         submitList(it)
                     })

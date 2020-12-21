@@ -1,5 +1,7 @@
 package com.acruxcs.lawyer
 
+import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.acruxcs.lawyer.model.Case
@@ -46,7 +48,7 @@ class ActivityViewModel : ViewModel() {
                     .edit {
                         it.putBoolean(SharedPrefRepository.SHARED_LOGGED_IN, true)
                     }
-                MainApplication.user.postValue(temp)
+                MainActivity.user.postValue(temp)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -79,5 +81,21 @@ class ActivityViewModel : ViewModel() {
         }
         ReservationsRepository.getReservationsForLawyer(uid).addValueEventListener(listener)
         return lawyerPreviousReservations
+    }
+
+    private val _bottomNavigationVisibility = MutableLiveData<Int>()
+    val bottomNavigationVisibility: LiveData<Int>
+        get() = _bottomNavigationVisibility
+
+    init {
+        showBottomNav()
+    }
+
+    fun showBottomNav() {
+        _bottomNavigationVisibility.postValue(View.VISIBLE)
+    }
+
+    fun hideBottomNav() {
+        _bottomNavigationVisibility.postValue(View.GONE)
     }
 }

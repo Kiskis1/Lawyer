@@ -23,6 +23,7 @@ import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
 import com.acruxcs.lawyer.repository.SharedPrefRepository.preferences
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.getProviderIdSet
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.CallbackManager
@@ -33,7 +34,6 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -41,6 +41,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private val viewModel: LoginViewModel by viewModels()
     private val activityViewModel: ActivityViewModel by activityViewModels()
     private val binding by viewBinding(FragmentLoginBinding::bind)
+    private val dirToMain = LoginFragmentDirections.actionLoginFragmentToMainFragment()
 
     private lateinit var activityProgressLayout: FrameLayout
 
@@ -82,7 +83,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
 
             textRegisterNow.setOnClickListener {
-                view.findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+                val dir = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                view.findNavController().navigate(dir)
             }
 
             editPassword.setOnEditorActionListener { _, i, _ ->
@@ -133,7 +135,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     this.putBoolean(SHARED_LOGGED_IN, true)
                 }
                 requireView().findNavController()
-                    .navigate(R.id.action_loginFragment_to_mainFragment)
+                    .navigate(dirToMain)
             } else {
                 binding.errorMessage.text = task.exception?.message
                 binding.buttonLogin.isEnabled = true
@@ -164,7 +166,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                             activityProgressLayout.visibility = View.GONE
                             requireView().findNavController()
-                                .navigate(R.id.action_loginFragment_to_mainFragment)
+                                .navigate(dirToMain)
 
                         }
                 } catch (e: ApiException) {
@@ -188,13 +190,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         }
                         preferences.edit {
                             this.putStringSet(SHARED_AUTH_PROVIDER, getProviderIdSet(user))
-                        }
-                        activityProgressLayout.visibility = View.GONE
-                        preferences.edit {
                             this.putBoolean(SHARED_LOGGED_IN, true)
                         }
+                        activityProgressLayout.visibility = View.GONE
                         requireView().findNavController()
-                            .navigate(R.id.action_loginFragment_to_mainFragment)
+                            .navigate(dirToMain)
                     } else {
                         binding.errorMessage.text = task.exception?.message
                         activityProgressLayout.visibility = View.GONE
@@ -215,13 +215,5 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         callbackManager.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private fun getProviderIdSet(user: FirebaseUser): MutableSet<String> {
-        val set = mutableSetOf<String>()
-        for (providerData in user.providerData) {
-            set.add(providerData.providerId)
-        }
-        return set
     }
 }

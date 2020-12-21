@@ -1,7 +1,7 @@
 package com.acruxcs.lawyer.ui.login
 
 import androidx.lifecycle.ViewModel
-import com.acruxcs.lawyer.MainApplication
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.repository.UsersRepository
 import com.google.android.gms.tasks.Task
@@ -21,13 +21,13 @@ class LoginViewModel : ViewModel() {
                 fullname = profile.displayName!!,
                 uid = profile.uid
             )
-            MainApplication.user.postValue(newUser)
+            MainActivity.user.postValue(newUser)
             usersRepository.setUser(newUser)
         }
     }
 
     fun createNewUser(newUser: User) {
-        MainApplication.user.postValue(newUser)
+        MainActivity.user.postValue(newUser)
         usersRepository.setUser(newUser)
     }
 }

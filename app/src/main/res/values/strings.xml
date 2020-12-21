@@ -17,7 +17,7 @@
     <string name="hint_country">Country</string>
     <string name="hint_full_name">Full name</string>
     <string name="hint_phone">Phone</string>
-    <string name="hint_description">Description</string>
+    <string name="hint_question">Question</string>
     <string name="hint_city">City</string>
     <string name="hint_specialization">Specialization</string>
     <string name="hint_experience">Experience</string>
@@ -28,8 +28,10 @@
     <string name="menu_profile">Profile</string>
     <string name="menu_lawyers">Lawyers</string>
 
-    <string name="call_dialog_title">Call a lawyer</string>
-    <string name="call_dialog_message">Are you sure you want to call this lawyer?</string>
+    <string name="call_dialog_title_lawyer">Call a lawyer</string>
+    <string name="call_dialog_message_lawyer">Are you sure you want to call this lawyer?</string>
+    <string name="call_dialog_title_user">Call a client</string>
+    <string name="call_dialog_message_user">Are you sure you want to call this client?</string>
 
     <string name="item_lawyer_name">Name: %s</string>
     <string name="item_lawyer_specialization">Specialization: %s</string>
@@ -37,6 +39,7 @@
     <string name="item_lawyer_number_of_won_cases">Number of won cases: %d</string>
     <string name="item_lawyer_country">Country: %s</string>
     <string name="item_lawyer_city">City: %s</string>
+    <string name="item_lawyer_location">Location: %s, %s</string>
     <string name="item_lawyer_address">Address: %s</string>
     <plurals name="item_lawyer_experience">
         <item quantity="one">Experience: %d year</item>
@@ -65,11 +68,13 @@
     <string name="item_case_outcome">Outcome: %s</string>
     <string name="item_case_date">Date: %s</string>
 
-    <string name="item_question_description">Description: %s</string>
+    <string name="item_question_question">Question: %s</string>
+    <string name="item_question_colon">Question:</string>
     <string name="item_question_country">Country: %s</string>
     <string name="item_question_city">City: %s</string>
     <string name="item_question_phone">Phone: %s</string>
-    <string name="item_question_full_name">Full name: %s</string>
+    <string name="item_question_full_name">Name: %s</string>
+    <string name="item_question_email">Email: %s</string>
 
     <string name="profile_your_cases">Your cases:</string>
     <string name="profile_switch_dark_mode">Switch Dark Mode</string>
@@ -125,7 +130,7 @@
     <string name="dialog_title_profile_edit">Profile Edit</string>
     <string name="dialog_title_new_case">New Case</string>
     <string name="dialog_title_question">New Question</string>
-    <string name="profile_update_address">Address</string>
+    <string name="profile_update_address">Update address</string>
 
     <string name="reservation_date">Date: %s</string>
     <string name="reservation_lawyer_name">Lawyer: %s</string>
@@ -147,5 +152,9 @@
     <string name="history_your_previous_reservations">Your previous reservations</string>
     <string name="profile_reservation_history">Reservation history</string>
     <string name="history_no_prev_reserv">You don\'t have any previous reservations.</string>
+    <string name="content_desc_call_question_asker">Call question asker</string>
+    <string name="error_no_phone_number">User doesn\'t have a phone number.</string>
+    <string name="item_reservation_payment_type">Payment type: %s</string>
+    <string name="profile_update_payment_types">Update payment types</string>
 
 </resources>

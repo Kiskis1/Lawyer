@@ -7,7 +7,6 @@
     <uses-sdk tools:overrideLibrary="zion830.com.range_picker_dialog" />
 
     <application
-        android:name=".MainApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

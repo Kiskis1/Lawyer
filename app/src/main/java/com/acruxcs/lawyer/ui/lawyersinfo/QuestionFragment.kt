@@ -2,18 +2,20 @@ package com.acruxcs.lawyer.ui.lawyersinfo
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.acruxcs.lawyer.MainApplication
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentQuestionBinding
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
+import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 
@@ -22,6 +24,7 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
     private var lawyer: User? = null
     private val binding by viewBinding(FragmentQuestionBinding::bind)
     private var tagas: String? = null
+    private lateinit var selectedCountry: String
     private val args: QuestionFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +45,7 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
                 editCity.setText(question?.city)
                 editPhone.setText(question?.phone)
                 editName.setText(question?.fullname)
+                editEmail.setText(question?.email)
             } else {
                 question = Question()
                 toolbar.toolbar.setTitle(R.string.dialog_title_question)
@@ -52,7 +56,35 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
                 }
                 setOnMenuItemClickListener(toolbarMenuClickListener)
             }
+            editCountry.apply {
+                setAdapter(countryAdapter)
+                setOnItemClickListener { adapterView, _, i, _ ->
+                    selectedCountry = adapterView.getItemAtPosition(i).toString()
+                    editCity.setAdapter(getCityAdapter(selectedCountry))
+                    editCity.isEnabled = true
+                    Utils.hideKeyboard(requireContext(), requireView())
+                }
+            }
+            if (MainActivity.user.value!!.country == "")
+                editCity.isEnabled = false
         }
+    }
+
+    private val countryAdapter =
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.Countries,
+            android.R.layout.simple_dropdown_item_1line
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+
+    fun getCityAdapter(country: String) = ArrayAdapter.createFromResource(
+        requireContext(),
+        getCitiesByCountry(country),
+        android.R.layout.simple_dropdown_item_1line
+    ).also {
+        it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     }
 
     private val toolbarMenuClickListener = Toolbar.OnMenuItemClickListener { item ->
@@ -64,9 +96,10 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
                         question!!.country = editCountry.text.toString().trim()
                         question!!.city = editCity.text.toString().trim()
                         question!!.phone = editPhone.text.toString().trim()
+                        question!!.email = editEmail.text.toString().trim()
                         question!!.fullname = editName.text.toString().trim()
                         if (tagas == null) question!!.destination = lawyer!!.uid
-                        question!!.sender = MainApplication.user.value!!.uid
+                        question!!.sender = MainActivity.user.value!!.uid
                         findNavController().previousBackStackEntry?.savedStateHandle?.set("question",
                             question)
                         Utils.hideKeyboard(requireContext(), binding.root)
@@ -82,10 +115,11 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
 
     private fun setupEditTexts() {
         with(binding) {
-            editCountry.setText(MainApplication.user.value!!.country)
-            editCity.setText(MainApplication.user.value!!.city)
-            editPhone.setText(MainApplication.user.value!!.phone)
-            editName.setText(MainApplication.user.value!!.fullname)
+            editCountry.setText(MainActivity.user.value!!.country)
+            editCity.setText(MainActivity.user.value!!.city)
+            editPhone.setText(MainActivity.user.value!!.phone)
+            editName.setText(MainActivity.user.value!!.fullname)
+            editEmail.setText(MainActivity.user.value!!.email)
         }
     }
 
@@ -107,6 +141,19 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
             checkFieldIfEmpty(
                 editName, layoutName, requireContext()
             ).yes { valid = false }
+            checkFieldIfEmpty(
+                editEmail, layoutEmail, requireContext()
+            ).yes { valid = false }
+            if (!resources.getStringArray(
+                    getCitiesByCountry(
+                        editCountry.editableText.toString().trim()
+                    )
+                )
+                    .contains(editCity.editableText.toString().trim())
+            ) {
+                valid = false
+                editCity.editableText.clear()
+            }
         }
         return valid
     }

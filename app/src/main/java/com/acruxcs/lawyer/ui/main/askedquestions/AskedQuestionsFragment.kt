@@ -7,13 +7,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.acruxcs.lawyer.MainApplication
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentAskedQuestionsBinding
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.UserTypes
 import com.acruxcs.lawyer.ui.main.MainFragmentDirections
 import com.acruxcs.lawyer.utils.Status
+import com.acruxcs.lawyer.utils.Utils
 import com.crazylegend.kotlinextensions.fragments.shortToast
 import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
@@ -25,7 +26,7 @@ class AskedQuestionsFragment : Fragment(R.layout.fragment_asked_questions),
     private val viewModel: QuestionsViewModel by viewModels()
     private val binding by viewBinding(FragmentAskedQuestionsBinding::bind)
     private val questionsAdapter by lazy { QuestionListAdapter(this) }
-    private val role = MainApplication.user.value!!.role
+    private val role = MainActivity.user.value!!.role
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,13 +43,13 @@ class AskedQuestionsFragment : Fragment(R.layout.fragment_asked_questions),
 
             if (role == UserTypes.User) {
                 textNoItems.text = resources.getString(R.string.question_no_active_questions)
-                viewModel.getSentQuestions(MainApplication.user.value!!.uid)
+                viewModel.getSentQuestions(MainActivity.user.value!!.uid)
                     .observe(viewLifecycleOwner) {
                         submitList(it)
                     }
             } else if (role == UserTypes.Lawyer) {
                 textNoItems.text = resources.getString(R.string.question_no_questions)
-                viewModel.getAskedQuestions(MainApplication.user.value!!.uid)
+                viewModel.getAskedQuestions(MainActivity.user.value!!.uid)
                     .observe(viewLifecycleOwner, {
                         submitList(it)
                     })
@@ -102,6 +103,9 @@ class AskedQuestionsFragment : Fragment(R.layout.fragment_asked_questions),
                     d.cancel()
                 }
                 dialog.create().show()
+            }
+            R.id.action_call -> {
+                Utils.showCallDialog(requireContext(), item.phone, UserTypes.User)
             }
         }
     }

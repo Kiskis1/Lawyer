@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import com.acruxcs.lawyer.MainActivity
-import com.acruxcs.lawyer.MainApplication
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentMainBinding
 import com.acruxcs.lawyer.utils.Utils.observeOnce
@@ -25,7 +24,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onViewCreated(view, savedInstanceState)
         activityProgressLayout.visibility = View.VISIBLE
 
-        MainApplication.user.observeOnce(viewLifecycleOwner, {
+        MainActivity.user.observeOnce(viewLifecycleOwner, {
             binding.viewPager.adapter = MainCollectionAdapter(this)
             TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
                 tab.text = when (position) {

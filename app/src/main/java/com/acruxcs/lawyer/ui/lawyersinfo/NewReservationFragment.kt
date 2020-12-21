@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.acruxcs.lawyer.MainApplication
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentNewReservationBinding
 import com.acruxcs.lawyer.model.Reservation
@@ -42,7 +42,7 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
         reservation = args.reservation
         if (tagas == null && tagas != "edit_reservation") {
             reservation = Reservation(lawyer = lawyer)
-            reservation!!.user = MainApplication.user.value!!.uid
+            reservation!!.user = MainActivity.user.value!!.uid
         }
     }
 

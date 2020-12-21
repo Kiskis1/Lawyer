@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.acruxcs.lawyer.MainApplication
+import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentWorkingHoursBinding
 import com.acruxcs.lawyer.model.WorkingHours
@@ -42,7 +42,7 @@ class WorkingHoursFragment : Fragment(R.layout.fragment_working_hours) {
     }
 
     private fun setupTextViews() {
-        val hours = MainApplication.user.value!!.workingHours
+        val hours = MainActivity.user.value!!.workingHours
         with(binding) {
             textMondayTime.text = hours?.monday
             textTuesdayTime.text = hours?.tuesday

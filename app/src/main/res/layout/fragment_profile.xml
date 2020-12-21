@@ -18,6 +18,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background_color"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true">
 
@@ -75,7 +76,6 @@
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_night_mode"
                         android:drawablePadding="24dp"
@@ -92,7 +92,6 @@
                         wanted="@{wanted}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:text="@string/action_change_working_hours"
                         android:textAlignment="textStart"
                         android:textColor="@color/textColor"
@@ -106,7 +105,6 @@
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:text="@string/action_update_profile_information"
                         android:textAlignment="textStart"
                         android:textColor="@color/textColor"
@@ -120,7 +118,6 @@
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:text="@string/profile_reservation_history"
                         android:textAlignment="textStart"
                         android:textColor="@color/textColor"
@@ -135,7 +132,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:layout_marginTop="8dp"
                         android:text="@string/action_logout"
                         android:textAlignment="textStart"
                         android:textColor="@color/textColor"
