@@ -92,7 +92,8 @@
                     android:hint="@string/case_hint_area"
                     android:imeOptions="actionNext"
                     android:inputType="none"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textSize="20sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

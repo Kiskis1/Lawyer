@@ -110,14 +110,14 @@ class LawyersViewModel : ViewModel() {
                             LocalTime.parse(item.time, DateTimeFormatter.ofPattern("HH:mm"))
                         workingHours.remove(timeItem)
                     }
-                    val local = LocalTime.of(LocalTime.now().hour, LocalTime.now().minute)
-                    if (LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) == date) {
-                        val iter = workingHours.iterator()
-                        while (iter.hasNext()) {
-                            val hour = iter.next()
-                            if (local.isAfter(hour)) {
-                                iter.remove()
-                            }
+                }
+                val local = LocalTime.of(LocalTime.now().hour, LocalTime.now().minute)
+                if (LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) == date) {
+                    val iter = workingHours.iterator()
+                    while (iter.hasNext()) {
+                        val hour = iter.next()
+                        if (local.isAfter(hour)) {
+                            iter.remove()
                         }
                     }
                 }

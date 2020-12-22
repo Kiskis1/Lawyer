@@ -85,7 +85,7 @@ object Utils {
         layout: TextInputLayout,
         context: Context,
     ): Boolean {
-        if (TextUtils.isEmpty(edit.editableText)) {
+        if (TextUtils.isEmpty(edit.editableText) || edit.editableText.contains("N/A")) {
             layout.error = context.resources.getString(R.string.error_empty_field)
             edit.requestFocus()
             return true

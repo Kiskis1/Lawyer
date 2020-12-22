@@ -24,14 +24,13 @@ class ReservationsViewModel : ViewModel() {
     fun getStatus() = status
 
     fun getReservationsForUser(uid: String): MutableLiveData<List<Reservation>> {
-
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = mutableListOf<Reservation>()
                 for (reservation in snapshot.children) {
                     reservation.getValue(Reservation::class.java)?.let { list.add(it) }
                 }
-                list.sortWith(compareBy<Reservation> { it.date }.thenBy { it.time })
+                list.sortWith(compareByDescending<Reservation> { it.date }.thenBy { it.time })
                 userReservations.postValue(list)
             }
 

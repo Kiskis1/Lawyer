@@ -55,7 +55,7 @@ class ProfileEditFragment :
                 }
             }
             editPaymentType.setAdapter(getPaymentTypeAdapter(requireContext()))
-            if (MainActivity.user.value!!.country == "")
+            if (MainActivity.user.value!!.country == "N/A")
                 editCity.isEnabled = false
             else editCity.setAdapter(getCityAdapter(requireContext(),
                 MainActivity.user.value!!.country))
@@ -84,60 +84,62 @@ class ProfileEditFragment :
     private fun isValid(): Boolean {
         var valid = true
         with(binding) {
-            checkFieldIfEmpty(editWonCases, layoutWonCases, requireContext()).yes {
-                valid = false
-            }
-            checkFieldIfEmpty(
-                editExperience, layoutExperience, requireContext()
-            ).yes {
-                valid = false
-            }
-            checkFieldIfEmpty(editEducation, layoutEducation, requireContext()).yes {
-                valid = false
-            }
-            checkFieldIfEmpty(editAddress, layoutAddress, requireContext()).yes {
-                valid = false
-            }
-            checkFieldIfEmpty(
-                editSpecialization, layoutSpecialization, requireContext()
-            ).yes {
-                valid = false
-            }
             checkFieldIfEmpty(editCountry, layoutCountry, requireContext()).yes {
                 valid = false
             }
             checkFieldIfEmpty(editCity, layoutCity, requireContext()).yes {
                 valid = false
             }
-            checkFieldIfEmpty(editPaymentType, layoutPaymentType, requireContext()).yes {
+            checkFieldIfEmpty(editPhone, layoutPhone, requireContext()).yes {
                 valid = false
             }
-            if (!resources.getStringArray(
-                    getCitiesByCountry(
-                        editCountry.editableText.toString().trim()
-                    )
-                )
+            if (!editCountry.editableText.contains("N/A") && !resources.getStringArray(
+                    getCitiesByCountry(editCountry.editableText.toString()
+                        .trim()))
                     .contains(editCity.editableText.toString().trim())
             ) {
                 valid = false
                 editCity.editableText.clear()
             }
-
+            if (role == UserTypes.Lawyer) {
+                checkFieldIfEmpty(editWonCases, layoutWonCases, requireContext()).yes {
+                    valid = false
+                }
+                checkFieldIfEmpty(
+                    editExperience, layoutExperience, requireContext()
+                ).yes {
+                    valid = false
+                }
+                checkFieldIfEmpty(editEducation, layoutEducation, requireContext()).yes {
+                    valid = false
+                }
+                checkFieldIfEmpty(editAddress, layoutAddress, requireContext()).yes {
+                    valid = false
+                }
+                checkFieldIfEmpty(
+                    editSpecialization, layoutSpecialization, requireContext()
+                ).yes {
+                    valid = false
+                }
+                checkFieldIfEmpty(editPaymentType, layoutPaymentType, requireContext()).yes {
+                    valid = false
+                }
+            }
         }
         return valid
     }
 
     private fun setupEditTexts() {
         with(binding) {
-            editCountry.setText(MainActivity.user.value!!.country)
-            editCity.setText(MainActivity.user.value!!.city)
-            editPhone.setText(MainActivity.user.value!!.phone)
-            editAddress.setText(MainActivity.user.value!!.address)
-            editSpecialization.setText(MainActivity.user.value!!.specialization)
-            editEducation.setText(MainActivity.user.value!!.education)
-            editExperience.setText(MainActivity.user.value!!.experience.toString())
-            editWonCases.setText(MainActivity.user.value!!.wonCases.toString())
-            editPaymentType.setText(MainActivity.user.value!!.paymentTypes)
+            editCountry.setText(MainActivity.user.value?.country)
+            editCity.setText(MainActivity.user.value?.city)
+            editPhone.setText(MainActivity.user.value?.phone)
+            editAddress.setText(MainActivity.user.value?.address)
+            editSpecialization.setText(MainActivity.user.value?.specialization)
+            editEducation.setText(MainActivity.user.value?.education)
+            editExperience.setText(MainActivity.user.value?.experience.toString())
+            editWonCases.setText(MainActivity.user.value?.wonCases.toString())
+            editPaymentType.setText(MainActivity.user.value?.paymentTypes)
         }
     }
 }

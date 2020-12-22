@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.DialogFilterBinding
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.getAllCityAdapter
 import com.acruxcs.lawyer.utils.Utils.getCountryAdapter
 import com.acruxcs.lawyer.utils.Utils.getExperienceAdapter
@@ -85,8 +86,11 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
 
                 val fab = (fragment as LawyersFragment).binding.fab
                 val dialog = builder.create()
+                val view = dialog.window?.decorView
+                filterSpinnerCity.setOnItemClickListener { _, v, _, _ ->
+                    Utils.hideKeyboard(fragment.requireContext(), v)
+                }
                 dialog.setOnShowListener {
-                    val view = dialog.window?.decorView
                     val endRadius = hypot(view!!.width.toDouble(), view.height.toDouble()).toInt()
                     val cx = (fab.x + fab.width / 2).toInt()
                     val cy = (fab.y + fab.height + 56).toInt()

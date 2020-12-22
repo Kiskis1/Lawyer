@@ -16,7 +16,6 @@ import coil.metadata
 import com.acruxcs.lawyer.ActivityViewModel
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentLawyersInfoBinding
-import com.acruxcs.lawyer.model.Case
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
@@ -32,7 +31,6 @@ import com.google.android.material.snackbar.Snackbar
 class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     private lateinit var lawyer: User
     private val lawyersCasesAdapter by lazy { LawyersCaseAdapter(this, null) }
-    private val list = mutableListOf<Case>()
     private val viewModel: LawyersViewModel by viewModels()
     private val activityViewModel: ActivityViewModel by activityViewModels()
     private val binding by viewBinding(FragmentLawyersInfoBinding::bind)
@@ -42,16 +40,18 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
         super.onCreate(savedInstanceState)
         lawyer = args.lawyer
         sharedElementEnterTransition = TransitionInflater.from(requireContext())
-            .inflateTransition(R.transition.move)
+            .inflateTransition(android.R.transition.move)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeBackStack()
-        setTransitions()
         setTextViews()
+        setTransitions()
+        observeBackStack()
         viewModel.getStatus().observe(this) { handleStatus(it) }
         with(binding) {
+            toolbar.toolbar.title = lawyer.fullname
+            toolbar.toolbar.menu.findItem(R.id.action_confirm).isVisible = false
             speeddial.inflate(R.menu.menu_speed_dial)
             speeddial.setOnActionSelectedListener { item ->
                 when (item.id) {
@@ -80,9 +80,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
 
             recyclerView.adapter = lawyersCasesAdapter
             activityViewModel.getLawyersCases(lawyer.uid).observe(viewLifecycleOwner, {
-                list.clear()
-                list.addAll(it)
-                lawyersCasesAdapter.swapData(list)
+                lawyersCasesAdapter.swapData(it)
                 if (it.isNotEmpty()) {
                     if (textEmptyCases.isVisible) textEmptyCases.toggleVisibilityGoneToVisible()
                 } else
@@ -118,6 +116,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
     }
 
     private fun setTransitions() {
+        ViewCompat.setTransitionName(binding.infoLayout, lawyer.uid + "infoLayout")
         ViewCompat.setTransitionName(binding.imageProfile, lawyer.uid)
         ViewCompat.setTransitionName(binding.textName, lawyer.fullname)
         ViewCompat.setTransitionName(binding.textEducation, lawyer.uid + lawyer.education)

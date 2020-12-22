@@ -11,13 +11,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.ItemQuestionBinding
 import com.acruxcs.lawyer.model.Question
+import com.acruxcs.lawyer.model.UserTypes
 
-class QuestionListAdapter(private val interaction: Interaction? = null) :
+class QuestionListAdapter(
+    private val interaction: Interaction? = null,
+    private val role: UserTypes,
+) :
     ListAdapter<Question, QuestionListAdapter.QuestionListViewHolder>(QuestionDC()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = QuestionListViewHolder(
         ItemQuestionBinding.inflate(LayoutInflater.from(parent.context), parent, false).root,
-        interaction
+        interaction, role
     )
 
     override fun onBindViewHolder(holder: QuestionListViewHolder, position: Int) =
@@ -30,6 +34,7 @@ class QuestionListAdapter(private val interaction: Interaction? = null) :
     inner class QuestionListViewHolder(
         itemView: View,
         private val interaction: Interaction?,
+        private val role: UserTypes,
     ) : RecyclerView.ViewHolder(itemView), OnClickListener {
         private val binding = ItemQuestionBinding.bind(itemView)
 
@@ -43,6 +48,10 @@ class QuestionListAdapter(private val interaction: Interaction? = null) :
             val clicked = getItem(adapterPosition)
             val popup = PopupMenu(v?.context, binding.menuButton)
             popup.inflate(R.menu.menu_question_actions)
+            if (role == UserTypes.Lawyer) {
+                popup.menu.findItem(R.id.action_edit).isVisible = false
+            } else if (role == UserTypes.User)
+                popup.menu.findItem(R.id.action_call).isVisible = false
             popup.setOnMenuItemClickListener {
                 interaction?.onActionSelected(it.itemId, clicked, itemView)
                 true

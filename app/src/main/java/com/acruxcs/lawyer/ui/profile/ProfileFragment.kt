@@ -152,7 +152,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun loadProfileImage() {
         with(binding.pictureLayout) {
-            println(MainActivity.user.value!!.imageRef)
             imagePicture.load(MainActivity.user.value!!.imageRef) {
                 error(R.drawable.ic_person_24)
                 placeholderMemoryCacheKey(imagePicture.metadata?.memoryCacheKey)

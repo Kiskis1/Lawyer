@@ -22,7 +22,11 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
+            toolbar.toolbar.title = resources.getString(R.string.title_history)
+            toolbar.toolbar.menu.findItem(R.id.action_confirm).isVisible = false
+
             progressBar.progressLayout.visibility = View.VISIBLE
+
             recyclerView.adapter = reservationsAdapter
             recyclerView.visibility = View.INVISIBLE
             viewModel.getPreviousReservationsForLawyer(MainActivity.user.value!!.uid)

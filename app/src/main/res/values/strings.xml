@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Lawyer</string>
-    <string name="facebook_app_id">641877796515383</string>
-    <string name="fb_login_protocol_scheme">fb641877796515383</string>
+    <string name="app_name" translatable="false">Lawyer</string>
+    <string name="facebook_app_id" translatable="false">641877796515383</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb641877796515383</string>
 
     <string name="login_title">Login</string>
 
@@ -148,7 +148,7 @@
     <string name="reservation_no_active_reservation">No reservations to show.\nGo to lawyers tab and choose a lawyer.</string>
     <string name="reservation_no_reservations">No reservations to show.</string>
     <string name="question_no_questions">No questions to show.</string>
-    <string name="question_no_active_questions">No questions to show.\nGo to lawyers tab and choose a lawyer</string>
+    <string name="question_no_active_questions">No questions to show.\nGo to lawyers tab and choose a lawyer.</string>
     <string name="history_your_previous_reservations">Your previous reservations</string>
     <string name="profile_reservation_history">Reservation history</string>
     <string name="history_no_prev_reserv">You don\'t have any previous reservations.</string>
@@ -156,5 +156,5 @@
     <string name="error_no_phone_number">User doesn\'t have a phone number.</string>
     <string name="item_reservation_payment_type">Payment type: %s</string>
     <string name="profile_update_payment_types">Update payment types</string>
-
+    <string name="title_history">History</string>
 </resources>

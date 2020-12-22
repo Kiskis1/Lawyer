@@ -94,17 +94,6 @@
         </LinearLayout>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_payment_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/item_reservation_payment_type"
-            android:textColor="@color/textColor"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_date" />
-
-        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_visit_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -112,7 +101,17 @@
             android:textColor="@color/textColor"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_payment_type" />
+            app:layout_constraintTop_toBottomOf="@id/text_date" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_payment_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_visit_type" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

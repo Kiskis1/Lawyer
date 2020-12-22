@@ -25,7 +25,7 @@ class AskedQuestionsFragment : Fragment(R.layout.fragment_asked_questions),
     QuestionListAdapter.Interaction {
     private val viewModel: QuestionsViewModel by viewModels()
     private val binding by viewBinding(FragmentAskedQuestionsBinding::bind)
-    private val questionsAdapter by lazy { QuestionListAdapter(this) }
+    private val questionsAdapter by lazy { QuestionListAdapter(this, role) }
     private val role = MainActivity.user.value!!.role
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

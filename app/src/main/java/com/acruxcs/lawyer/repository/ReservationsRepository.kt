@@ -12,10 +12,10 @@ object ReservationsRepository {
     fun postReservation(res: Reservation) = db.child(res.id).setValue(res)
 
     fun getReservationsForUser(uid: String) =
-        db.orderByChild("lawyer").equalTo(uid)
+        db.orderByChild("user").equalTo(uid)
 
     fun getReservationsForLawyer(uid: String) =
-        db.orderByChild("user").equalTo(uid)
+        db.orderByChild("lawyer/uid").equalTo(uid)
 
     fun getLawyersReservations(dateLawyer: String) =
         db.orderByChild("dateLawyer").equalTo(dateLawyer)

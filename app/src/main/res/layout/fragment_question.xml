@@ -7,6 +7,7 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
+    android:background="@color/background_color"
     tools:context=".ui.lawyersinfo.QuestionFragment">
 
     <include
@@ -138,7 +139,7 @@
                     android:hint="@string/hint_country"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="none"
                     android:textSize="20sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -162,7 +163,7 @@
                     android:hint="@string/hint_city"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
-                    android:inputType="text"
+                    android:inputType="none"
                     android:textSize="20sp" />
             </com.google.android.material.textfield.TextInputLayout>
 

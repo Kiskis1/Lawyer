@@ -116,6 +116,8 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_history"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
+                        role="@{role}"
+                        wanted="@{wanted}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/profile_reservation_history"

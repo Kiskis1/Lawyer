@@ -2,7 +2,6 @@ package com.acruxcs.lawyer.ui.lawyersinfo
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -16,6 +15,8 @@ import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
+import com.acruxcs.lawyer.utils.Utils.getCityAdapter
+import com.acruxcs.lawyer.utils.Utils.getCountryAdapter
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
 
@@ -57,34 +58,19 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
                 setOnMenuItemClickListener(toolbarMenuClickListener)
             }
             editCountry.apply {
-                setAdapter(countryAdapter)
+                setAdapter(getCountryAdapter(requireContext()))
                 setOnItemClickListener { adapterView, _, i, _ ->
                     selectedCountry = adapterView.getItemAtPosition(i).toString()
-                    editCity.setAdapter(getCityAdapter(selectedCountry))
+                    editCity.setAdapter(getCityAdapter(requireContext(), selectedCountry))
                     editCity.isEnabled = true
                     Utils.hideKeyboard(requireContext(), requireView())
                 }
             }
-            if (MainActivity.user.value!!.country == "")
+            if (MainActivity.user.value!!.country == "N/A")
                 editCity.isEnabled = false
+            else editCity.setAdapter(getCityAdapter(requireContext(),
+                MainActivity.user.value!!.country))
         }
-    }
-
-    private val countryAdapter =
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.Countries,
-            android.R.layout.simple_dropdown_item_1line
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
-
-    fun getCityAdapter(country: String) = ArrayAdapter.createFromResource(
-        requireContext(),
-        getCitiesByCountry(country),
-        android.R.layout.simple_dropdown_item_1line
-    ).also {
-        it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     }
 
     private val toolbarMenuClickListener = Toolbar.OnMenuItemClickListener { item ->
@@ -115,11 +101,11 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
 
     private fun setupEditTexts() {
         with(binding) {
-            editCountry.setText(MainActivity.user.value!!.country)
-            editCity.setText(MainActivity.user.value!!.city)
-            editPhone.setText(MainActivity.user.value!!.phone)
-            editName.setText(MainActivity.user.value!!.fullname)
-            editEmail.setText(MainActivity.user.value!!.email)
+            editCountry.setText(MainActivity.user.value?.country)
+            editCity.setText(MainActivity.user.value?.city)
+            editPhone.setText(MainActivity.user.value?.phone)
+            editName.setText(MainActivity.user.value?.fullname)
+            editEmail.setText(MainActivity.user.value?.email)
         }
     }
 
@@ -144,11 +130,8 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
             checkFieldIfEmpty(
                 editEmail, layoutEmail, requireContext()
             ).yes { valid = false }
-            if (!resources.getStringArray(
-                    getCitiesByCountry(
-                        editCountry.editableText.toString().trim()
-                    )
-                )
+            if (!editCountry.editableText.contains("N/A") && !resources.getStringArray(
+                    getCitiesByCountry(editCountry.editableText.toString().trim()))
                     .contains(editCity.editableText.toString().trim())
             ) {
                 valid = false
