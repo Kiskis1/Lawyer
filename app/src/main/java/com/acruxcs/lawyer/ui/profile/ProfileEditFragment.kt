@@ -3,6 +3,7 @@ package com.acruxcs.lawyer.ui.profile
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
@@ -16,10 +17,12 @@ import com.acruxcs.lawyer.utils.Utils.getCountryAdapter
 import com.acruxcs.lawyer.utils.Utils.getPaymentTypeAdapter
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
+import com.yariksoffice.lingver.Lingver
 
 class ProfileEditFragment :
     Fragment(R.layout.fragment_profile_edit) {
     private val binding by viewBinding(FragmentProfileEditBinding::bind)
+    private val viewModel: ProfileViewModel by viewModels({ requireParentFragment() })
 
     private lateinit var selectedCountry: String
 
@@ -49,6 +52,8 @@ class ProfileEditFragment :
                 setAdapter(getCountryAdapter(requireContext()))
                 setOnItemClickListener { adapterView, _, i, _ ->
                     selectedCountry = adapterView.getItemAtPosition(i).toString()
+                    Lingver.getInstance()
+                        .setLocale(context, Utils.convertToLocaleCode(selectedCountry))
                     editCity.setAdapter(getCityAdapter(requireContext(), selectedCountry))
                     editCity.isEnabled = true
                     Utils.hideKeyboard(requireContext(), requireView())
@@ -76,7 +81,8 @@ class ProfileEditFragment :
                 user.wonCases = Integer.parseInt(editWonCases.text.toString().trim())
                 user.paymentTypes = editPaymentType.editableText.toString().trim()
             }
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("user", user)
+            viewModel.updateUser(user)
+            (activity as MainActivity).recreate()
             findNavController().navigateUp()
         }
     }
@@ -100,6 +106,8 @@ class ProfileEditFragment :
             ) {
                 valid = false
                 editCity.editableText.clear()
+                editCity.requestFocus()
+                layoutCity.error = resources.getString(R.string.error_invalid_city)
             }
             if (role == UserTypes.Lawyer) {
                 checkFieldIfEmpty(editWonCases, layoutWonCases, requireContext()).yes {

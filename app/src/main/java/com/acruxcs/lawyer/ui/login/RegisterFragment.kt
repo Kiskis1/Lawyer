@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.content.edit
@@ -25,6 +24,7 @@ import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
 import com.acruxcs.lawyer.utils.Utils.yes
 import com.crazylegend.viewbinding.viewBinding
+import com.yariksoffice.lingver.Lingver
 import java.util.regex.Pattern
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -57,28 +57,16 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
 
         with(binding) {
-            ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.Countries,
-                android.R.layout.simple_dropdown_item_1line
-            ).also {
-                it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                spinnerCountry.setAdapter(it)
-            }
+            spinnerCountry.setAdapter(Utils.getCountryAdapter(requireContext()))
 
             spinnerCountry.setOnItemClickListener { adapterView, _, i, _ ->
-                spinnerCity.text.clear()
                 selectedCountry = adapterView.getItemAtPosition(i).toString()
-                ArrayAdapter.createFromResource(
-                    requireContext(),
-                    getCitiesByCountry(selectedCountry),
-                    android.R.layout.simple_dropdown_item_1line
-                ).also {
-                    it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinnerCity.setAdapter(it)
-                }
-
+                Lingver.getInstance()
+                    .setLocale(requireContext(), Utils.convertToLocaleCode(selectedCountry))
+                spinnerCity.setAdapter(Utils.getCityAdapter(requireContext(), selectedCountry))
+                spinnerCity.isEnabled = true
                 Utils.hideKeyboard(requireContext(), requireView())
+
             }
 
             spinnerCity.setOnItemClickListener { _, _, _, _ ->
@@ -162,11 +150,12 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 valid = false
             }
 
-            if (selectedCountry.isNotEmpty() &&
+            if (!spinnerCity.editableText.contains("N/A") &&
                 !resources.getStringArray(getCitiesByCountry(selectedCountry)).contains(city)
             ) {
                 layoutCity.error = getString(R.string.error_invalid_city)
                 spinnerCity.requestFocus()
+                spinnerCity.editableText.clear()
                 valid = false
             } else layoutCity.error = null
         }

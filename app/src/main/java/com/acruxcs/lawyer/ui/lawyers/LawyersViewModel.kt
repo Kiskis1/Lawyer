@@ -51,7 +51,7 @@ class LawyersViewModel : ViewModel() {
         return lawyers
     }
 
-    fun createReservation(res: Reservation) {
+    fun postReservation(res: Reservation) {
         reservationsRepository.postReservation(res).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {

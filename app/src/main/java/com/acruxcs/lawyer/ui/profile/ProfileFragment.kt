@@ -18,10 +18,7 @@ import com.acruxcs.lawyer.ActivityViewModel
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentProfileBinding
-import com.acruxcs.lawyer.model.Case
-import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.model.UserTypes
-import com.acruxcs.lawyer.model.WorkingHours
 import com.acruxcs.lawyer.repository.SharedPrefRepository
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_DARK_MODE_ON
 import com.acruxcs.lawyer.repository.SharedPrefRepository.SHARED_LOGGED_IN
@@ -32,27 +29,27 @@ import com.acruxcs.lawyer.utils.Status
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.MIN_PASS_LENGTH
 import com.crazylegend.kotlinextensions.fragments.shortToast
+import com.crazylegend.kotlinextensions.views.snackbar
 import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val activityViewModel: ActivityViewModel by activityViewModels()
-    private val viewModel: ProfileViewModel by viewModels()
+    private val viewModel: ProfileViewModel by viewModels({ requireParentFragment() })
     private val lawyersCasesAdapter by lazy { LawyersCaseAdapter(this, viewModel) }
 
     private val binding by viewBinding(FragmentProfileBinding::bind)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getStatus().observe(this, { handleStatus(it) })
         loadProfileImage()
-        observeBackStack()
-
+        viewModel.getStatus().observe(this, { handleStatus(it) })
         with(binding) {
+            layoutPassword.invalidate()
+            editPassword.invalidate()
             role = MainActivity.user.value!!.role
             wanted = UserTypes.Lawyer
 
@@ -113,25 +110,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun observeBackStack() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<User>("user")
-            ?.observe(
-                viewLifecycleOwner) {
-                viewModel.updateUser(it)
-            }
-
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Case>("case")
-            ?.observe(
-                viewLifecycleOwner) {
-                viewModel.postCase(it)
-            }
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<WorkingHours>("hours")
-            ?.observe(
-                viewLifecycleOwner) {
-                viewModel.saveHours(it)
-            }
-    }
-
     private fun updatePassword() {
         val password: String
         with(binding) {
@@ -187,15 +165,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         selectImageForResult.launch(Intent.createChooser(intent, "Select Image from here..."))
     }
 
-    private fun handleStatus(status: Status?) {
+    private fun handleStatus(status: Status) {
         when (status) {
             Status.SUCCESS ->
-                Snackbar.make(requireView(), R.string.success, Snackbar.LENGTH_SHORT).show()
+                requireView().snackbar(R.string.success)
 
-            Status.UPDATE_SUCCESS -> {
-                Snackbar.make(requireView(), R.string.success, Snackbar.LENGTH_SHORT).show()
-                lawyersCasesAdapter.notifyDataSetChanged()
-            }
             Status.ERROR -> shortToast(R.string.error_something)
 
             Status.REAUTHENTICATE -> {
@@ -205,7 +179,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
             Status.PICTURE_CHANGE_SUCCESS -> {
                 loadProfileImage()
-                Snackbar.make(requireView(), R.string.success, Snackbar.LENGTH_SHORT).show()
+                requireView().snackbar(R.string.success)
             }
 
             Status.NO_CHANGE -> shortToast("No change")

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.acruxcs.lawyer.R
@@ -25,6 +26,7 @@ class NewCaseFragment : Fragment(R.layout.fragment_new_case) {
     private val binding by viewBinding(FragmentNewCaseBinding::bind)
     private var tagas: String? = null
     private val args: NewCaseFragmentArgs by navArgs()
+    private val viewModel: ProfileViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +76,7 @@ class NewCaseFragment : Fragment(R.layout.fragment_new_case) {
                                 case!!.area = editArea.text.toString().trim()
                                 case!!.type = editType.text.toString().trim()
                                 case!!.outcome = editOutcome.text.toString().trim()
-                                findNavController().previousBackStackEntry?.savedStateHandle?.set("case",
-                                    case)
+                                viewModel.postCase(case!!)
                                 Utils.hideKeyboard(requireContext(), binding.root)
                                 findNavController().navigateUp()
                             }

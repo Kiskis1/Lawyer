@@ -1,20 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-
-    <string-array name="Specializations" tools:ignore="InconsistentArrays">
-        <item>Admiralty Law</item>
-        <item>Business Law</item>
-        <item>Constitutional Law</item>
-        <item>Criminal Law</item>
-        <item>Environmental Law</item>
-        <item>First Amendment Law</item>
-        <item>Health Care Law</item>
-        <item>Intellectual Property Law</item>
-        <item>Joint Degree Programs</item>
-        <item>Patent Law</item>
-        <item>DK</item>
-    </string-array>
-
     <integer-array name="Experience">
         <item>0</item>
         <item>5</item>
@@ -27,10 +12,21 @@
         <item>40</item>
     </integer-array>
 
+    <string-array name="Specializations" tools:ignore="InconsistentArrays">
+        <item>Administracinė</item>
+        <item>Civilinė</item>
+        <item>Civilinio proceso</item>
+        <item>Baudžiamoji</item>
+        <item>Baudžiamoji proceso</item>
+        <item>Žemės</item>
+        <item>Finansų</item>
+        <item>Darbo</item>
+    </string-array>
+
     <string-array name="PaymentTypes">
-        <item>Card</item>
-        <item>Cash</item>
-        <item>Any</item>
+        <item>Kortele</item>
+        <item>Grynais</item>
+        <item>Visi būdai</item>
     </string-array>
 
     <string-array name="Countries">
@@ -145,7 +141,6 @@
         <item>Žiežmariai</item>
     </string-array>
 
-
     <string-array name="United_Kingdom">
         <item>Avon</item>
         <item>Bedfordshire</item>
@@ -242,8 +237,6 @@
         <item>Tyrone</item>
     </string-array>
     <string-array name="United_States">
-
-
         <item>Alabama</item>
         <item>Alaska</item>
         <item>American Samoa</item>

@@ -24,6 +24,7 @@
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="@string/content_desc_picture_of_lawyer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -36,6 +37,7 @@
             android:orientation="vertical"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/image_profile"
             app:layout_constraintTop_toTopOf="parent">

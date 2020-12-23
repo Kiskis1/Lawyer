@@ -59,16 +59,18 @@ class LawyersCaseAdapter(private val fragment: Fragment, private val viewModel: 
                             fragment.findNavController().navigate(dir)
                         }
                         R.id.action_delete -> {
-                            val dialog = AlertDialog.Builder(itemView.context)
-                            dialog.setMessage(R.string.dialog_are_you_sure)
-                            dialog.setTitle(R.string.dialog_title_confirm)
-                            dialog.setPositiveButton(R.string.action_delete) { _, _ ->
+                            val builder = AlertDialog.Builder(itemView.context)
+                            builder.setMessage(R.string.dialog_are_you_sure)
+                            builder.setTitle(R.string.dialog_title_confirm)
+                            builder.setPositiveButton(R.string.action_delete) { _, _ ->
                                 viewModel.deleteCase(clicked.id)
                             }
-                            dialog.setNegativeButton(R.string.action_cancel) { d, _ ->
+                            builder.setNegativeButton(R.string.action_cancel) { d, _ ->
                                 d.cancel()
                             }
-                            dialog.create().show()
+                            val dialog = builder.create()
+                            dialog.window?.attributes?.windowAnimations = R.style.DialogAnim
+                            dialog.show()
                         }
                     }
                     true

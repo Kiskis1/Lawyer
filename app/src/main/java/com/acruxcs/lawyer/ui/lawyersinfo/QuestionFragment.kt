@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -12,12 +13,14 @@ import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentQuestionBinding
 import com.acruxcs.lawyer.model.Question
 import com.acruxcs.lawyer.model.User
+import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.acruxcs.lawyer.utils.Utils
 import com.acruxcs.lawyer.utils.Utils.checkFieldIfEmpty
 import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
 import com.acruxcs.lawyer.utils.Utils.getCityAdapter
 import com.acruxcs.lawyer.utils.Utils.getCountryAdapter
 import com.acruxcs.lawyer.utils.Utils.yes
+import com.crazylegend.kotlinextensions.views.snackbar
 import com.crazylegend.viewbinding.viewBinding
 
 class QuestionFragment : Fragment(R.layout.fragment_question) {
@@ -27,6 +30,7 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
     private var tagas: String? = null
     private lateinit var selectedCountry: String
     private val args: QuestionFragmentArgs by navArgs()
+    private val viewModel: LawyersViewModel by viewModels({ requireParentFragment() })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,10 +90,10 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
                         question!!.fullname = editName.text.toString().trim()
                         if (tagas == null) question!!.destination = lawyer!!.uid
                         question!!.sender = MainActivity.user.value!!.uid
-                        findNavController().previousBackStackEntry?.savedStateHandle?.set("question",
-                            question)
                         Utils.hideKeyboard(requireContext(), binding.root)
+                        viewModel.postQuestion(question!!)
                         findNavController().navigateUp()
+                        requireView().snackbar(R.string.success)
                     }
                     true
                 }

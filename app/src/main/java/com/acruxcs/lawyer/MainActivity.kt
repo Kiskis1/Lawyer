@@ -83,7 +83,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.progressBar.progressLayout.visibility = View.GONE
         }
-
     }
 
     override fun onBackPressed() {

@@ -74,10 +74,6 @@ class AskedQuestionsFragment : Fragment(R.layout.fragment_asked_questions),
             Status.SUCCESS ->
                 Snackbar.make(requireView(), R.string.success, Snackbar.LENGTH_SHORT).show()
 
-            Status.UPDATE_SUCCESS -> {
-                Snackbar.make(requireView(), R.string.success, Snackbar.LENGTH_SHORT).show()
-                questionsAdapter.notifyDataSetChanged()
-            }
             Status.ERROR -> shortToast(R.string.error_something)
 
             else -> shortToast(R.string.error_something)

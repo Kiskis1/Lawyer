@@ -15,6 +15,7 @@ import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.crazylegend.kotlinextensions.fragments.shortToast
+import com.crazylegend.kotlinextensions.views.snackbar
 import com.crazylegend.kotlinextensions.views.toggleVisibilityInvisibleToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.vivekkaushik.datepicker.OnDateSelectedListener
@@ -29,7 +30,7 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
     private var selectedDate: LocalDate? = null
     private var selectedTime: LocalTime? = null
     private val binding by viewBinding(FragmentNewReservationBinding::bind)
-    private val viewModel: LawyersViewModel by viewModels()
+    private val viewModel: LawyersViewModel by viewModels({ requireParentFragment() })
     private var tagas: String? = null
     private val args: NewReservationFragmentArgs by navArgs()
 
@@ -71,8 +72,8 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
                             reservation!!.date = "$selectedDate"
                             reservation!!.time = "$selectedTime"
                             reservation!!.dateLawyer = "$selectedDate" + "_" + lawyer!!.uid
-                            findNavController().previousBackStackEntry?.savedStateHandle?.set("reservation",
-                                reservation!!)
+                            viewModel.postReservation(reservation!!)
+                            view.snackbar(R.string.success)
                             findNavController().navigateUp()
                             true
                         }

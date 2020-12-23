@@ -81,16 +81,18 @@ class ReservationsFragment : Fragment(R.layout.fragment_reservations),
                     .navigate(dir)
             }
             R.id.action_delete -> {
-                val dialog = MaterialAlertDialogBuilder(v.context)
-                dialog.setMessage(R.string.dialog_are_you_sure)
-                dialog.setTitle(R.string.dialog_title_confirm)
-                dialog.setPositiveButton(R.string.action_delete) { _, _ ->
+                val builder = MaterialAlertDialogBuilder(v.context)
+                builder.setMessage(R.string.dialog_are_you_sure)
+                builder.setTitle(R.string.dialog_title_confirm)
+                builder.setPositiveButton(R.string.action_delete) { _, _ ->
                     viewModel.deleteReservation(item.id)
                 }
-                dialog.setNegativeButton(R.string.action_cancel) { d, _ ->
+                builder.setNegativeButton(R.string.action_cancel) { d, _ ->
                     d.cancel()
                 }
-                dialog.create().show()
+                val dialog = builder.create()
+                dialog.window?.attributes?.windowAnimations = R.style.DialogAnim
+                dialog.show()
             }
         }
     }
@@ -102,10 +104,6 @@ class ReservationsFragment : Fragment(R.layout.fragment_reservations),
                 reservationsAdapter.notifyDataSetChanged()
             }
 
-            Status.UPDATE_SUCCESS -> {
-                Snackbar.make(requireView(), R.string.success, Snackbar.LENGTH_SHORT).show()
-                reservationsAdapter.notifyDataSetChanged()
-            }
             Status.ERROR -> shortToast(R.string.error_something)
 
             else -> shortToast(R.string.error_something)

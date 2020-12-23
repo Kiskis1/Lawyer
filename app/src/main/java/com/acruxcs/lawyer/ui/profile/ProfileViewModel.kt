@@ -51,7 +51,7 @@ class ProfileViewModel : ViewModel() {
     fun postCase(case: Case) {
         if (case.user == "") case.user = firebaseUser!!.uid
         casesRepository.postCase(case).addOnSuccessListener {
-            status.value = Status.UPDATE_SUCCESS
+            status.value = Status.SUCCESS
         }.addOnFailureListener {
             status.value = Status.ERROR
         }
@@ -73,7 +73,7 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    fun saveHours(hours: WorkingHours) {
+    fun updateHours(hours: WorkingHours) {
         usersRepository.updateHours(hours, MainActivity.user.value!!.uid).addOnSuccessListener {
             status.value = Status.SUCCESS
         }.addOnFailureListener {

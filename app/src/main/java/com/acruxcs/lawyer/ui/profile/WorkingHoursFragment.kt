@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentWorkingHoursBinding
@@ -15,12 +15,13 @@ import zion830.com.range_picker_dialog.TimeRangePickerDialog
 
 class WorkingHoursFragment : Fragment(R.layout.fragment_working_hours) {
     private val binding by viewBinding(FragmentWorkingHoursBinding::bind)
+    private val viewModel: ProfileViewModel by viewModels({ requireParentFragment() })
+    private var hours = MainActivity.user.value!!.workingHours
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupLayouts()
         setupTextViews()
-
         with(binding) {
             toolbar.toolbar.apply {
                 setNavigationOnClickListener {
@@ -31,6 +32,7 @@ class WorkingHoursFragment : Fragment(R.layout.fragment_working_hours) {
                     when (it.itemId) {
                         R.id.action_confirm -> {
                             saveHours()
+                            viewModel.updateHours(hours!!)
                             findNavController().navigateUp()
                             true
                         }
@@ -42,7 +44,6 @@ class WorkingHoursFragment : Fragment(R.layout.fragment_working_hours) {
     }
 
     private fun setupTextViews() {
-        val hours = MainActivity.user.value!!.workingHours
         with(binding) {
             textMondayTime.text = hours?.monday
             textTuesdayTime.text = hours?.tuesday
@@ -55,16 +56,15 @@ class WorkingHoursFragment : Fragment(R.layout.fragment_working_hours) {
     }
 
     private fun saveHours() {
-        val hours = WorkingHours()
+        if (hours == null) hours = WorkingHours()
         with(binding) {
-            hours.monday = textMondayTime.text.toString()
-            hours.tuesday = textTuesdayTime.text.toString()
-            hours.wednesday = textWednesdayTime.text.toString()
-            hours.thursday = textThursdayTime.text.toString()
-            hours.friday = textFridayTime.text.toString()
-            hours.saturday = textSaturdayTime.text.toString()
-            hours.sunday = textSundayTime.text.toString()
-            findNavController().previousBackStackEntry?.savedStateHandle?.set("hours", hours)
+            hours!!.monday = textMondayTime.text.toString()
+            hours!!.tuesday = textTuesdayTime.text.toString()
+            hours!!.wednesday = textWednesdayTime.text.toString()
+            hours!!.thursday = textThursdayTime.text.toString()
+            hours!!.friday = textFridayTime.text.toString()
+            hours!!.saturday = textSaturdayTime.text.toString()
+            hours!!.sunday = textSundayTime.text.toString()
         }
     }
 

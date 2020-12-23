@@ -7,7 +7,7 @@
 
     <string name="login_option">OR CONNECT WITH</string>
     <string name="login_no_account">Don\'t have an account?</string>
-    <string name="login_register_now">Register now</string>
+    <string name="login_register_now">Register now!</string>
 
     <string name="register_title">Register</string>
     <string name="register_as_lawyer">Register as lawyer:</string>
@@ -123,7 +123,7 @@
     <string name="error_select_time">Please select time</string>
     <string name="success">Success</string>
     <string name="error_something">Something went wrong, please try again!</string>
-    <string name="reservation_no_available_dates">Lawyer doesn\'t have available times.\nTry another day</string>
+    <string name="reservation_no_available_dates">Lawyer doesn\'t have available times.\nTry another day.</string>
     <string name="dialog_title_working_hours">Working Hours</string>
     <string name="dialog_title_reservation">Reservation</string>
     <string name="dialog_title_edit">Edit</string>
@@ -139,7 +139,7 @@
     <string name="reservation_visit_type_remote">Visit type: Remote</string>
     <string name="reservation_time">Time: %s</string>
     <string name="action_update_profile_information">Change profile information</string>
-    <string name="vertical_dots">⋮</string>
+    <string name="vertical_dots" translatable="false">⋮</string>
     <string name="action_change_time">Change time</string>
     <string name="visit_type_in_person">In person</string>
     <string name="visit_type_remote">Remote</string>

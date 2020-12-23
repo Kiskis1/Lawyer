@@ -6,6 +6,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import com.acruxcs.lawyer.ActivityViewModel
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
@@ -22,8 +23,13 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            toolbar.toolbar.title = resources.getString(R.string.title_history)
-            toolbar.toolbar.menu.findItem(R.id.action_confirm).isVisible = false
+            toolbar.toolbar.apply {
+                title = resources.getString(R.string.title_history)
+                setNavigationOnClickListener {
+                    findNavController().navigateUp()
+                }
+                menu.findItem(R.id.action_confirm).isVisible = false
+            }
 
             progressBar.progressLayout.visibility = View.VISIBLE
 

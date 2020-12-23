@@ -53,13 +53,15 @@ object Utils {
         }
 
         val dialog = builder.create()
-        dialog.window?.attributes?.windowAnimations = R.style.CallDialogAnim
+        dialog.window?.attributes?.windowAnimations = R.style.DialogAnim
         dialog.show()
     }
 
     fun getCitiesByCountry(country: String): Int {
         return when (country) {
-            "Lithuania" -> R.array.Lithuania
+            "Lietuva",
+            "Lithuania",
+            -> R.array.Lithuania
             "United States" -> R.array.United_States
             "United Kingdom" -> R.array.United_Kingdom
             else -> 0
@@ -169,6 +171,15 @@ object Utils {
     ).also {
         it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
     }
+
+    fun convertToLocaleCode(country: String) =
+        when (country) {
+            "Lietuva" -> "lt"
+            "United Kingdom",
+            "United States",
+            -> "en"
+            else -> "en"
+        }
 }
 
 @BindingAdapter(value = ["role", "wanted"], requireAll = true)

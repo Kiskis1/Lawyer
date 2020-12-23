@@ -187,6 +187,7 @@
                         android:id="@+id/text_empty_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="@string/profile_empty_cases"
                         android:textColor="@color/textColor"
                         android:visibility="gone"
