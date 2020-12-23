@@ -15,7 +15,6 @@ import com.acruxcs.lawyer.model.Reservation
 import com.acruxcs.lawyer.model.User
 import com.acruxcs.lawyer.ui.lawyers.LawyersViewModel
 import com.crazylegend.kotlinextensions.fragments.shortToast
-import com.crazylegend.kotlinextensions.views.snackbar
 import com.crazylegend.kotlinextensions.views.toggleVisibilityInvisibleToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.vivekkaushik.datepicker.OnDateSelectedListener
@@ -73,7 +72,6 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
                             reservation!!.time = "$selectedTime"
                             reservation!!.dateLawyer = "$selectedDate" + "_" + lawyer!!.uid
                             viewModel.postReservation(reservation!!)
-                            view.snackbar(R.string.success)
                             findNavController().navigateUp()
                             true
                         }

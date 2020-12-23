@@ -20,7 +20,6 @@ import com.acruxcs.lawyer.utils.Utils.getCitiesByCountry
 import com.acruxcs.lawyer.utils.Utils.getCityAdapter
 import com.acruxcs.lawyer.utils.Utils.getCountryAdapter
 import com.acruxcs.lawyer.utils.Utils.yes
-import com.crazylegend.kotlinextensions.views.snackbar
 import com.crazylegend.viewbinding.viewBinding
 
 class QuestionFragment : Fragment(R.layout.fragment_question) {
@@ -93,7 +92,6 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
                         Utils.hideKeyboard(requireContext(), binding.root)
                         viewModel.postQuestion(question!!)
                         findNavController().navigateUp()
-                        requireView().snackbar(R.string.success)
                     }
                     true
                 }
