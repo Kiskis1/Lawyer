@@ -5,9 +5,8 @@ import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.acruxcs.lawyer.ActivityViewModel
 import com.acruxcs.lawyer.MainActivity
 import com.acruxcs.lawyer.R
 import com.acruxcs.lawyer.databinding.FragmentHistoryBinding
@@ -18,7 +17,7 @@ import com.crazylegend.viewbinding.viewBinding
 class HistoryFragment : Fragment(R.layout.fragment_history) {
     private val reservationsAdapter by lazy { ReservationsAdapter(history = true) }
     private val binding by viewBinding(FragmentHistoryBinding::bind)
-    private val viewModel: ActivityViewModel by activityViewModels()
+    private val viewModel: ProfileViewModel by viewModels({ requireParentFragment() })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

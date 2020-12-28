@@ -182,8 +182,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 requireView().snackbar(R.string.success)
             }
 
-            Status.NO_CHANGE -> shortToast("No change")
-
             else -> shortToast(R.string.error_something)
         }
     }

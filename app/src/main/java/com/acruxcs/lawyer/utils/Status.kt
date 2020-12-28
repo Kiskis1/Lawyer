@@ -6,5 +6,4 @@ enum class Status {
     ERROR,
     REAUTHENTICATE,
     NO_NETWORK,
-    NO_CHANGE,
 }

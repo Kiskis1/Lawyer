@@ -20,7 +20,6 @@ object UsersRepository {
 
     fun uploadImage(file: Uri, uid: String): UploadTask {
         val reference = storage.child(uid)
-        println("IMAGE")
         reference.downloadUrl.addOnSuccessListener {
             setUserImage(uid, it.toString())
         }

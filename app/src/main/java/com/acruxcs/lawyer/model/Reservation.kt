@@ -12,7 +12,6 @@ data class Reservation(
     var id: String = UUID.randomUUID().toString().replace("-", "").toUpperCase(Locale.ENGLISH),
     var date: String = "",
     var time: String = "",
-    var reason: String = "",
     var lawyer: User? = null,
     var user: String = "",
     var inPerson: Boolean = true,
