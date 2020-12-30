@@ -37,14 +37,12 @@
     <string name="item_lawyer_specialization">Specialization: %s</string>
     <string name="item_lawyer_education">Education: %s</string>
     <string name="item_lawyer_number_of_won_cases">Number of won cases: %d</string>
+    <string name="item_lawyer_won_cases">%d won cases</string>
     <string name="item_lawyer_country">Country: %s</string>
     <string name="item_lawyer_city">City: %s</string>
     <string name="item_lawyer_location">Location: %s, %s</string>
     <string name="item_lawyer_address">Address: %s</string>
-    <plurals name="item_lawyer_experience">
-        <item quantity="one">Experience: %d year</item>
-        <item quantity="other">Experience: %d years</item>
-    </plurals>
+    <string name="item_lawyer_experience">Since %d</string>
     <string name="lawyersinfo_notable_cases">Notable cases:</string>
 
 
@@ -83,7 +81,7 @@
     <string name="profile_update_city">Update City</string>
     <string name="profile_update_specialization">Update Specialization</string>
     <string name="profile_update_education">Update Education</string>
-    <string name="profile_update_experience">Update Years of Experience</string>
+    <string name="profile_update_experience">Update start of service</string>
     <string name="profile_update_won_cases">Update Won Cases</string>
 
     <string name="content_desc_picture_of_lawyer">Picture of lawyer</string>
@@ -157,4 +155,6 @@
     <string name="item_reservation_payment_type">Payment type: %s</string>
     <string name="profile_update_payment_types">Update payment types</string>
     <string name="title_history">History</string>
+
+    <string name="two_string_comma" translatable="false">%s, %s</string>
 </resources>

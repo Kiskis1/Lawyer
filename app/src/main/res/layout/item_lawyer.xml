@@ -24,61 +24,93 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_person_24" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:textColor="@color/textColor"
+            app:layout_constraintEnd_toEndOf="@id/image_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image_profile" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
             android:orientation="vertical"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:layout_marginStart="16dp"
             app:layout_constraintStart_toEndOf="@id/image_profile"
             app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/text_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/text_education"
-                android:layout_width="match_parent"
-                android:maxLines="2"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
-
-            <TextView
-                android:id="@+id/text_specialization"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
-
-            <TextView
-                android:id="@+id/text_experience"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
-
-            <TextView
-                android:id="@+id/text_won_cases"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
 
             <TextView
                 android:id="@+id/text_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
+                android:drawablePadding="8dp"
+                android:textColor="@color/textColor"
+                app:drawableStartCompat="@drawable/ic_location_on_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/info" />
 
             <TextView
                 android:id="@+id/text_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
-        </LinearLayout>
+                android:drawablePadding="8dp"
+                android:textColor="@color/textColor"
+                app:drawableStartCompat="@drawable/ic_location_city_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_location" />
+
+            <TextView
+                android:id="@+id/text_education"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:maxLines="2"
+                android:textColor="@color/textColor"
+                app:drawableStartCompat="@drawable/ic_school_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_address" />
+
+            <TextView
+                android:id="@+id/text_specialization"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:textColor="@color/textColor"
+                app:drawableStartCompat="@drawable/ic_suitcase_24"
+                app:drawableTint="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_education" />
+
+            <TextView
+                android:id="@+id/text_experience"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:textColor="@color/textColor"
+                app:drawableStartCompat="@drawable/ic_psychology_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_specialization" />
+
+            <TextView
+                android:id="@+id/text_won_cases"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:textColor="@color/textColor"
+                app:drawableStartCompat="@drawable/ic_hashtag_symbol"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_experience" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Buttons -->
         <LinearLayout
@@ -90,7 +122,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/info">
+            app:layout_constraintTop_toBottomOf="@id/text_name">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_call"

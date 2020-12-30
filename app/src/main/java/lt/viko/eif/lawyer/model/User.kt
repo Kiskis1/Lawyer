@@ -17,7 +17,7 @@ data class User(
     var address: String = "N/A",
     var specialization: String = "N/A",
     var education: String = "N/A",
-    var experience: Int = 0,
+    var experience: String = "N/A",
     var wonCases: Int = 0,
     var workingHours: WorkingHours? = null,
     var imageRef: String = "",

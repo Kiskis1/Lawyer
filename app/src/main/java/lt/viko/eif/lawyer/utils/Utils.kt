@@ -16,13 +16,13 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.google.android.gms.common.util.ArrayUtils
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseUser
 import lt.viko.eif.lawyer.MainActivity
 import lt.viko.eif.lawyer.R
 import lt.viko.eif.lawyer.model.UserTypes
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 object Utils {
@@ -137,15 +137,6 @@ object Utils {
             allCities
         ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
 
-    fun getExperienceAdapter(context: Context) =
-        ArrayAdapter(
-            context,
-            android.R.layout.simple_dropdown_item_1line,
-            ArrayUtils.toWrapperArray(MainActivity.appContext.resources.getIntArray(R.array.Experience))
-        ).also {
-            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        }
-
     fun getSpecializationAdapter(context: Context) =
         ArrayAdapter.createFromResource(
             context,
@@ -170,6 +161,21 @@ object Utils {
         android.R.layout.simple_dropdown_item_1line
     ).also {
         it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+    }
+
+    fun getExperienceAdapter(context: Context): ArrayAdapter<String> {
+        var years = arrayOf<String>()
+        val now = Calendar.getInstance().get(Calendar.YEAR)
+        for (i in 1950..now) {
+            years += i.toString()
+        }
+        return ArrayAdapter(
+            context,
+            android.R.layout.simple_dropdown_item_1line,
+            years
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
     }
 
     fun convertToLocaleCode(country: String) =

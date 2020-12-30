@@ -77,27 +77,27 @@ class LawyersListAdapter(
                 ViewCompat.setTransitionName(textSpecialization,
                     item.uid + item.specialization)
                 ViewCompat.setTransitionName(textExperience,
-                    item.uid + item.experience.toString())
+                    item.uid + item.experience)
                 ViewCompat.setTransitionName(textWonCases,
                     item.uid + item.wonCases.toString())
                 ViewCompat.setTransitionName(textLocation, item.uid + item.city)
                 ViewCompat.setTransitionName(textAddress, item.uid + item.address)
-                textName.text = resources.getString(R.string.item_lawyer_name, item.fullname)
-                textEducation.text =
-                    resources.getString(R.string.item_lawyer_education, item.education)
-                textSpecialization.text =
-                    resources.getString(R.string.item_lawyer_specialization, item.specialization)
-                textExperience.text =
-                    resources.getQuantityString(
-                        R.plurals.item_lawyer_experience,
-                        item.experience,
-                        item.experience
-                    )
+
+                textName.text = item.fullname
+                textEducation.text = item.education
+                textSpecialization.text = item.specialization
+                if (item.experience != "N/A") {
+                    textExperience.text = resources.getString(R.string.item_lawyer_experience,
+                        Integer.parseInt(item.experience))
+                } else
+                    textExperience.text = item.experience
+
                 textWonCases.text =
-                    resources.getString(R.string.item_lawyer_number_of_won_cases, item.wonCases)
-                textAddress.text = resources.getString(R.string.item_lawyer_address, item.address)
+                    resources.getString(R.string.item_lawyer_won_cases, item.wonCases)
+                textAddress.text = item.address
                 textLocation.text =
-                    resources.getString(R.string.item_lawyer_location, item.country, item.city)
+                    resources.getString(R.string.two_string_comma, item.country, item.city)
+
                 buttonCall.setOnClickListener {
                     Utils.showCallDialog(itemView.context, item.phone, UserTypes.Lawyer)
                 }

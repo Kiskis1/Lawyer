@@ -27,8 +27,7 @@
     <string name="item_lawyer_name">Vardas: %s</string>
     <string name="item_lawyer_specialization">Specializacija: %s</string>
     <string name="item_lawyer_education">Išsilavinimas: %s</string>
-    <string name="item_lawyer_number_of_won_cases">Laimetų bylų skaičius: %d</string>
-    <string name="item_lawyer_country">Šali:s %s</string>
+    <string name="item_lawyer_country">Šalis: %s</string>
     <string name="item_lawyer_city">Miestas: %s</string>
     <string name="item_lawyer_location">Vietovė: %s, %s</string>
     <string name="item_lawyer_address">Adresas: %s</string>
@@ -64,7 +63,7 @@
     <string name="profile_update_city">Atnaujinti miestą</string>
     <string name="profile_update_specialization">Atnaujinti specializaciją</string>
     <string name="profile_update_education">Atnaujinti išsilavinimą</string>
-    <string name="profile_update_experience">Atnaujinti patirtį metas</string>
+    <string name="profile_update_experience">Atnaujinti darbo pradžią</string>
     <string name="profile_update_won_cases">Atnaujinti laimėtų bylų skaičių</string>
     <string name="content_desc_picture_of_lawyer">Advokato nuotrauka</string>
     <string name="content_desc_profile_change_profile_picture">Keisti nuotrauką</string>
@@ -131,11 +130,7 @@
     <string name="item_reservation_payment_type">Atsiskaitymo būdas: %s</string>
     <string name="profile_update_payment_types">Atnaujinti atsiskaitymo būdus</string>
     <string name="title_history">Istorija</string>
-
-    <plurals name="item_lawyer_experience">
-        <item quantity="one">Patirtis: %d metai</item>
-        <item quantity="few">Patirtis: %d metai</item>
-        <item quantity="other">Patirtis: %d metų</item>
-    </plurals>
-
+    <string name="item_lawyer_won_cases">%d laimetų bylų</string>
+    <string name="item_lawyer_number_of_won_cases">Laimėtų bylų skaičius: %d</string>
+    <string name="item_lawyer_experience">Nuo %d metų</string>
 </resources>

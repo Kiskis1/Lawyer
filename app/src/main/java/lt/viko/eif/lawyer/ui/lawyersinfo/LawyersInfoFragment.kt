@@ -94,23 +94,20 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
 
     private fun setTextViews() {
         with(binding) {
-            textName.text =
-                resources.getString(R.string.item_lawyer_name, lawyer.fullname)
-            textEducation.text =
-                resources.getString(R.string.item_lawyer_education, lawyer.education)
-            textSpecialization.text =
-                resources.getString(R.string.item_lawyer_specialization, lawyer.specialization)
+            textName.text = lawyer.fullname
+            textEducation.text = lawyer.education
+            textSpecialization.text = lawyer.specialization
             textLocation.text =
-                resources.getString(R.string.item_lawyer_location, lawyer.country, lawyer.city)
-            textExperience.text =
-                resources.getQuantityString(
-                    R.plurals.item_lawyer_experience,
-                    lawyer.experience,
-                    lawyer.experience
-                )
+                resources.getString(R.string.two_string_comma, lawyer.country, lawyer.city)
+            if (lawyer.experience != "N/A") {
+                textExperience.text = resources.getString(R.string.item_lawyer_experience,
+                    Integer.parseInt(lawyer.experience))
+            } else
+                textExperience.text = lawyer.experience
+
             textWonCases.text =
-                resources.getString(R.string.item_lawyer_number_of_won_cases, lawyer.wonCases)
-            textAddress.text = resources.getString(R.string.item_lawyer_address, lawyer.address)
+                resources.getString(R.string.item_lawyer_won_cases, lawyer.wonCases)
+            textAddress.text = lawyer.address
             imageProfile.load(lawyer.imageRef) {
                 error(R.drawable.ic_person_24)
                 placeholderMemoryCacheKey(imageProfile.metadata?.memoryCacheKey)
@@ -125,7 +122,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
         ViewCompat.setTransitionName(binding.textEducation, lawyer.uid + lawyer.education)
         ViewCompat.setTransitionName(binding.textSpecialization, lawyer.uid + lawyer.specialization)
         ViewCompat.setTransitionName(binding.textExperience,
-            lawyer.uid + lawyer.experience.toString())
+            lawyer.uid + lawyer.experience)
         ViewCompat.setTransitionName(binding.textWonCases, lawyer.uid + lawyer.wonCases.toString())
         ViewCompat.setTransitionName(binding.textLocation, lawyer.uid + lawyer.city)
         ViewCompat.setTransitionName(binding.textAddress, lawyer.uid + lawyer.address)

@@ -16,6 +16,7 @@ import lt.viko.eif.lawyer.utils.Utils.checkFieldIfEmpty
 import lt.viko.eif.lawyer.utils.Utils.getCitiesByCountry
 import lt.viko.eif.lawyer.utils.Utils.getCityAdapter
 import lt.viko.eif.lawyer.utils.Utils.getCountryAdapter
+import lt.viko.eif.lawyer.utils.Utils.getExperienceAdapter
 import lt.viko.eif.lawyer.utils.Utils.getPaymentTypeAdapter
 import lt.viko.eif.lawyer.utils.Utils.yes
 
@@ -59,6 +60,7 @@ class ProfileEditFragment :
                     Utils.hideKeyboard(requireContext(), requireView())
                 }
             }
+            editExperience.setAdapter(getExperienceAdapter(requireContext()))
             editPaymentType.setAdapter(getPaymentTypeAdapter(requireContext()))
             if (MainActivity.user.value!!.country == "N/A")
                 editCity.isEnabled = false
@@ -77,7 +79,7 @@ class ProfileEditFragment :
                 user.address = editAddress.text.toString().trim()
                 user.specialization = editSpecialization.text.toString().trim()
                 user.education = editEducation.text.toString().trim()
-                user.experience = Integer.parseInt(editExperience.text.toString().trim())
+                user.experience = editExperience.editableText.toString().trim()
                 user.wonCases = Integer.parseInt(editWonCases.text.toString().trim())
                 user.paymentTypes = editPaymentType.editableText.toString().trim()
             }
@@ -145,7 +147,7 @@ class ProfileEditFragment :
             editAddress.setText(MainActivity.user.value?.address)
             editSpecialization.setText(MainActivity.user.value?.specialization)
             editEducation.setText(MainActivity.user.value?.education)
-            editExperience.setText(MainActivity.user.value?.experience.toString())
+            editExperience.setText(MainActivity.user.value?.experience)
             editWonCases.setText(MainActivity.user.value?.wonCases.toString())
             editPaymentType.setText(MainActivity.user.value?.paymentTypes)
         }

@@ -7,121 +7,166 @@
     android:background="@color/background_color"
     tools:context=".ui.lawyersinfo.LawyersInfoFragment">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/layout_toolbar" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/info_layout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/image_profile"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="4dp"
-            android:contentDescription="@string/content_desc_picture_of_lawyer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_person_24" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="vertical"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/image_profile"
-            app:layout_constraintTop_toTopOf="parent">
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/layout_toolbar" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/image_profile"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:layout_marginStart="4dp"
+                    android:contentDescription="@string/content_desc_picture_of_lawyer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_person_24" />
+
+                <TextView
+                    android:id="@+id/text_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/textColor"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image_profile" />
+
+                <TextView
+                    android:id="@+id/text_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:drawablePadding="8dp"
+                    android:textColor="@color/textColor"
+                    app:drawableStartCompat="@drawable/ic_location_on_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_name" />
+
+                <TextView
+                    android:id="@+id/text_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
+                    android:textColor="@color/textColor"
+                    app:drawableStartCompat="@drawable/ic_location_city_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_location" />
+
+                <TextView
+                    android:id="@+id/text_education"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
+                    android:textColor="@color/textColor"
+                    app:drawableStartCompat="@drawable/ic_school_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_address" />
+
+                <TextView
+                    android:id="@+id/text_specialization"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
+                    android:textColor="@color/textColor"
+                    app:drawableStartCompat="@drawable/ic_suitcase_24"
+                    app:drawableTint="@color/colorPrimary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_education" />
+
+                <TextView
+                    android:id="@+id/text_experience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
+                    android:textColor="@color/textColor"
+                    app:drawableStartCompat="@drawable/ic_psychology_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_specialization" />
+
+                <TextView
+                    android:id="@+id/text_won_cases"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
+                    android:textColor="@color/textColor"
+                    app:drawableStartCompat="@drawable/ic_hashtag_symbol"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_experience" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/text_name"
+                android:id="@+id/text_cases"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/lawyersinfo_notable_cases"
+                android:textColor="@color/textColor"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/info_layout" />
 
             <TextView
-                android:id="@+id/text_education"
+                android:id="@+id/text_empty_cases"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="5dp"
+                android:text="@string/lawyersinfo_empty_cases"
+                android:textColor="@color/textColor"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_cases" />
 
-            <TextView
-                android:id="@+id/text_specialization"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_cases" />
 
-            <TextView
-                android:id="@+id/text_experience"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
-
-            <TextView
-                android:id="@+id/text_won_cases"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
-
-            <TextView
-                android:id="@+id/text_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
-
-            <TextView
-                android:id="@+id/text_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColor" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/text_cases"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/lawyersinfo_notable_cases"
-        android:textColor="@color/textColor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/info_layout" />
-
-    <TextView
-        android:id="@+id/text_empty_cases"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="5dp"
-        android:text="@string/lawyersinfo_empty_cases"
-        android:textColor="@color/textColor"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_cases" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_cases" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.leinardi.android.speeddial.SpeedDialOverlayLayout
         android:id="@+id/speeddial_overlay"
