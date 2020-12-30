@@ -42,6 +42,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936927441239:android:c1738f1e48d53f443a4e12",
+        "android_client_info": {
+          "package_name": "lt.viko.eif.lawyer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "936927441239-g0l4v8fe6431rv93i0nc29jve5h6p1n2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsp-iZ5PxjRa2IGOvy1IG8fKFCRB5AmZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "936927441239-g0l4v8fe6431rv93i0nc29jve5h6p1n2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

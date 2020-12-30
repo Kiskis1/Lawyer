@@ -8,11 +8,11 @@
 
         <variable
             name="role"
-            type="com.acruxcs.lawyer.model.UserTypes" />
+            type="lt.viko.eif.lawyer.model.UserTypes" />
 
         <variable
             name="wanted"
-            type="com.acruxcs.lawyer.model.UserTypes" />
+            type="lt.viko.eif.lawyer.model.UserTypes" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
