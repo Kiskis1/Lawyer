@@ -62,6 +62,7 @@
     <string name="item_question_city">City: %s</string>
     <string name="item_question_phone">Phone: %s</string>
     <string name="item_question_full_name">Name: %s</string>
+    <string name="item_question_lawyer_full_name">Lawyer name: %s</string>
     <string name="item_question_email">Email: %s</string>
 
     <string name="profile_your_cases">Your cases:</string>
@@ -142,4 +143,5 @@
     <string name="title_history">History</string>
 
     <string name="two_string_comma" translatable="false">%s, %s</string>
+    <string name="lawyers_empty_list">No lawyers with this filter.</string>
 </resources>

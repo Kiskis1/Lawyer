@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.crazylegend.kotlinextensions.fragments.shortToast
 import com.crazylegend.kotlinextensions.views.snackbar
+import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
 import lt.viko.eif.lawyer.R
 import lt.viko.eif.lawyer.databinding.FragmentLawyersBinding
@@ -51,8 +54,17 @@ class LawyersFragment : Fragment(R.layout.fragment_lawyers),
     }
 
     override fun onFilterButtonClick(filter: MutableList<Predicate<User>>) {
-        if (filter.isNotEmpty())
-            lawyersAdapter.swapData(viewModel.filter(list, filter))
+        if (filter.isNotEmpty()) {
+            val filtered = viewModel.filter(list, filter)
+            lawyersAdapter.swapData(filtered)
+
+            with(binding) {
+                if (filtered.isNotEmpty()) {
+                    if (textEmptyList.isVisible) textEmptyList.toggleVisibilityGoneToVisible()
+                } else
+                    if (textEmptyList.isGone) textEmptyList.toggleVisibilityGoneToVisible()
+            }
+        }
     }
 
     private fun handleStatus(it: Status?) {

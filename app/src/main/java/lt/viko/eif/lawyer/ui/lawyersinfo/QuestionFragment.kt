@@ -17,9 +17,6 @@ import lt.viko.eif.lawyer.model.User
 import lt.viko.eif.lawyer.ui.lawyers.LawyersViewModel
 import lt.viko.eif.lawyer.utils.Utils
 import lt.viko.eif.lawyer.utils.Utils.checkFieldIfEmpty
-import lt.viko.eif.lawyer.utils.Utils.getCitiesByCountry
-import lt.viko.eif.lawyer.utils.Utils.getCityAdapter
-import lt.viko.eif.lawyer.utils.Utils.getCountryAdapter
 import lt.viko.eif.lawyer.utils.Utils.yes
 
 class QuestionFragment : Fragment(R.layout.fragment_question) {
@@ -27,7 +24,6 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
     private var lawyer: User? = null
     private val binding by viewBinding(FragmentQuestionBinding::bind)
     private var tagas: String? = null
-    private lateinit var selectedCountry: String
     private val args: QuestionFragmentArgs by navArgs()
     private val viewModel: LawyersViewModel by viewModels({ requireParentFragment() })
 
@@ -40,18 +36,12 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupEditTexts()
         with(binding) {
             if (tagas != null && tagas == "edit_question") {
                 toolbar.toolbar.setTitle(R.string.dialog_title_edit)
                 editDescription.setText(question?.description)
-                editCountry.setText(question?.country)
-                editCity.setText(question?.city)
-                editPhone.setText(question?.phone)
-                editName.setText(question?.fullname)
-                editEmail.setText(question?.email)
             } else {
-                question = Question()
+                question = Question(sender = MainActivity.user.value!!, destination = lawyer)
                 toolbar.toolbar.setTitle(R.string.dialog_title_question)
             }
             toolbar.toolbar.apply {
@@ -60,19 +50,6 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
                 }
                 setOnMenuItemClickListener(toolbarMenuClickListener)
             }
-            editCountry.apply {
-                setAdapter(getCountryAdapter(requireContext()))
-                setOnItemClickListener { adapterView, _, i, _ ->
-                    selectedCountry = adapterView.getItemAtPosition(i).toString()
-                    editCity.setAdapter(getCityAdapter(requireContext(), selectedCountry))
-                    editCity.isEnabled = true
-                    Utils.hideKeyboard(requireContext(), requireView())
-                }
-            }
-            if (MainActivity.user.value!!.country == "N/A")
-                editCity.isEnabled = false
-            else editCity.setAdapter(getCityAdapter(requireContext(),
-                MainActivity.user.value!!.country))
         }
     }
 
@@ -82,13 +59,6 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
                 R.id.action_confirm -> {
                     if (isValid()) {
                         question!!.description = editDescription.text.toString().trim()
-                        question!!.country = editCountry.text.toString().trim()
-                        question!!.city = editCity.text.toString().trim()
-                        question!!.phone = editPhone.text.toString().trim()
-                        question!!.email = editEmail.text.toString().trim()
-                        question!!.fullname = editName.text.toString().trim()
-                        if (tagas == null) question!!.destination = lawyer!!.uid
-                        question!!.sender = MainActivity.user.value!!.uid
                         Utils.hideKeyboard(requireContext(), binding.root)
                         viewModel.postQuestion(question!!)
                         findNavController().navigateUp()
@@ -101,44 +71,12 @@ class QuestionFragment : Fragment(R.layout.fragment_question) {
 
     }
 
-    private fun setupEditTexts() {
-        with(binding) {
-            editCountry.setText(MainActivity.user.value?.country)
-            editCity.setText(MainActivity.user.value?.city)
-            editPhone.setText(MainActivity.user.value?.phone)
-            editName.setText(MainActivity.user.value?.fullname)
-            editEmail.setText(MainActivity.user.value?.email)
-        }
-    }
-
     private fun isValid(): Boolean {
         var valid = true
         with(binding) {
             checkFieldIfEmpty(
                 editDescription, layoutDescription, requireContext()
             ).yes { valid = false }
-            checkFieldIfEmpty(
-                editCountry, layoutCountry, requireContext()
-            ).yes { valid = false }
-            checkFieldIfEmpty(
-                editCity, layoutCity, requireContext()
-            ).yes { valid = false }
-            checkFieldIfEmpty(
-                editPhone, layoutPhone, requireContext()
-            ).yes { valid = false }
-            checkFieldIfEmpty(
-                editName, layoutName, requireContext()
-            ).yes { valid = false }
-            checkFieldIfEmpty(
-                editEmail, layoutEmail, requireContext()
-            ).yes { valid = false }
-            if (!editCountry.editableText.contains("N/A") && !resources.getStringArray(
-                    getCitiesByCountry(editCountry.editableText.toString().trim()))
-                    .contains(editCity.editableText.toString().trim())
-            ) {
-                valid = false
-                editCity.editableText.clear()
-            }
         }
         return valid
     }

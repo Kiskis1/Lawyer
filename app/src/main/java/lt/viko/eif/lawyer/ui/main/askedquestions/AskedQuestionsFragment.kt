@@ -101,7 +101,7 @@ class AskedQuestionsFragment : Fragment(R.layout.fragment_asked_questions),
                 dialog.create().show()
             }
             R.id.action_call -> {
-                Utils.showCallDialog(requireContext(), item.phone, UserTypes.User)
+                Utils.showCallDialog(requireContext(), item.sender!!.phone, UserTypes.User)
             }
         }
     }

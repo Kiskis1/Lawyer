@@ -8,20 +8,23 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import lt.viko.eif.lawyer.MainActivity
 import lt.viko.eif.lawyer.R
 import lt.viko.eif.lawyer.databinding.ItemReservationBinding
 import lt.viko.eif.lawyer.model.Reservation
+import lt.viko.eif.lawyer.model.UserTypes
 import lt.viko.eif.lawyer.utils.Utils.dateFormat
 import java.util.Date
 
 class ReservationsAdapter(
     private val interaction: Interaction? = null,
     private val history: Boolean = false,
+    private val role: UserTypes = MainActivity.user.value!!.role,
 ) :
     ListAdapter<Reservation, ReservationsAdapter.ReservationsViewHolder>(ReservationDC()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ReservationsViewHolder(
-        ItemReservationBinding.inflate(LayoutInflater.from(parent.context), parent, false).root,
+        ItemReservationBinding.inflate(LayoutInflater.from(parent.context), parent, false),
         interaction, history
     )
 
@@ -33,12 +36,10 @@ class ReservationsAdapter(
     }
 
     inner class ReservationsViewHolder(
-        itemView: View,
+        val binding: ItemReservationBinding,
         private val interaction: Interaction?,
         history: Boolean,
-    ) : RecyclerView.ViewHolder(itemView), OnClickListener {
-
-        private val binding = ItemReservationBinding.bind(itemView)
+    ) : RecyclerView.ViewHolder(binding.root), OnClickListener {
 
         init {
             itemView.setOnClickListener(this)
@@ -64,7 +65,14 @@ class ReservationsAdapter(
 
         fun bind(item: Reservation) = with(itemView) {
             with(binding) {
-                textFullname.text = item.lawyer!!.fullname
+                if (role == UserTypes.Lawyer) {
+                    textFullname.text = item.userName
+                    divider.visibility = View.GONE
+                    textAddress.visibility = View.GONE
+                } else if (role == UserTypes.User) {
+                    textFullname.text = item.lawyer!!.fullname
+                }
+
                 textDate.text = item.date
                 textTime.text = item.time
                 textAddress.text = item.lawyer!!.address

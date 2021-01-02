@@ -65,7 +65,7 @@ class ProfileEditFragment :
             editSpecialization.setAdapter(getSpecializationAdapter(requireContext()))
             editExperience.setAdapter(getExperienceAdapter(requireContext()))
             editPaymentType.setAdapter(getPaymentTypeAdapter(requireContext()))
-            editPaymentType.setOnItemClickListener { adapterView, view, i, l ->
+            editPaymentType.setOnItemClickListener { _, _, i, _ ->
                 selected = i
             }
 

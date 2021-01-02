@@ -62,13 +62,33 @@ class QuestionListAdapter(
         fun bind(item: Question) = with(itemView) {
             with(binding) {
                 textQuestion.text = item.description
-                textCountry.text =
-                    resources.getString(R.string.item_question_country, item.country)
-                textCity.text = resources.getString(R.string.item_question_city, item.city)
-                textEmail.text = resources.getString(R.string.item_question_email, item.email)
-                textPhone.text = resources.getString(R.string.item_question_phone, item.phone)
-                textFullname.text =
-                    resources.getString(R.string.item_question_full_name, item.fullname)
+                if (role == UserTypes.Lawyer) {
+                    textCountry.text =
+                        resources.getString(R.string.item_question_country, item.sender!!.country)
+                    textCity.text =
+                        resources.getString(R.string.item_question_city, item.sender!!.city)
+                    textEmail.text =
+                        resources.getString(R.string.item_question_email, item.sender!!.email)
+                    textPhone.text =
+                        resources.getString(R.string.item_question_phone, item.sender!!.phone)
+                    textFullname.text =
+                        resources.getString(R.string.item_question_full_name,
+                            item.sender!!.fullname)
+                } else if (role == UserTypes.User) {
+                    textCountry.text =
+                        resources.getString(R.string.item_question_country,
+                            item.destination!!.country)
+                    textCity.text =
+                        resources.getString(R.string.item_question_city, item.destination!!.city)
+                    textEmail.text =
+                        resources.getString(R.string.item_question_email, item.destination!!.email)
+                    textPhone.text =
+                        resources.getString(R.string.item_question_phone, item.destination!!.phone)
+                    textFullname.text =
+                        resources.getString(R.string.item_question_lawyer_full_name,
+                            item.destination!!.fullname)
+                }
+
             }
         }
     }

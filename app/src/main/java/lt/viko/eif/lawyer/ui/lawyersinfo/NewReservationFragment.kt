@@ -41,8 +41,9 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
         tagas = args.tag
         reservation = args.reservation
         if (tagas == null && tagas != "edit_reservation") {
-            reservation = Reservation(lawyer = lawyer)
-            reservation!!.user = MainActivity.user.value!!.uid
+            reservation = Reservation(lawyer = lawyer,
+                user = MainActivity.user.value!!.uid,
+                userName = MainActivity.user.value!!.fullname)
         }
     }
 

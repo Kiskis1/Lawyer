@@ -8,49 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:936927441239:android:493ed0d7caeb74e03a4e12",
-        "android_client_info": {
-          "package_name": "com.acruxcs.lawyer"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "936927441239-n9ipa77ngqdrea6q3darq77hjci5jlot.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.acruxcs.lawyer",
-            "certificate_hash": "27457f811ca98561225f4dacc6399763c8fe2166"
-          }
-        },
-        {
-          "client_id": "936927441239-g0l4v8fe6431rv93i0nc29jve5h6p1n2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDsp-iZ5PxjRa2IGOvy1IG8fKFCRB5AmZY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "936927441239-g0l4v8fe6431rv93i0nc29jve5h6p1n2.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:936927441239:android:c1738f1e48d53f443a4e12",
         "android_client_info": {
           "package_name": "lt.viko.eif.lawyer"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "936927441239-reshh05vfa204je2gfb787lmasnbp3j2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "lt.viko.eif.lawyer",
+            "certificate_hash": "27457f811ca98561225f4dacc6399763c8fe2166"
+          }
+        },
         {
           "client_id": "936927441239-g0l4v8fe6431rv93i0nc29jve5h6p1n2.apps.googleusercontent.com",
           "client_type": 3

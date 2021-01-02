@@ -117,4 +117,6 @@
     <string name="title_history">Istorija</string>
     <string name="item_lawyer_won_cases">%d laimetų bylų</string>
     <string name="item_lawyer_experience">Nuo %d metų</string>
+    <string name="lawyers_empty_list">Nėra advokatų su šiuo filtru.</string>
+    <string name="item_question_lawyer_full_name">Advokato vardas: %s</string>
 </resources>

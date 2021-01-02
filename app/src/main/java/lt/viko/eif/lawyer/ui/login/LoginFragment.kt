@@ -79,6 +79,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             //normal login
             buttonLogin.setOnClickListener {
                 Utils.hideKeyboard(requireContext(), requireView())
+                activityProgressLayout.visibility = View.VISIBLE
                 login()
             }
 
@@ -121,7 +122,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 }
         }
 
-        activityProgressLayout.visibility = View.VISIBLE
         viewModel.firebaseAuth.signInWithEmailAndPassword(
             email,
             password
