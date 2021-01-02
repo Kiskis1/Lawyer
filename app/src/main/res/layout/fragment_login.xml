@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:autofillHints="username"
             android:hint="@string/hint_email"
-            android:imeOptions="actionNext"
+            android:imeOptions="actionDone"
             android:inputType="textEmailAddress"
             android:nextFocusDown="@id/layout_password"
             android:textSize="20sp" />
