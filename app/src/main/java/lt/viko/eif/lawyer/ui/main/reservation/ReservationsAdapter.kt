@@ -74,7 +74,7 @@ class ReservationsAdapter(
                 }
                 textPaymentType.text =
                     resources.getString(R.string.item_reservation_payment_type,
-                        item.lawyer!!.paymentTypes)
+                        resources.getStringArray(R.array.PaymentTypes)[item.lawyer!!.paymentTypes])
                 val strDate = dateFormat.parse("${item.date} ${item.time}")
                 if (Date().after(strDate))
                     binding.menuButton.visibility = View.GONE

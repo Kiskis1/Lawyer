@@ -15,18 +15,6 @@
         <item>DK</item>
     </string-array>
 
-    <integer-array name="Experience">
-        <item>0</item>
-        <item>5</item>
-        <item>10</item>
-        <item>15</item>
-        <item>20</item>
-        <item>25</item>
-        <item>30</item>
-        <item>35</item>
-        <item>40</item>
-    </integer-array>
-
     <string-array name="PaymentTypes">
         <item>Card</item>
         <item>Cash</item>

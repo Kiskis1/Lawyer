@@ -24,13 +24,6 @@
     <string name="call_dialog_message_lawyer">Ar tikrai nori skambinti šiam advokatui?</string>
     <string name="call_dialog_title_user">Paskambinti klientui</string>
     <string name="call_dialog_message_user">Ar tikrai nori skambinti šiam klientui?</string>
-    <string name="item_lawyer_name">Vardas: %s</string>
-    <string name="item_lawyer_specialization">Specializacija: %s</string>
-    <string name="item_lawyer_education">Išsilavinimas: %s</string>
-    <string name="item_lawyer_country">Šalis: %s</string>
-    <string name="item_lawyer_city">Miestas: %s</string>
-    <string name="item_lawyer_location">Vietovė: %s, %s</string>
-    <string name="item_lawyer_address">Adresas: %s</string>
     <string name="lawyersinfo_notable_cases">Minimos bylos:</string>
     <string name="action_ask_a_question">Užduok klausimą</string>
     <string name="action_message">Parašyk</string>
@@ -49,8 +42,6 @@
     <string name="item_case_area">Rūšis: %s</string>
     <string name="item_case_outcome">Baigtis: %s</string>
     <string name="item_case_date">Data: %s</string>
-    <string name="item_question_question">Klausimas: %s</string>
-    <string name="item_question_colon">Klausimas:</string>
     <string name="item_question_country">Šalis: %s</string>
     <string name="item_question_city">Miestas: %s</string>
     <string name="item_question_phone">Tel. nr: %s</string>
@@ -106,12 +97,8 @@
     <string name="dialog_title_new_case">Nauja bylą</string>
     <string name="dialog_title_question">Naujas klausimas</string>
     <string name="profile_update_address">Atnaujinti adresą</string>
-    <string name="reservation_date">Data: %s</string>
-    <string name="reservation_lawyer_name">Advokatas: %s</string>
-    <string name="reservation_lawyer_address">Adresas: %s</string>
     <string name="reservation_visit_type_person">Vizito tipas: Kontaktinis</string>
     <string name="reservation_visit_type_remote">Vizito tipas: Nuotolinis</string>
-    <string name="reservation_time">Laikas: %s</string>
     <string name="action_update_profile_information">Keisti profilio duomenis</string>
     <string name="action_change_time">Keisti laiką</string>
     <string name="visit_type_in_person">Kontaktinis</string>
@@ -122,15 +109,12 @@
     <string name="reservation_no_reservations">Rezervacijų nėra.</string>
     <string name="question_no_questions">Klausimų nėra.</string>
     <string name="question_no_active_questions">Neturi klausimų.\nNueik į advokatų langą ir pasirink advokatą.</string>
-    <string name="history_your_previous_reservations">Buvusios rezervacijos</string>
     <string name="profile_reservation_history">Rezervacijų istorija</string>
     <string name="history_no_prev_reserv">Neturi buvusių rezervacijų</string>
-    <string name="content_desc_call_question_asker">Skambinti klausimo užklausėjui</string>
     <string name="error_no_phone_number">Naudotojas neturi pridėjęs tel. nr.</string>
     <string name="item_reservation_payment_type">Atsiskaitymo būdas: %s</string>
     <string name="profile_update_payment_types">Atnaujinti atsiskaitymo būdus</string>
     <string name="title_history">Istorija</string>
     <string name="item_lawyer_won_cases">%d laimetų bylų</string>
-    <string name="item_lawyer_number_of_won_cases">Laimėtų bylų skaičius: %d</string>
     <string name="item_lawyer_experience">Nuo %d metų</string>
 </resources>

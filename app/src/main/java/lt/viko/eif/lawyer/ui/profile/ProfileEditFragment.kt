@@ -18,12 +18,14 @@ import lt.viko.eif.lawyer.utils.Utils.getCityAdapter
 import lt.viko.eif.lawyer.utils.Utils.getCountryAdapter
 import lt.viko.eif.lawyer.utils.Utils.getExperienceAdapter
 import lt.viko.eif.lawyer.utils.Utils.getPaymentTypeAdapter
+import lt.viko.eif.lawyer.utils.Utils.getSpecializationAdapter
 import lt.viko.eif.lawyer.utils.Utils.yes
 
 class ProfileEditFragment :
     Fragment(R.layout.fragment_profile_edit) {
     private val binding by viewBinding(FragmentProfileEditBinding::bind)
     private val viewModel: ProfileViewModel by viewModels({ requireParentFragment() })
+    private var selected = MainActivity.user.value!!.paymentTypes
 
     private lateinit var selectedCountry: String
 
@@ -60,8 +62,13 @@ class ProfileEditFragment :
                     Utils.hideKeyboard(requireContext(), requireView())
                 }
             }
+            editSpecialization.setAdapter(getSpecializationAdapter(requireContext()))
             editExperience.setAdapter(getExperienceAdapter(requireContext()))
             editPaymentType.setAdapter(getPaymentTypeAdapter(requireContext()))
+            editPaymentType.setOnItemClickListener { adapterView, view, i, l ->
+                selected = i
+            }
+
             if (MainActivity.user.value!!.country == "N/A")
                 editCity.isEnabled = false
             else editCity.setAdapter(getCityAdapter(requireContext(),
@@ -81,7 +88,7 @@ class ProfileEditFragment :
                 user.education = editEducation.text.toString().trim()
                 user.experience = editExperience.editableText.toString().trim()
                 user.wonCases = Integer.parseInt(editWonCases.text.toString().trim())
-                user.paymentTypes = editPaymentType.editableText.toString().trim()
+                user.paymentTypes = selected
             }
             viewModel.updateUser(user)
             (activity as MainActivity).recreate()
@@ -149,7 +156,7 @@ class ProfileEditFragment :
             editEducation.setText(MainActivity.user.value?.education)
             editExperience.setText(MainActivity.user.value?.experience)
             editWonCases.setText(MainActivity.user.value?.wonCases.toString())
-            editPaymentType.setText(MainActivity.user.value?.paymentTypes)
+            editPaymentType.setText(resources.getStringArray(R.array.PaymentTypes)[MainActivity.user.value?.paymentTypes!!])
         }
     }
 }
