@@ -166,7 +166,7 @@ object Utils {
     fun getExperienceAdapter(context: Context): ArrayAdapter<String> {
         var years = arrayOf<String>()
         val now = Calendar.getInstance().get(Calendar.YEAR)
-        for (i in 1950..now) {
+        for (i in 1970..now) {
             years += i.toString()
         }
         return ArrayAdapter(

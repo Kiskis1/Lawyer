@@ -7,6 +7,7 @@ import com.crazylegend.kotlinextensions.livedata.SingleLiveEvent
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import lt.viko.eif.lawyer.MainActivity
 import lt.viko.eif.lawyer.model.Question
 import lt.viko.eif.lawyer.model.Reservation
 import lt.viko.eif.lawyer.model.User
@@ -40,6 +41,7 @@ class LawyersViewModel : ViewModel() {
                 for (lawyer in snapshot.children) {
                     lawyer.getValue(User::class.java)?.let { list.add(it) }
                 }
+                list.sortWith(compareBy { it.city != MainActivity.user.value!!.city })
                 lawyers.postValue(list)
             }
 

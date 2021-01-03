@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.metadata
 import com.crazylegend.kotlinextensions.fragments.shortToast
+import com.crazylegend.kotlinextensions.views.afterTextChanged
 import com.crazylegend.kotlinextensions.views.snackbar
 import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
@@ -94,9 +95,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 findNavController().navigate(R.id.action_profileFragment_to_historyFragment)
             }
 
-            layoutPassword.setEndIconOnClickListener {
+            layoutPasswordConfirm.setEndIconOnClickListener {
                 updatePassword()
             }
+
+            editPasswordConfirm.afterTextChanged { layoutPasswordConfirm.error = null }
 
             recyclerView.adapter = lawyersCasesAdapter
             activityViewModel.getLawyersCases(MainActivity.user.value!!.uid)
@@ -114,6 +117,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         val password: String
         with(binding) {
             password = editPassword.text.toString().trim()
+            val passwordConfirm = editPasswordConfirm.text.toString().trim()
             if (password.isEmpty()) {
                 layoutPassword.error = getString(R.string.error_empty_field)
                 editPassword.requestFocus()
@@ -121,6 +125,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             } else if (password.length < MIN_PASS_LENGTH) {
                 layoutPassword.error = getString(R.string.error_password_not_long_enough)
                 editPassword.requestFocus()
+                return
+            } else if (passwordConfirm.isEmpty()) {
+                layoutPasswordConfirm.error = getString(R.string.error_empty_field)
+                editPasswordConfirm.requestFocus()
+                return
+            } else if (passwordConfirm.length < MIN_PASS_LENGTH) {
+                layoutPasswordConfirm.error = getString(R.string.error_password_not_long_enough)
+                editPasswordConfirm.requestFocus()
+                return
+            } else if (password != passwordConfirm) {
+                layoutPasswordConfirm.error = getString(R.string.error_password_do_not_match)
+                editPasswordConfirm.requestFocus()
                 return
             }
         }

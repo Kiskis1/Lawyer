@@ -46,7 +46,7 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
 
     private val expPredicate by lazy {
         Predicate<User> { l: User ->
-            l.experience <= binding.filterSpinnerExperience.editableText.toString()
+            l.experience >= binding.filterSpinnerExperience.editableText.toString()
         }
     }
     private val allPredicates = mutableListOf<Predicate<User>>()

@@ -14,7 +14,7 @@
     <string name="hint_question">Klausimas</string>
     <string name="hint_city">Miestas</string>
     <string name="hint_specialization">Specializacija</string>
-    <string name="hint_experience">Patirtis</string>
+    <string name="hint_experience">Praktikuojantis nuo</string>
     <string name="hint_new_password">Naujas slaptažodis</string>
     <string name="hint_date">Data</string>
     <string name="menu_home">Pagrindinis</string>
@@ -26,7 +26,7 @@
     <string name="call_dialog_message_user">Ar tikrai nori skambinti šiam klientui?</string>
     <string name="lawyersinfo_notable_cases">Minimos bylos:</string>
     <string name="action_ask_a_question">Užduok klausimą</string>
-    <string name="action_message">Parašyk</string>
+    <string name="action_message">Parašyti</string>
     <string name="action_filter">Filtruoti</string>
     <string name="action_call">Skambinti</string>
     <string name="action_cancel">Atšaukti</string>
@@ -70,7 +70,7 @@
     <string name="error_invalid_name">Neteisingas vardas ar pavardė</string>
     <string name="error_invalid_email">Neteisingas el. paštas</string>
     <string name="action_edit">Keisti</string>
-    <string name="action_delete">Ištrinti</string>
+    <string name="action_delete">Atšaukti</string>
     <string name="dialog_title_confirm">Patvirtinti</string>
     <string name="dialog_are_you_sure">Ar tikrai nori ištrinti šį elementą?</string>
     <string name="action_book_visit">Užsirezervuoti vizitą</string>
@@ -85,8 +85,8 @@
     <string name="day_saturday">Šeštadienis</string>
     <string name="day_sunday">Sekmadienis</string>
     <string name="action_reset">Trinti</string>
-    <string name="error_select_date">Prašau pasirinkti datą</string>
-    <string name="error_select_time">Prašau pasirinkti laiką</string>
+    <string name="error_select_date">Prašome pasirinkti datą</string>
+    <string name="error_select_time">Prašome pasirinkti laiką</string>
     <string name="success">Pavyko</string>
     <string name="error_something">Kažkas nepavyko. Bandyk dar kartą!</string>
     <string name="reservation_no_available_dates">Advokatas neturi laisvų datų.\nPabandyk kitą dieną.</string>
@@ -119,4 +119,6 @@
     <string name="item_lawyer_experience">Nuo %d metų</string>
     <string name="lawyers_empty_list">Nėra advokatų su šiuo filtru.</string>
     <string name="item_question_lawyer_full_name">Advokato vardas: %s</string>
+    <string name="hint_confirm_password">Patvirtinti slaptažodį</string>
+    <string name="error_password_do_not_match">Slaptažodžiai nesutampa.</string>
 </resources>

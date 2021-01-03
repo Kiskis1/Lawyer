@@ -54,17 +54,40 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/textColor"
                         android:textColorHint="@color/textColor"
-                        app:endIconContentDescription="Send updated info"
-                        app:endIconDrawable="@drawable/ic_send_24"
-                        app:endIconMode="custom"
+                        app:endIconMode="password_toggle"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:startIconDrawable="@drawable/ic_lock_24">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edit_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_new_password"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout_password_confirm"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/textColor"
+                        android:textColorHint="@color/textColor"
+                        app:endIconContentDescription="Send updated info"
+                        app:endIconDrawable="@drawable/ic_send_24"
+                        app:endIconMode="custom"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layout_password"
+                        app:startIconDrawable="@drawable/ic_lock_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_password_confirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_confirm_password"
                             android:imeOptions="actionDone"
                             android:inputType="textPassword" />
 
@@ -82,7 +105,7 @@
                         android:textAlignment="textStart"
                         android:textColor="@color/textColor"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/layout_password" />
+                        app:layout_constraintTop_toBottomOf="@+id/layout_password_confirm" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_working_hours"

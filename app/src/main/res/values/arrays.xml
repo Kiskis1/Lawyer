@@ -26,7 +26,13 @@
         <item>United Kingdom</item>
         <item>United States</item>
     </string-array>
+
     <string-array name="Lithuania">
+        <item>Vilnius</item>
+        <item>Kaunas</item>
+        <item>Klaipėda</item>
+        <item>Šiauliai</item>
+        <item>Panevėžys</item>
         <item>Akmenė</item>
         <item>Alytus</item>
         <item>Anykščiai</item>
@@ -53,13 +59,11 @@
         <item>Jurbarkas</item>
         <item>Kaišiadorys</item>
         <item>Kalvarija</item>
-        <item>Kaunas</item>
         <item>Kavarskas</item>
         <item>Kazlų Rūda</item>
         <item>Kėdainiai</item>
         <item>Kelmė</item>
         <item>Kybartai</item>
-        <item>Klaipėda</item>
         <item>Kretinga</item>
         <item>Kudirkos Naumiestis</item>
         <item>Kupiškis</item>
@@ -81,7 +85,6 @@
         <item>Palanga</item>
         <item>Pandėlys</item>
         <item>Panemunė</item>
-        <item>Panevėžys</item>
         <item>Pasvalys</item>
         <item>Plungė</item>
         <item>Priekulė</item>
@@ -102,7 +105,6 @@
         <item>Šakiai</item>
         <item>Šalčininkai</item>
         <item>Šeduva</item>
-        <item>Šiauliai</item>
         <item>Šilalė</item>
         <item>Šilutė</item>
         <item>Širvintos</item>
@@ -125,7 +127,6 @@
         <item>Vievis</item>
         <item>Vilkaviškis</item>
         <item>Vilkija</item>
-        <item>Vilnius</item>
         <item>Virbalis</item>
         <item>Visaginas</item>
         <item>Zarasai</item>
