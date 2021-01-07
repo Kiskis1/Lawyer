@@ -26,7 +26,7 @@ import java.util.Date
 class ProfileViewModel : ViewModel() {
     private val usersRepository = UsersRepository
     private val casesRepository = CasesRepository
-    private val firebaseUser = Firebase.auth.currentUser
+    val firebaseUser = Firebase.auth.currentUser
     private val lawyerPreviousReservations = MutableLiveData<List<Reservation>>()
 
     private val status = SingleLiveEvent<Status>()

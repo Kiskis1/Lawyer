@@ -70,7 +70,7 @@
     <string name="error_invalid_name">Neteisingas vardas ar pavardė</string>
     <string name="error_invalid_email">Neteisingas el. paštas</string>
     <string name="action_edit">Keisti</string>
-    <string name="action_delete">Atšaukti</string>
+    <string name="action_delete">Ištrinti</string>
     <string name="dialog_title_confirm">Patvirtinti</string>
     <string name="dialog_are_you_sure">Ar tikrai nori ištrinti šį elementą?</string>
     <string name="action_book_visit">Užsirezervuoti vizitą</string>
@@ -121,4 +121,8 @@
     <string name="item_question_lawyer_full_name">Advokato vardas: %s</string>
     <string name="hint_confirm_password">Patvirtinti slaptažodį</string>
     <string name="error_password_do_not_match">Slaptažodžiai nesutampa.</string>
+    <string name="reservation_no_working_hours">Advokatas nėra nustatęs darbo valandų.\nPasirinkite kitą advokatą.</string>
+    <string name="error_invalid_username_password">Neteisingas el. paštas arba slaptažodis arba yra problema sistemoje.</string>
+    <string name="msg_reauth_success">Reautentifikacija pavyko. Pabandykite vėl pakeisti slaptažodį.</string>
+    <string name="msg_please_reauth">Prašome reautentifikuotis</string>
 </resources>

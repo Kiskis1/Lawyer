@@ -23,6 +23,7 @@ class WorkingHoursFragment : Fragment(R.layout.fragment_working_hours) {
         setupLayouts()
         setupTextViews()
         with(binding) {
+            dialog = this@WorkingHoursFragment
             toolbar.toolbar.apply {
                 setNavigationOnClickListener {
                     findNavController().navigateUp()

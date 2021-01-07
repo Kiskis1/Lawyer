@@ -146,4 +146,10 @@
     <string name="lawyers_empty_list">No lawyers with this filter.</string>
     <string name="hint_confirm_password">Confirm password</string>
     <string name="error_password_do_not_match">Passwords do not match.</string>
+    <string name="reservation_no_working_hours">Lawyer has not set his working hours.\nTry another lawyer.</string>
+
+    <string name="error_invalid_username_password">Invalid email or password or there is a problem in the system.</string>
+    <string name="msg_reauth_success">Re-authentication successful. Try to change password again.</string>
+    <string name="msg_please_reauth">Please re-authenticate</string>
+
 </resources>

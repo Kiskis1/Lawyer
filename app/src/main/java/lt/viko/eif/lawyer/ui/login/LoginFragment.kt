@@ -137,7 +137,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 requireView().findNavController()
                     .navigate(dirToMain)
             } else {
-                binding.errorMessage.text = task.exception?.message
+                binding.errorMessage.text =
+                    resources.getString(R.string.error_invalid_username_password)
                 binding.buttonLogin.isEnabled = true
                 activityProgressLayout.visibility = View.GONE
             }

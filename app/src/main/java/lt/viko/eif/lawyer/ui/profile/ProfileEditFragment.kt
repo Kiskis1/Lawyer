@@ -55,8 +55,6 @@ class ProfileEditFragment :
                 setAdapter(getCountryAdapter(requireContext()))
                 setOnItemClickListener { adapterView, _, i, _ ->
                     selectedCountry = adapterView.getItemAtPosition(i).toString()
-                    Lingver.getInstance()
-                        .setLocale(context, Utils.convertToLocaleCode(selectedCountry))
                     editCity.setAdapter(getCityAdapter(requireContext(), selectedCountry))
                     editCity.isEnabled = true
                     Utils.hideKeyboard(requireContext(), requireView())
@@ -89,6 +87,8 @@ class ProfileEditFragment :
                 user.experience = editExperience.editableText.toString().trim()
                 user.wonCases = Integer.parseInt(editWonCases.text.toString().trim())
                 user.paymentTypes = selected
+                Lingver.getInstance()
+                    .setLocale(requireContext(), Utils.convertToLocaleCode(selectedCountry))
             }
             viewModel.updateUser(user)
             (activity as MainActivity).recreate()

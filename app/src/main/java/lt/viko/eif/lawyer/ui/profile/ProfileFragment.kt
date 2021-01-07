@@ -1,8 +1,10 @@
 package lt.viko.eif.lawyer.ui.profile
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
@@ -20,11 +22,13 @@ import com.crazylegend.kotlinextensions.views.snackbar
 import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.facebook.login.LoginManager
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import lt.viko.eif.lawyer.ActivityViewModel
 import lt.viko.eif.lawyer.MainActivity
 import lt.viko.eif.lawyer.R
+import lt.viko.eif.lawyer.databinding.DialogReauthenticateBinding
 import lt.viko.eif.lawyer.databinding.FragmentProfileBinding
 import lt.viko.eif.lawyer.model.UserTypes
 import lt.viko.eif.lawyer.repository.SharedPrefRepository
@@ -36,6 +40,7 @@ import lt.viko.eif.lawyer.ui.lawyersinfo.LawyersCaseAdapter
 import lt.viko.eif.lawyer.utils.Status
 import lt.viko.eif.lawyer.utils.Utils
 import lt.viko.eif.lawyer.utils.Utils.MIN_PASS_LENGTH
+import lt.viko.eif.lawyer.utils.Utils.yes
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val activityViewModel: ActivityViewModel by activityViewModels()
@@ -63,8 +68,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     setOf<String>()
                 )
                     ?.contains("password")!!
-            )
+            ) {
                 layoutPassword.visibility = View.GONE
+                layoutPasswordConfirm.visibility = View.GONE
+            }
 
             buttonLogout.setOnClickListener {
                 logout()
@@ -189,8 +196,47 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             Status.ERROR -> shortToast(R.string.error_something)
 
             Status.REAUTHENTICATE -> {
-                shortToast("Please re-login")
-                logout()
+                shortToast(getString(R.string.msg_please_reauth))
+                val dialogBinding =
+                    DialogReauthenticateBinding.inflate(LayoutInflater.from(requireContext()))
+                val builder = AlertDialog.Builder(requireContext())
+                with(dialogBinding) {
+                    builder.setView(root)
+                        .setPositiveButton(
+                            R.string.action_confirm, null)
+                        .setNegativeButton(
+                            R.string.action_cancel) { dialog, _ ->
+                            dialog.cancel()
+                        }
+
+                    val dialog = builder.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                        var valid = true
+                        Utils.checkFieldIfEmpty(editEmail, layoutEmail, requireContext()).yes {
+                            valid = false
+                        }
+                        Utils.checkFieldIfEmpty(editPassword, layoutPassword, requireContext())
+                            .yes {
+                                valid = false
+                            }
+                        if (valid) {
+                            val credential =
+                                EmailAuthProvider.getCredential(
+                                    editEmail.text.toString().trim(),
+                                    editPassword.text.toString().trim())
+
+                            viewModel.firebaseUser!!.reauthenticate(credential)
+                                .addOnSuccessListener {
+                                    requireView().snackbar(getString(R.string.msg_reauth_success))
+                                    dialog.dismiss()
+                                }.addOnFailureListener {
+                                    errorMessage.text =
+                                        resources.getString(R.string.error_invalid_username_password)
+                                }
+                        }
+                    }
+                }
             }
 
             Status.PICTURE_CHANGE_SUCCESS -> {

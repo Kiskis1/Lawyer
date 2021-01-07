@@ -91,7 +91,7 @@ class NewReservationFragment : Fragment(R.layout.fragment_new_reservation),
                 }
             } ?: run {
                 toolbar.toolbar.menu.findItem(R.id.action_confirm).isVisible = false
-                textEmptyList.visibility = View.VISIBLE
+                textNoWorkingHours.visibility = View.VISIBLE
                 visitTypeGroup.visibility = View.GONE
                 recyclerView.visibility = View.GONE
                 dayPicker.visibility = View.GONE

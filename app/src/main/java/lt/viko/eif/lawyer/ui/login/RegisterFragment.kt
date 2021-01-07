@@ -61,8 +61,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
             spinnerCountry.setOnItemClickListener { adapterView, _, i, _ ->
                 selectedCountry = adapterView.getItemAtPosition(i).toString()
-                Lingver.getInstance()
-                    .setLocale(requireContext(), Utils.convertToLocaleCode(selectedCountry))
                 spinnerCity.setAdapter(Utils.getCityAdapter(requireContext(), selectedCountry))
                 spinnerCity.isEnabled = true
                 Utils.hideKeyboard(requireContext(), requireView())
@@ -99,6 +97,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
                 Utils.hideKeyboard(requireContext(), requireView())
                 activityProgressLayout.visibility = View.VISIBLE
+                Lingver.getInstance()
+                    .setLocale(requireContext(), Utils.convertToLocaleCode(selectedCountry))
                 createAccount(user)
             }
         }
