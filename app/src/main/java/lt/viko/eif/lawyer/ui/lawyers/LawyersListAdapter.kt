@@ -71,17 +71,17 @@ class LawyersListAdapter(
         fun bind(item: User) = with(itemView) {
             with(binding) {
                 ViewCompat.setTransitionName(infoLayout, item.uid + "infoLayout")
-                ViewCompat.setTransitionName(imageProfile, item.uid)
-                ViewCompat.setTransitionName(textName, item.fullname)
-                ViewCompat.setTransitionName(textEducation, item.uid + item.education)
+                ViewCompat.setTransitionName(imageProfile, item.uid + "1")
+                ViewCompat.setTransitionName(textName, item.fullname + "2")
+                ViewCompat.setTransitionName(textEducation, item.uid + item.education + "3")
                 ViewCompat.setTransitionName(textSpecialization,
-                    item.uid + item.specialization)
+                    item.uid + item.specialization + "4")
                 ViewCompat.setTransitionName(textExperience,
-                    item.uid + item.experience)
+                    item.uid + item.experience + "5")
                 ViewCompat.setTransitionName(textWonCases,
-                    item.uid + item.wonCases.toString())
-                ViewCompat.setTransitionName(textLocation, item.uid + item.city)
-                ViewCompat.setTransitionName(textAddress, item.uid + item.address)
+                    item.uid + item.wonCases.toString() + "6")
+                ViewCompat.setTransitionName(textLocation, item.uid + item.city + "7")
+                ViewCompat.setTransitionName(textAddress, item.uid + item.address + "8")
 
                 textName.text = item.fullname
                 textEducation.text = item.education

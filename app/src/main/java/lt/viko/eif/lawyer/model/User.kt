@@ -22,4 +22,5 @@ data class User(
     var workingHours: WorkingHours? = null,
     var imageRef: String = "",
     var paymentTypes: Int = 1,
+    var token: String = "",
 ) : Parcelable
