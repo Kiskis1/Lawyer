@@ -31,4 +31,6 @@ object UsersRepository {
 
     fun updateHours(hours: WorkingHours, uid: String) =
         db.child(uid).child("workingHours").setValue(hours)
+
+    fun updateToken(token: String, uid: String) = db.child(uid).child("token").setValue(token)
 }
