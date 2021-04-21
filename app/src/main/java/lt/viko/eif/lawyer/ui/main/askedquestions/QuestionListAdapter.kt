@@ -63,8 +63,8 @@ class QuestionListAdapter(
             with(binding) {
                 textQuestion.text = item.description
                 if (role == UserTypes.Lawyer) {
-                    textCountry.text =
-                        resources.getString(R.string.item_question_country, item.sender!!.country)
+                    // textCountry.text =
+                    //     resources.getString(R.string.item_question_country, item.sender!!.country)
                     textCity.text =
                         resources.getString(R.string.item_question_city, item.sender!!.city)
                     textEmail.text =
@@ -75,9 +75,9 @@ class QuestionListAdapter(
                         resources.getString(R.string.item_question_full_name,
                             item.sender!!.fullname)
                 } else if (role == UserTypes.User) {
-                    textCountry.text =
-                        resources.getString(R.string.item_question_country,
-                            item.destination!!.country)
+                    // textCountry.text =
+                    //     resources.getString(R.string.item_question_country,
+                    //         item.destination!!.country)
                     textCity.text =
                         resources.getString(R.string.item_question_city, item.destination!!.city)
                     textEmail.text =

@@ -11,28 +11,28 @@
     android:paddingBottom="16dp"
     tools:context=".ui.lawyers.FilterDialog">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/filter_layout_country"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/textColor"
-        android:textColorHint="@color/textColor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <!--    <com.google.android.material.textfield.TextInputLayout-->
+    <!--        android:id="@+id/filter_layout_country"-->
+    <!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:textColor="@color/textColor"-->
+    <!--        android:textColorHint="@color/textColor"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
 
-        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/filter_spinner_country"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusable="false"
-            android:hint="@string/hint_country"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:singleLine="true" />
+    <!--        <com.google.android.material.textfield.MaterialAutoCompleteTextView-->
+    <!--            android:id="@+id/filter_spinner_country"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:focusable="false"-->
+    <!--            android:hint="@string/hint_country"-->
+    <!--            android:imeOptions="actionDone"-->
+    <!--            android:inputType="text"-->
+    <!--            android:singleLine="true" />-->
 
-    </com.google.android.material.textfield.TextInputLayout>
+    <!--    </com.google.android.material.textfield.TextInputLayout>-->
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/filter_layout_city"
@@ -43,7 +43,7 @@
         android:textColor="@color/textColor"
         android:textColorHint="@color/textColor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filter_layout_country">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/filter_spinner_city"
