@@ -60,7 +60,7 @@ class FcmMessageService : FirebaseMessagingService() {
             .setContentText(body)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
+            // .setContentIntent(pendingIntent)
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
     }

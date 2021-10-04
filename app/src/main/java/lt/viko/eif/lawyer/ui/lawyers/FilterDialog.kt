@@ -13,7 +13,6 @@ import lt.viko.eif.lawyer.databinding.DialogFilterBinding
 import lt.viko.eif.lawyer.model.User
 import lt.viko.eif.lawyer.utils.Utils
 import lt.viko.eif.lawyer.utils.Utils.getAllCityAdapter
-import lt.viko.eif.lawyer.utils.Utils.getCountryAdapter
 import lt.viko.eif.lawyer.utils.Utils.getExperienceAdapter
 import lt.viko.eif.lawyer.utils.Utils.getSpecializationAdapter
 import lt.viko.eif.lawyer.utils.Utils.yes
@@ -26,11 +25,11 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
 
     private lateinit var binding: DialogFilterBinding
 
-    private val countryPredicate by lazy {
-        Predicate<User> { l: User ->
-            l.country == binding.filterSpinnerCountry.editableText.toString().trim()
-        }
-    }
+    // private val countryPredicate by lazy {
+    //     Predicate<User> { l: User ->
+    //         l.country == binding.filterSpinnerCountry.editableText.toString().trim()
+    //     }
+    // }
 
     private val cityPredicate by lazy {
         Predicate<User> { l: User ->
@@ -57,7 +56,7 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
             val builder = MaterialAlertDialogBuilder(activity)
             with(binding) {
 
-                filterSpinnerCountry.setAdapter(getCountryAdapter(fragment.requireContext()))
+                // filterSpinnerCountry.setAdapter(getCountryAdapter(fragment.requireContext()))
                 filterSpinnerCity.setAdapter(getAllCityAdapter(fragment.requireContext()))
 
                 filterSpinnerSpecialization.setAdapter(getSpecializationAdapter(fragment.requireContext()))
@@ -67,8 +66,8 @@ class FilterDialog(private val fragment: Fragment) : DialogFragment() {
                     .setPositiveButton(
                         R.string.action_filter
                     ) { dialog, _ ->
-                        filterSpinnerCountry.text.toString().isNotEmpty()
-                            .yes { allPredicates.add(countryPredicate) }
+                        // filterSpinnerCountry.text.toString().isNotEmpty()
+                        //     .yes { allPredicates.add(countryPredicate) }
                         filterSpinnerCity.text.toString().isNotEmpty()
                             .yes { allPredicates.add(cityPredicate) }
                         filterSpinnerSpecialization.editableText.toString().isNotEmpty()

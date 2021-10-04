@@ -18,7 +18,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseUser
-import lt.viko.eif.lawyer.MainActivity
 import lt.viko.eif.lawyer.R
 import lt.viko.eif.lawyer.model.UserTypes
 import java.text.SimpleDateFormat
@@ -57,16 +56,16 @@ object Utils {
         dialog.show()
     }
 
-    fun getCitiesByCountry(country: String): Int {
-        return when (country) {
-            "Lietuva",
-            "Lithuania",
-            -> R.array.Lithuania
-            "United States" -> R.array.United_States
-            "United Kingdom" -> R.array.United_Kingdom
-            else -> 0
-        }
-    }
+    // fun getCitiesByCountry(country: String): Int {
+    //     return when (country) {
+    //         "Lietuva",
+    //         "Lithuania",
+    //         -> R.array.Lithuania
+    //         "United States" -> R.array.United_States
+    //         "United Kingdom" -> R.array.United_Kingdom
+    //         else -> 0
+    //     }
+    // }
 
     fun hideKeyboard(context: Context, view: View) {
         val imm: InputMethodManager =
@@ -112,29 +111,35 @@ object Utils {
         return set
     }
 
-    fun getCountryAdapter(context: Context) = ArrayAdapter.createFromResource(
-        context,
-        R.array.Countries,
-        android.R.layout.simple_dropdown_item_1line
-    ).also {
-        it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-    }
+    // fun getCountryAdapter(context: Context) = ArrayAdapter.createFromResource(
+    //     context,
+    //     R.array.Countries,
+    //     android.R.layout.simple_dropdown_item_1line
+    // ).also {
+    //     it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+    // }
 
-    private val allCities by lazy {
-        val array = mutableListOf<String>()
-        for (country in MainActivity.appContext.resources.getStringArray(R.array.Countries)) {
-            array.addAll(
-                MainActivity.appContext.resources.getStringArray(getCitiesByCountry(country))
-            )
-        }
-        array
-    }
+    // private val allCities by lazy {
+    //     val array = mutableListOf<String>()
+    //     for (country in MainActivity.appContext.resources.getStringArray(R.array.Countries)) {
+    //         array.addAll(
+    //             MainActivity.appContext.resources.getStringArray(getCitiesByCountry(country))
+    //         )
+    //     }
+    //     array
+    // }
+
+    // fun getAllCityAdapter(context: Context) =
+    //     ArrayAdapter(
+    //         context,
+    //         android.R.layout.simple_dropdown_item_1line,
+    //         allCities
+    //     ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
 
     fun getAllCityAdapter(context: Context) =
-        ArrayAdapter(
-            context,
-            android.R.layout.simple_dropdown_item_1line,
-            allCities
+        ArrayAdapter.createFromResource(context,
+            R.array.Lithuania,
+            android.R.layout.simple_dropdown_item_1line
         ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
 
     fun getSpecializationAdapter(context: Context) =
@@ -155,13 +160,13 @@ object Utils {
             it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
 
-    fun getCityAdapter(context: Context, country: String) = ArrayAdapter.createFromResource(
-        context,
-        getCitiesByCountry(country),
-        android.R.layout.simple_dropdown_item_1line
-    ).also {
-        it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-    }
+    // fun getCityAdapter(context: Context, country: String) = ArrayAdapter.createFromResource(
+    //     context,
+    //     getCitiesByCountry(country),
+    //     android.R.layout.simple_dropdown_item_1line
+    // ).also {
+    //     it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+    // }
 
     fun getExperienceAdapter(context: Context): ArrayAdapter<String> {
         var years = arrayOf<String>()
@@ -178,14 +183,14 @@ object Utils {
         }
     }
 
-    fun convertToLocaleCode(country: String) =
-        when (country) {
-            "Lietuva" -> "lt"
-            "United Kingdom",
-            "United States",
-            -> "en"
-            else -> "en"
-        }
+    // fun convertToLocaleCode(country: String) =
+    //     when (country) {
+    //         "Lietuva" -> "lt"
+    //         "United Kingdom",
+    //         "United States",
+    //         -> "en"
+    //         else -> "en"
+    //     }
 }
 
 @BindingAdapter(value = ["role", "wanted"], requireAll = true)

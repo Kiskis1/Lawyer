@@ -97,8 +97,9 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
             textName.text = lawyer.fullname
             textEducation.text = lawyer.education
             textSpecialization.text = lawyer.specialization
-            textLocation.text =
-                resources.getString(R.string.two_string_comma, lawyer.country, lawyer.city)
+            // textLocation.text =
+            //     resources.getString(R.string.two_string_comma, lawyer.country, lawyer.city)
+            textLocation.text = lawyer.city
             if (lawyer.experience != "N/A") {
                 textExperience.text = resources.getString(R.string.item_lawyer_experience,
                     Integer.parseInt(lawyer.experience))

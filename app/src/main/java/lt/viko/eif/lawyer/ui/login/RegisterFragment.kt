@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.crazylegend.viewbinding.viewBinding
-import com.yariksoffice.lingver.Lingver
 import lt.viko.eif.lawyer.MainActivity
 import lt.viko.eif.lawyer.R
 import lt.viko.eif.lawyer.databinding.FragmentRegisterBinding
@@ -23,7 +22,6 @@ import lt.viko.eif.lawyer.repository.SharedPrefRepository.preferences
 import lt.viko.eif.lawyer.utils.Utils
 import lt.viko.eif.lawyer.utils.Utils.MIN_PASS_LENGTH
 import lt.viko.eif.lawyer.utils.Utils.checkFieldIfEmpty
-import lt.viko.eif.lawyer.utils.Utils.getCitiesByCountry
 import lt.viko.eif.lawyer.utils.Utils.yes
 import java.util.regex.Pattern
 
@@ -57,16 +55,16 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
 
         with(binding) {
-            spinnerCountry.setAdapter(Utils.getCountryAdapter(requireContext()))
-
-            spinnerCountry.setOnItemClickListener { adapterView, _, i, _ ->
-                selectedCountry = adapterView.getItemAtPosition(i).toString()
-                spinnerCity.setAdapter(Utils.getCityAdapter(requireContext(), selectedCountry))
-                spinnerCity.isEnabled = true
-                Utils.hideKeyboard(requireContext(), requireView())
-
-            }
-
+            // spinnerCountry.setAdapter(Utils.getCountryAdapter(requireContext()))
+            //
+            // spinnerCountry.setOnItemClickListener { adapterView, _, i, _ ->
+            //     selectedCountry = adapterView.getItemAtPosition(i).toString()
+            //     spinnerCity.setAdapter(Utils.getCityAdapter(requireContext(), selectedCountry))
+            //     spinnerCity.isEnabled = true
+            //     Utils.hideKeyboard(requireContext(), requireView())
+            //
+            // }
+            spinnerCity.setAdapter(Utils.getAllCityAdapter(requireContext()))
             spinnerCity.setOnItemClickListener { _, _, _, _ ->
                 Utils.hideKeyboard(requireContext(), requireView())
             }
@@ -83,11 +81,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             password = editPassword.text.toString().trim()
             fullname = editFullName.text.toString().trim()
             phone = editPhone.text.toString().trim()
-            country = spinnerCountry.editableText.toString()
+            // country = spinnerCountry.editableText.toString()
             city = spinnerCity.editableText.toString()
             if (isValid()) {
                 user = User(
-                    email, fullname, country, city, phone
+                    email, fullname, city, phone
                 )
                 if (!checkboxLawyer.isChecked) {
                     user.role = UserTypes.User
@@ -97,8 +95,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
                 Utils.hideKeyboard(requireContext(), requireView())
                 activityProgressLayout.visibility = View.VISIBLE
-                Lingver.getInstance()
-                    .setLocale(requireContext(), Utils.convertToLocaleCode(selectedCountry))
+                // Lingver.getInstance()
+                //     .setLocale(requireContext(), Utils.convertToLocaleCode(selectedCountry))
                 createAccount(user)
             }
         }
@@ -141,23 +139,23 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 valid = false
             } else layoutPassword.error = null
 
-            checkFieldIfEmpty(
-                spinnerCountry, layoutCountry, requireContext()
-            ).yes {
-                valid = false
-            }
+            // checkFieldIfEmpty(
+            //     spinnerCountry, layoutCountry, requireContext()
+            // ).yes {
+            //     valid = false
+            // }
             checkFieldIfEmpty(spinnerCity, layoutCity, requireContext()).yes {
                 valid = false
             }
 
-            if (!spinnerCity.editableText.contains("N/A") &&
-                !resources.getStringArray(getCitiesByCountry(selectedCountry)).contains(city)
-            ) {
-                layoutCity.error = getString(R.string.error_invalid_city)
-                spinnerCity.requestFocus()
-                spinnerCity.editableText.clear()
-                valid = false
-            } else layoutCity.error = null
+            // if (!spinnerCity.editableText.contains("N/A") &&
+            //     !resources.getStringArray(getCitiesByCountry(selectedCountry)).contains(city)
+            // ) {
+            //     layoutCity.error = getString(R.string.error_invalid_city)
+            //     spinnerCity.requestFocus()
+            //     spinnerCity.editableText.clear()
+            //     valid = false
+            // } else layoutCity.error = null
         }
         return valid
     }

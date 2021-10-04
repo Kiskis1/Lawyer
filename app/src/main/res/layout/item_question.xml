@@ -53,25 +53,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_phone" />
 
+        <!--        <TextView-->
+        <!--            android:id="@+id/text_country"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="8dp"-->
+        <!--            android:textColor="@color/textColor"-->
+        <!--            android:textSize="16sp"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/text_email" />-->
+
         <TextView
-            android:id="@+id/text_country"
+            android:id="@+id/text_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textColor="@color/textColor"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_email" />
-
-        <TextView
-            android:id="@+id/text_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/textColor"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@id/text_country"
             app:layout_constraintTop_toBottomOf="@id/text_email" />
 
         <View

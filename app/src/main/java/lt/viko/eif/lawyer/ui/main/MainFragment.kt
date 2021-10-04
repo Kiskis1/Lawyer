@@ -8,13 +8,11 @@ import com.crazylegend.viewbinding.viewBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.yariksoffice.lingver.Lingver
 import lt.viko.eif.lawyer.MainActivity
 import lt.viko.eif.lawyer.MyApplication
 import lt.viko.eif.lawyer.R
 import lt.viko.eif.lawyer.databinding.FragmentMainBinding
 import lt.viko.eif.lawyer.repository.UsersRepository
-import lt.viko.eif.lawyer.utils.Utils
 import lt.viko.eif.lawyer.utils.Utils.observeOnce
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -40,7 +38,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 }
             }.attach()
             activityProgressLayout.visibility = View.GONE
-            Lingver.getInstance().setLocale(requireContext(), Utils.convertToLocaleCode(it.country))
+            // Lingver.getInstance().setLocale(requireContext(), Utils.convertToLocaleCode(it.country))
 
         })
 

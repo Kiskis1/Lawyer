@@ -6,16 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.crazylegend.viewbinding.viewBinding
-import com.yariksoffice.lingver.Lingver
 import lt.viko.eif.lawyer.MainActivity
 import lt.viko.eif.lawyer.R
 import lt.viko.eif.lawyer.databinding.FragmentProfileEditBinding
 import lt.viko.eif.lawyer.model.UserTypes
 import lt.viko.eif.lawyer.utils.Utils
 import lt.viko.eif.lawyer.utils.Utils.checkFieldIfEmpty
-import lt.viko.eif.lawyer.utils.Utils.getCitiesByCountry
-import lt.viko.eif.lawyer.utils.Utils.getCityAdapter
-import lt.viko.eif.lawyer.utils.Utils.getCountryAdapter
 import lt.viko.eif.lawyer.utils.Utils.getExperienceAdapter
 import lt.viko.eif.lawyer.utils.Utils.getPaymentTypeAdapter
 import lt.viko.eif.lawyer.utils.Utils.getSpecializationAdapter
@@ -27,7 +23,7 @@ class ProfileEditFragment :
     private val viewModel: ProfileViewModel by viewModels({ requireParentFragment() })
     private var selected = MainActivity.user.value!!.paymentTypes
 
-    private lateinit var selectedCountry: String
+    // private lateinit var selectedCountry: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,14 +47,18 @@ class ProfileEditFragment :
                     }
                 }
             }
-            editCountry.apply {
-                setAdapter(getCountryAdapter(requireContext()))
-                setOnItemClickListener { adapterView, _, i, _ ->
-                    selectedCountry = adapterView.getItemAtPosition(i).toString()
-                    editCity.setAdapter(getCityAdapter(requireContext(), selectedCountry))
-                    editCity.isEnabled = true
-                    Utils.hideKeyboard(requireContext(), requireView())
-                }
+            // editCountry.apply {
+            //     setAdapter(getCountryAdapter(requireContext()))
+            //     setOnItemClickListener { adapterView, _, i, _ ->
+            //         selectedCountry = adapterView.getItemAtPosition(i).toString()
+            //         editCity.setAdapter(getCityAdapter(requireContext(), selectedCountry))
+            //         editCity.isEnabled = true
+            //         Utils.hideKeyboard(requireContext(), requireView())
+            //     }
+            // }
+            editCity.setAdapter(Utils.getAllCityAdapter(requireContext()))
+            editCity.setOnItemClickListener { _, _, _, _ ->
+                Utils.hideKeyboard(requireContext(), requireView())
             }
             editSpecialization.setAdapter(getSpecializationAdapter(requireContext()))
             editExperience.setAdapter(getExperienceAdapter(requireContext()))
@@ -67,10 +67,10 @@ class ProfileEditFragment :
                 selected = i
             }
 
-            if (MainActivity.user.value!!.country == "N/A")
-                editCity.isEnabled = false
-            else editCity.setAdapter(getCityAdapter(requireContext(),
-                MainActivity.user.value!!.country))
+            // if (MainActivity.user.value!!.country == "N/A")
+            //     editCity.isEnabled = false
+            // else editCity.setAdapter(getCityAdapter(requireContext(),
+            //     MainActivity.user.value!!.country))
         }
     }
 
@@ -79,7 +79,7 @@ class ProfileEditFragment :
             val user = MainActivity.user.value!!
             with(binding) {
                 user.phone = editPhone.text.toString().trim()
-                user.country = editCountry.editableText.toString().trim()
+                // user.country = editCountry.editableText.toString().trim()
                 user.city = editCity.editableText.toString().trim()
                 user.address = editAddress.text.toString().trim()
                 user.specialization = editSpecialization.text.toString().trim()
@@ -87,11 +87,11 @@ class ProfileEditFragment :
                 user.experience = editExperience.editableText.toString().trim()
                 user.wonCases = Integer.parseInt(editWonCases.text.toString().trim())
                 user.paymentTypes = selected
-                Lingver.getInstance()
-                    .setLocale(requireContext(), Utils.convertToLocaleCode(selectedCountry))
+                // Lingver.getInstance()
+                //     .setLocale(requireContext(), Utils.convertToLocaleCode(selectedCountry))
             }
             viewModel.updateUser(user)
-            (activity as MainActivity).recreate()
+            // (activity as MainActivity).recreate()
             findNavController().navigateUp()
         }
     }
@@ -99,25 +99,25 @@ class ProfileEditFragment :
     private fun isValid(): Boolean {
         var valid = true
         with(binding) {
-            checkFieldIfEmpty(editCountry, layoutCountry, requireContext()).yes {
-                valid = false
-            }
+            // checkFieldIfEmpty(editCountry, layoutCountry, requireContext()).yes {
+            //     valid = false
+            // }
             checkFieldIfEmpty(editCity, layoutCity, requireContext()).yes {
                 valid = false
             }
             checkFieldIfEmpty(editPhone, layoutPhone, requireContext()).yes {
                 valid = false
             }
-            if (!editCountry.editableText.contains("N/A") && !resources.getStringArray(
-                    getCitiesByCountry(editCountry.editableText.toString()
-                        .trim()))
-                    .contains(editCity.editableText.toString().trim())
-            ) {
-                valid = false
-                editCity.editableText.clear()
-                editCity.requestFocus()
-                layoutCity.error = resources.getString(R.string.error_invalid_city)
-            }
+            // if (!editCountry.editableText.contains("N/A") && !resources.getStringArray(
+            //         getCitiesByCountry(editCountry.editableText.toString()
+            //             .trim()))
+            //         .contains(editCity.editableText.toString().trim())
+            // ) {
+            //     valid = false
+            //     editCity.editableText.clear()
+            //     editCity.requestFocus()
+            //     layoutCity.error = resources.getString(R.string.error_invalid_city)
+            // }
             if (role == UserTypes.Lawyer) {
                 checkFieldIfEmpty(editWonCases, layoutWonCases, requireContext()).yes {
                     valid = false
@@ -148,7 +148,7 @@ class ProfileEditFragment :
 
     private fun setupEditTexts() {
         with(binding) {
-            editCountry.setText(MainActivity.user.value?.country)
+            // editCountry.setText(MainActivity.user.value?.country)
             editCity.setText(MainActivity.user.value?.city)
             editPhone.setText(MainActivity.user.value?.phone)
             editAddress.setText(MainActivity.user.value?.address)

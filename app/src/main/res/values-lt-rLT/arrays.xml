@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <string-array name="Specializations" tools:ignore="InconsistentArrays">
-        <item>Administracinė</item>
-        <item>Civilinė</item>
-        <item>Civilinio proceso</item>
-        <item>Baudžiamoji</item>
-        <item>Baudžiamoji proceso</item>
-        <item>Žemės</item>
-        <item>Finansų</item>
-        <item>Darbo</item>
-    </string-array>
-
+<resources>
     <string-array name="PaymentTypes">
         <item>Kortele</item>
         <item>Grynais</item>
         <item>Visi būdai</item>
     </string-array>
 
-    <string-array name="Countries">
-        <item>Lietuva</item>
-        <item>United Kingdom</item>
-        <item>United States</item>
-    </string-array>
+    <!--    <string-array name="Countries">-->
+    <!--        <item>Lietuva</item>-->
+    <!--        <item>United Kingdom</item>-->
+    <!--        <item>United States</item>-->
+    <!--    </string-array>-->
 
 </resources>

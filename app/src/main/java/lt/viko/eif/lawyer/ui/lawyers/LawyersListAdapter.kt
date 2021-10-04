@@ -95,8 +95,9 @@ class LawyersListAdapter(
                 textWonCases.text =
                     resources.getString(R.string.item_lawyer_won_cases, item.wonCases)
                 textAddress.text = item.address
-                textLocation.text =
-                    resources.getString(R.string.two_string_comma, item.country, item.city)
+                textLocation.text = item.city
+                // textLocation.text =
+                //     resources.getString(R.string.two_string_comma, item.country, item.city)
 
                 buttonCall.setOnClickListener {
                     Utils.showCallDialog(itemView.context, item.phone, UserTypes.Lawyer)
