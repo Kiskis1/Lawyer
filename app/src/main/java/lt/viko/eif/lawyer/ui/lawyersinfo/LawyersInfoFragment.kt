@@ -106,7 +106,7 @@ class LawyersInfoFragment : Fragment(R.layout.fragment_lawyers_info) {
                 textExperience.text = lawyer.experience
 
             textWonCases.text =
-                resources.getString(R.string.item_lawyer_won_cases, lawyer.wonCases)
+                resources.getQuantityString(R.plurals.item_lawyer_won_cases, lawyer.wonCases)
             textAddress.text = lawyer.address
             imageProfile.load(lawyer.imageRef) {
                 error(R.drawable.ic_person_24)

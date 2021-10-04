@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="login_title">Prisijungti</string>
     <string name="login_no_account">Neturi paskyros?</string>
     <string name="login_option">ARBA PRISIJUNK SU</string>
@@ -115,7 +115,11 @@
     <string name="item_reservation_payment_type">Atsiskaitymo būdas: %s</string>
     <string name="profile_update_payment_types">Atnaujinti atsiskaitymo būdus</string>
     <string name="title_history">Istorija</string>
-    <string name="item_lawyer_won_cases">%d laimėtų bylų</string>
+    <plurals name="item_lawyer_won_cases">
+        <item quantity="one"> %d laimėta bylą</item>
+        <item quantity="few"> %d laimėtos bylos</item>
+        <item quantity="other">%d laimėtų bylų</item>
+    </plurals>
     <string name="item_lawyer_experience">Nuo %d metų</string>
     <string name="lawyers_empty_list">Nėra advokatų su šiuo filtru.</string>
     <string name="item_question_lawyer_full_name">Advokato vardas: %s</string>
