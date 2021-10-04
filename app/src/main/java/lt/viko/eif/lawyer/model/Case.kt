@@ -15,6 +15,6 @@ data class Case(
     var type: String = "",
     var outcome: String = "",
     var date: Long = 0,
-    var id: String = UUID.randomUUID().toString().replace("-", "").toUpperCase(Locale.ENGLISH),
+    var id: String = UUID.randomUUID().toString().replace("-", "").uppercase(Locale.ENGLISH),
     var user: String = "",
 ) : Parcelable

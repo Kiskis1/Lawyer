@@ -2,12 +2,12 @@ package lt.viko.eif.lawyer.ui.main.askedquestions
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.crazylegend.kotlinextensions.fragments.shortToast
+import com.crazylegend.kotlinextensions.views.isGone
 import com.crazylegend.kotlinextensions.views.toggleVisibilityGoneToVisible
 import com.crazylegend.viewbinding.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

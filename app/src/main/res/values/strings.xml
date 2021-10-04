@@ -33,7 +33,10 @@
     <string name="call_dialog_title_user">Call a client</string>
     <string name="call_dialog_message_user">Are you sure you want to call this client?</string>
 
-    <string name="item_lawyer_won_cases">%d won cases</string>
+    <plurals name="item_lawyer_won_cases">
+        <item quantity="one"> %d won case</item>
+        <item quantity="other">%d won cases</item>
+    </plurals>
     <string name="item_lawyer_experience">Since %d</string>
     <string name="lawyersinfo_notable_cases">Notable cases:</string>
 

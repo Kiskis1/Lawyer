@@ -93,7 +93,7 @@ class LawyersListAdapter(
                     textExperience.text = item.experience
 
                 textWonCases.text =
-                    resources.getString(R.string.item_lawyer_won_cases, item.wonCases)
+                    resources.getQuantityString(R.plurals.item_lawyer_won_cases, item.wonCases)
                 textAddress.text = item.address
                 textLocation.text =
                     resources.getString(R.string.two_string_comma, item.country, item.city)

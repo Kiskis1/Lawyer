@@ -14,5 +14,5 @@ data class Question(
     var destination: User? = null,
     var sender: User? = null,
     var id: String = UUID.randomUUID().toString().replace("-", "")
-        .toUpperCase(Locale.ENGLISH) + Date().time,
+        .uppercase(Locale.ENGLISH) + Date().time,
 ) : Parcelable
