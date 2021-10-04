@@ -9,7 +9,7 @@ import java.util.UUID
 @Parcelize
 @Keep
 data class Reservation(
-    var id: String = UUID.randomUUID().toString().replace("-", "").toUpperCase(Locale.ENGLISH),
+    var id: String = UUID.randomUUID().toString().replace("-", "").uppercase(Locale.ENGLISH),
     var date: String = "",
     var time: String = "",
     var lawyer: User? = null,
